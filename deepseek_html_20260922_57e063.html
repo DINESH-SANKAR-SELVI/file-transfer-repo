@@ -1,0 +1,1999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Cloud-Based Applications — HashVeno</title>
+<meta name="description" content="HashVeno designs, migrates, and operates cloud-native applications on AWS, GCP, and Azure — multi-tenant SaaS, auto-scaling, observability, and security from day one." />
+<meta name="theme-color" content="#0A0A12" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   DESIGN TOKENS
+============================================================ */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F7FB;
+  --surface:#FFFFFF;
+  --ink:#0A0A12;
+  --ink-2:#252532;
+  --muted:#63637A;
+  --faint:#9B9BAA;
+  --line:#E8E8F0;
+  --line-soft:#F1F1F7;
+
+  --brand:#5B4BE8;
+  --brand-2:#8B7BFF;
+  --brand-soft:#EFECFF;
+  --brand-ink:#3D2FC9;
+
+  --cloud:#0EA5E9;
+  --cloud-2:#38BDF8;
+  --cloud-soft:#E0F2FE;
+  --cloud-ink:#075985;
+
+  --accent:#00C48C;
+  --amber:#D98A0B;
+  --rose:#E0526B;
+
+  --radius:16px;
+  --radius-lg:24px;
+  --shadow-sm:0 1px 2px rgba(15,15,30,.04);
+  --shadow-md:0 8px 24px -8px rgba(20,20,40,.08),0 2px 6px rgba(20,20,40,.03);
+  --shadow-lg:0 24px 60px -20px rgba(20,20,50,.18),0 8px 20px rgba(20,20,40,.06);
+  --shadow-brand:0 12px 32px -8px rgba(91,75,232,.35);
+  --shadow-cloud:0 12px 32px -8px rgba(14,165,233,.35);
+  --font-sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,monospace;
+  --container:1200px;
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--font-sans);background:var(--bg);color:var(--ink);
+  line-height:1.55;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
+}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input{font:inherit;border:none;outline:none;background:none;color:inherit}
+::selection{background:var(--cloud);color:#fff}
+
+.container{width:100%;max-width:var(--container);margin:0 auto;padding:0 24px}
+.section{padding:96px 0;position:relative}
+
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--cloud-ink);background:var(--cloud-soft);
+  padding:6px 12px;border-radius:99px;margin-bottom:18px;
+}
+.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--cloud);box-shadow:0 0 0 3px rgba(14,165,233,.18)}
+.section-head{max-width:680px;margin-bottom:56px}
+.section-head.center{margin-left:auto;margin-right:auto;text-align:center}
+.section-head h2{
+  font-size:clamp(28px,4vw,42px);font-weight:700;letter-spacing:-.03em;
+  line-height:1.12;margin-bottom:14px;
+}
+.section-head h2 em{
+  font-style:normal;
+  background:linear-gradient(100deg,var(--cloud),var(--cloud-2) 55%,#7DD3FC);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.section-head p{font-size:16.5px;color:var(--muted);line-height:1.6}
+
+/* BUTTONS */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-size:14.5px;font-weight:600;letter-spacing:-.005em;
+  padding:12px 22px;border-radius:12px;
+  transition:transform .15s ease, box-shadow .18s ease, background .15s ease, color .15s ease, border-color .15s ease;
+  white-space:nowrap;
+}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--brand);color:#fff;box-shadow:var(--shadow-brand)}
+.btn-primary:hover{background:#4E3FD4;transform:translateY(-1px);box-shadow:0 16px 36px -10px rgba(91,75,232,.5)}
+.btn-cloud{background:var(--cloud);color:#fff;box-shadow:var(--shadow-cloud)}
+.btn-cloud:hover{background:#0284C7;transform:translateY(-1px);box-shadow:0 16px 36px -10px rgba(14,165,233,.5)}
+.btn-secondary{background:var(--surface);color:var(--ink);border:1px solid var(--line)}
+.btn-secondary:hover{background:#fff;border-color:#D6D6E2;transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.btn svg{transition:transform .18s}
+.btn:hover svg{transform:translateX(2px)}
+.btn-lg{font-size:15.5px;padding:14px 26px;border-radius:13px}
+
+/* ============================================================
+   NAV
+============================================================ */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 0;
+  transition:background .25s ease, backdrop-filter .25s ease, border-color .25s ease, padding .25s ease;
+  border-bottom:1px solid transparent;
+}
+.nav.scrolled{
+  background:rgba(247,247,251,.82);
+  backdrop-filter:saturate(180%) blur(20px);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-bottom-color:var(--line);padding:10px 0;
+}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.02em}
+.brand-mark{
+  width:34px;height:34px;border-radius:10px;
+  background:linear-gradient(135deg,var(--brand),var(--brand-2));
+  display:grid;place-items:center;color:#fff;
+  box-shadow:0 6px 16px -4px rgba(91,75,232,.45);position:relative;
+}
+.brand-mark::after{
+  content:"";position:absolute;inset:0;border-radius:10px;
+  background:linear-gradient(135deg,rgba(255,255,255,.35),transparent 55%);pointer-events:none;
+}
+.brand-name{font-size:17px}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-link{
+  font-size:14px;font-weight:500;color:var(--muted);
+  padding:8px 14px;border-radius:9px;transition:.15s;
+}
+.nav-link:hover{color:var(--ink);background:rgba(255,255,255,.7)}
+.nav-link.active{color:var(--cloud-ink);background:var(--cloud-soft)}
+.nav-cta{display:flex;align-items:center;gap:8px}
+.nav-toggle{
+  display:none;width:40px;height:40px;border-radius:10px;
+  align-items:center;justify-content:center;
+  border:1px solid var(--line);background:var(--surface);
+}
+@media(max-width:900px){
+  .nav-links{display:none}
+  .nav-toggle{display:flex}
+  .nav-cta .btn{display:none}
+}
+.mobile-menu{
+  position:fixed;inset:56px 0 auto 0;z-index:99;
+  background:var(--surface);border-bottom:1px solid var(--line);
+  padding:12px 24px 20px;transform:translateY(-8px);opacity:0;pointer-events:none;
+  transition:.22s ease;box-shadow:var(--shadow-lg);
+}
+.mobile-menu.open{transform:none;opacity:1;pointer-events:auto}
+.mobile-menu a{display:block;padding:13px 4px;font-size:15px;font-weight:500;border-bottom:1px solid var(--line-soft)}
+.mobile-menu a:last-child{border:none}
+
+/* ============================================================
+   BREADCRUMB
+============================================================ */
+.breadcrumb{
+  max-width:var(--container);margin:0 auto;padding:96px 24px 0;
+  display:flex;align-items:center;gap:8px;
+  font-size:13px;color:var(--faint);
+}
+.breadcrumb a{transition:.15s}
+.breadcrumb a:hover{color:var(--cloud-ink)}
+.breadcrumb .sep{opacity:.5}
+.breadcrumb .current{color:var(--ink-2);font-weight:500}
+
+/* ============================================================
+   HERO
+============================================================ */
+.shero{position:relative;padding:56px 0 80px;overflow:hidden;isolation:isolate}
+.shero-bg{
+  position:absolute;inset:0;z-index:-1;
+  background:
+    radial-gradient(1000px 480px at 20% 0%, rgba(14,165,233,.14), transparent 65%),
+    radial-gradient(700px 400px at 90% 15%, rgba(91,75,232,.08), transparent 60%);
+}
+.shero-grid{
+  position:absolute;inset:0;z-index:-1;opacity:.5;
+  background-image:
+    linear-gradient(to right, rgba(14,165,233,.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(14,165,233,.06) 1px, transparent 1px);
+  background-size:56px 56px;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+}
+.shero-inner{display:grid;grid-template-columns:1fr 1.15fr;gap:64px;align-items:center}
+.shero-copy{max-width:520px}
+.shero-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.stag{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11.5px;font-weight:600;letter-spacing:.02em;
+  padding:5px 11px;border-radius:99px;
+  background:var(--brand-soft);color:var(--brand-ink);
+}
+.stag.cloud{background:var(--cloud-soft);color:var(--cloud-ink)}
+.stag.live{background:rgba(0,196,140,.1);color:#0B8A66}
+.stag .sdot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.shero h1{
+  font-size:clamp(36px,5.2vw,56px);font-weight:700;letter-spacing:-.04em;
+  line-height:1.06;margin-bottom:20px;
+}
+.shero h1 em{
+  font-style:normal;
+  background:linear-gradient(100deg,var(--cloud),var(--cloud-2) 55%,#7DD3FC);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.shero p.lead{font-size:17px;color:var(--muted);line-height:1.62;margin-bottom:32px}
+.shero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:26px}
+.shero-meta{
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  font-size:12.5px;color:var(--faint);
+}
+.shero-meta span{display:flex;align-items:center;gap:6px}
+.shero-meta svg{color:var(--cloud)}
+
+/* ============================================================
+   CLOUD INFRA MOCKUP (hero visual)
+============================================================ */
+.shero-visual{position:relative;perspective:1600px}
+.infra-window{
+  background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;
+  box-shadow:
+    0 40px 80px -30px rgba(20,20,50,.3),
+    0 20px 40px -20px rgba(20,20,40,.15),
+    0 1px 0 rgba(255,255,255,.9) inset;
+  transform:rotateY(-4deg) rotateX(2deg);
+  transition:transform .6s cubic-bezier(.2,.8,.2,1);
+}
+.infra-window:hover{transform:rotateY(0) rotateX(0)}
+.iw-chrome{
+  display:flex;align-items:center;gap:8px;padding:12px 16px;
+  background:#FAFAFD;border-bottom:1px solid var(--line);
+}
+.iw-dot{width:11px;height:11px;border-radius:50%}
+.iw-title{
+  flex:1;margin:0 12px;
+  color:var(--faint);font-size:11.5px;
+  font-family:var(--font-mono);
+  text-align:center;letter-spacing:.02em;
+}
+.iw-body{background:#FBFBFE;padding:20px;min-height:400px}
+
+/* infra diagram */
+.infra-grid{display:flex;flex-direction:column;gap:14px;height:100%}
+.infra-row{display:flex;gap:10px;align-items:stretch}
+
+.infra-card{
+  flex:1;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:11px;
+  padding:12px 14px;
+  position:relative;
+  transition:.2s;
+}
+.infra-card:hover{border-color:var(--border-2,#DEDEEA);box-shadow:0 8px 18px -8px rgba(20,20,40,.1)}
+.ic-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.ic-name{font-size:11.5px;font-weight:650;color:var(--ink);letter-spacing:-.005em}
+.ic-tag{
+  font-size:9.5px;font-weight:700;
+  padding:2px 6px;border-radius:5px;
+  letter-spacing:.03em;
+}
+.ic-tag.health{background:rgba(0,196,140,.12);color:var(--accent)}
+.ic-tag.warn{background:rgba(217,138,11,.12);color:var(--amber)}
+.ic-tag.live{background:var(--cloud-soft);color:var(--cloud-ink)}
+.ic-meta{display:flex;align-items:center;gap:8px;font-size:10.5px;color:var(--faint);font-family:var(--font-mono)}
+.ic-meta .dot-sep{width:3px;height:3px;border-radius:50%;background:var(--faint)}
+.ic-bars{display:flex;gap:2px;height:24px;align-items:flex-end;margin-top:8px}
+.ic-bars span{
+  flex:1;
+  background:linear-gradient(180deg,rgba(14,165,233,.5),rgba(14,165,233,.2));
+  border-radius:2px 2px 0 0;
+  min-height:3px;
+}
+.ic-bars span:nth-child(1){height:40%}
+.ic-bars span:nth-child(2){height:65%}
+.ic-bars span:nth-child(3){height:50%}
+.ic-bars span:nth-child(4){height:80%}
+.ic-bars span:nth-child(5){height:95%}
+.ic-bars span:nth-child(6){height:70%}
+.ic-bars span:nth-child(7){height:85%}
+.ic-bars span:nth-child(8){height:60%}
+
+.infra-node{
+  flex:0 0 72px;
+  background:linear-gradient(135deg,var(--cloud-soft),#fff);
+  border:1.5px solid rgba(14,165,233,.25);
+  border-radius:11px;
+  display:grid;place-items:center;
+  color:var(--cloud-ink);
+  font-size:22px;
+}
+
+.infra-section-label{
+  font-size:10px;font-weight:700;
+  letter-spacing:.09em;text-transform:uppercase;
+  color:var(--faint);
+  padding:2px 0;
+}
+
+/* Cost bar */
+.cost-strip{
+  background:#fff;border:1px solid var(--line);border-radius:11px;
+  padding:14px 16px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;
+}
+.cost-strip .cs-label{font-size:11px;font-weight:600;color:var(--faint);letter-spacing:.05em;text-transform:uppercase}
+.cost-strip .cs-value{font-size:19px;font-weight:700;letter-spacing:-.02em;color:var(--ink);margin-top:3px}
+.cost-strip .cs-delta{font-size:11px;font-weight:600;color:var(--accent);margin-top:2px}
+.cost-sparkline{width:80px;height:36px;flex-shrink:0}
+
+.float-badge{
+  position:absolute;background:#fff;border:1px solid var(--line);
+  border-radius:13px;padding:11px 13px;
+  box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:10px;
+  font-size:12px;animation:float 6s ease-in-out infinite;
+}
+.float-badge .fb-icon{
+  width:30px;height:30px;border-radius:8px;display:grid;place-items:center;
+  font-size:14px;flex-shrink:0;
+}
+.float-badge .fb-title{font-weight:600;letter-spacing:-.01em}
+.float-badge .fb-sub{font-size:10.5px;color:var(--muted);margin-top:1px}
+.fb-1{top:16%;left:-6%;animation-delay:0s}
+.fb-2{bottom:14%;right:-5%;animation-delay:-3s}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@media(max-width:1050px){.float-badge{display:none}}
+@media(max-width:920px){
+  .shero-inner{grid-template-columns:1fr;gap:44px}
+  .shero-copy{max-width:100%}
+  .iw-body{padding:14px}
+}
+
+/* ============================================================
+   CLOUD PROVIDERS STRIP
+============================================================ */
+.provider-strip{
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  background:rgba(255,255,255,.5);padding:26px 0;
+}
+.provider-inner{display:flex;align-items:center;gap:32px;flex-wrap:wrap;justify-content:center}
+.provider-label{
+  font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--faint);flex-shrink:0;
+}
+.provider-logos{
+  display:flex;align-items:center;gap:28px;flex-wrap:wrap;justify-content:center;
+  flex:1;
+}
+.provider-logo{
+  display:flex;align-items:center;gap:8px;
+  font-size:14px;font-weight:600;color:var(--muted);
+  opacity:.72;transition:.2s;
+}
+.provider-logo:hover{opacity:1;color:var(--ink)}
+.provider-logo .pl-mark{
+  width:22px;height:22px;border-radius:6px;
+  background:var(--line);display:grid;place-items:center;
+  font-size:10px;font-weight:700;color:var(--ink-2);
+}
+
+/* ============================================================
+   PROBLEM / SOLUTION
+============================================================ */
+.ps-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.ps-card{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius-lg);padding:32px 30px;
+  position:relative;overflow:hidden;
+}
+.ps-card.problem{background:linear-gradient(180deg,#FFF8F5,#fff);border-color:#F8E0D6}
+.ps-card.solution{background:linear-gradient(180deg,#F0F9FF,#fff);border-color:#BAE6FD}
+.ps-badge{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:5px 11px;border-radius:99px;margin-bottom:18px;
+}
+.ps-badge.problem{background:rgba(224,82,107,.1);color:var(--rose)}
+.ps-badge.solution{background:rgba(14,165,233,.1);color:var(--cloud-ink)}
+.ps-card h3{
+  font-size:21px;font-weight:700;letter-spacing:-.02em;
+  line-height:1.3;margin-bottom:14px;
+}
+.ps-card p{font-size:15px;color:var(--muted);line-height:1.65;margin-bottom:20px}
+.ps-list{display:flex;flex-direction:column;gap:11px}
+.ps-item{
+  display:flex;align-items:flex-start;gap:11px;
+  font-size:14px;color:var(--ink-2);line-height:1.5;
+}
+.ps-item .bullet{
+  width:20px;height:20px;border-radius:6px;flex-shrink:0;
+  display:grid;place-items:center;font-size:11px;font-weight:700;
+  margin-top:1px;
+}
+.ps-item.problem .bullet{background:rgba(224,82,107,.12);color:var(--rose)}
+.ps-item.solution .bullet{background:rgba(14,165,233,.12);color:var(--cloud-ink)}
+@media(max-width:820px){.ps-grid{grid-template-columns:1fr;gap:16px}}
+
+/* ============================================================
+   WHAT WE BUILD
+============================================================ */
+.build-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+}
+.build-card{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius-lg);padding:26px 24px 24px;
+  position:relative;overflow:hidden;
+  transition:transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s, border-color .25s;
+}
+.build-card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--cloud),var(--cloud-2));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .4s cubic-bezier(.2,.8,.2,1);
+}
+.build-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:#DEDEEA}
+.build-card:hover::before{transform:scaleX(1)}
+.build-icon{
+  width:46px;height:46px;border-radius:13px;
+  display:grid;place-items:center;font-size:20px;
+  background:linear-gradient(135deg,var(--cloud-soft),#fff);
+  border:1px solid rgba(14,165,233,.16);
+  margin-bottom:18px;
+}
+.build-title{font-size:16px;font-weight:650;letter-spacing:-.015em;margin-bottom:8px}
+.build-desc{font-size:13.8px;color:var(--muted);line-height:1.6}
+.build-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.build-tag{
+  font-size:11px;font-weight:500;color:var(--ink-2);
+  background:var(--line-soft);padding:4px 9px;border-radius:6px;
+}
+@media(max-width:900px){.build-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.build-grid{grid-template-columns:1fr}}
+
+/* ============================================================
+   PROCESS
+============================================================ */
+.process-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+}
+.process-card{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius-lg);padding:26px 24px 24px;
+  position:relative;
+  transition:transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s, border-color .25s;
+}
+.process-card:hover{
+  transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:#DEDEEA;
+}
+.process-num{
+  font-family:var(--font-mono);
+  font-size:11px;font-weight:600;letter-spacing:.06em;
+  color:var(--cloud-ink);
+  background:var(--cloud-soft);
+  padding:5px 10px;border-radius:7px;
+  display:inline-block;
+  margin-bottom:18px;
+}
+.process-icon{
+  width:42px;height:42px;border-radius:12px;
+  display:grid;place-items:center;font-size:19px;
+  background:linear-gradient(135deg,var(--cloud-soft),#fff);
+  border:1px solid rgba(14,165,233,.14);
+  margin-bottom:16px;
+}
+.process-title{
+  font-size:16px;font-weight:650;letter-spacing:-.015em;
+  margin-bottom:8px;
+}
+.process-desc{font-size:13.5px;color:var(--muted);line-height:1.6}
+@media(max-width:900px){.process-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.process-grid{grid-template-columns:1fr}}
+
+/* ============================================================
+   DEEP DIVE
+============================================================ */
+.deep{
+  display:grid;grid-template-columns:1fr 1fr;gap:0;
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius-lg);overflow:hidden;
+  margin-bottom:24px;
+  transition:transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s;
+}
+.deep:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+.deep.reverse{direction:rtl}
+.deep.reverse > *{direction:ltr}
+.deep-visual{
+  position:relative;min-height:380px;display:grid;place-items:center;
+  padding:36px;overflow:hidden;
+  background:
+    radial-gradient(400px 300px at 50% 50%, rgba(255,255,255,.9), transparent 70%),
+    linear-gradient(135deg,var(--d-g1,#E0F2FE),var(--d-g2,#BAE6FD));
+}
+.deep-visual::before{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,.5) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,.5) 1px, transparent 1px);
+  background-size:32px 32px;
+  mask-image:radial-gradient(circle at 50% 50%,#000,transparent 75%);
+  -webkit-mask-image:radial-gradient(circle at 50% 50%,#000,transparent 75%);
+  opacity:.55;
+}
+.deep-mock{
+  position:relative;z-index:1;width:100%;max-width:360px;
+  background:#fff;border-radius:14px;
+  box-shadow:0 30px 60px -20px rgba(20,20,50,.3), 0 10px 24px -10px rgba(20,20,40,.12);
+  overflow:hidden;
+}
+.dm-head{
+  padding:11px 14px;display:flex;align-items:center;gap:7px;
+  border-bottom:1px solid var(--line-soft);background:#FBFBFE;
+}
+.dm-head .dot{width:9px;height:9px;border-radius:50%}
+.dm-head .dm-title{font-size:11px;font-weight:600;color:var(--faint);margin-left:6px;letter-spacing:.02em}
+.dm-body{padding:16px}
+
+/* K8s deploy mockup */
+.k8s-list{display:flex;flex-direction:column;gap:8px}
+.k8s-row{
+  display:grid;grid-template-columns:1.2fr 1fr 1fr 0.8fr;
+  font-size:11px;
+  padding:8px 10px;
+  background:#FBFBFE;border:1px solid var(--line-soft);border-radius:8px;
+  align-items:center;
+  gap:8px;
+}
+.k8s-row.head{background:transparent;border:none;color:var(--faint);font-weight:600;text-transform:uppercase;letter-spacing:.05em;font-size:9.5px;padding:2px 10px}
+.k8s-name{font-weight:600;color:var(--ink);font-family:var(--font-mono);font-size:10.5px}
+.k8s-val{color:var(--muted);font-family:var(--font-mono);font-size:10.5px}
+.k8s-tag{
+  font-size:9.5px;font-weight:700;
+  padding:2px 6px;border-radius:5px;
+  justify-self:start;
+}
+.k8s-tag.green{background:rgba(0,196,140,.12);color:var(--accent)}
+.k8s-tag.amber{background:rgba(217,138,11,.12);color:var(--amber)}
+.k8s-tag.blue{background:var(--cloud-soft);color:var(--cloud-ink)}
+
+/* Autoscale chart */
+.autoscale-chart{
+  background:#FBFBFE;border:1px solid var(--line-soft);
+  border-radius:11px;padding:14px 16px;
+}
+.as-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.as-title{font-size:11.5px;font-weight:600;color:var(--ink)}
+.as-legend{display:flex;gap:12px;font-size:10.5px;color:var(--muted)}
+.as-legend i{width:8px;height:8px;border-radius:2px;display:inline-block;margin-right:4px;vertical-align:middle}
+.as-chart{position:relative;height:110px}
+
+/* Observability */
+.obs-tiles{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;
+  margin-bottom:10px;
+}
+.obs-tile{
+  background:#FBFBFE;border:1px solid var(--line-soft);border-radius:9px;
+  padding:10px 11px;
+}
+.obs-tile .ol{font-size:9.5px;font-weight:600;color:var(--faint);letter-spacing:.06em;text-transform:uppercase}
+.obs-tile .ov{font-size:15px;font-weight:700;letter-spacing:-.015em;color:var(--ink);margin-top:3px;font-feature-settings:"tnum"}
+.obs-tile .od{font-size:10px;font-weight:600;color:var(--accent);margin-top:1px}
+.obs-tile .od.warn{color:var(--amber)}
+.obs-logs{
+  background:#0B0D16;border-radius:9px;padding:11px 12px;
+  font-family:var(--font-mono);font-size:10.5px;
+  display:flex;flex-direction:column;gap:4px;
+}
+.obs-log-line{display:flex;gap:8px;align-items:baseline}
+.obs-log-line .ts{color:#4B5563;flex-shrink:0}
+.obs-log-line .lvl{color:#22D3EE;font-weight:600;flex-shrink:0}
+.obs-log-line .msg{color:#9CA3AF}
+
+/* Data pipeline */
+.pipeline{
+  display:flex;flex-direction:column;gap:10px;
+}
+.pipe-stage{
+  display:flex;align-items:center;gap:10px;
+  background:#FBFBFE;border:1px solid var(--line-soft);border-radius:9px;
+  padding:10px 12px;
+}
+.pipe-icon{
+  width:26px;height:26px;border-radius:7px;
+  display:grid;place-items:center;font-size:12px;flex-shrink:0;
+  background:var(--cloud-soft);color:var(--cloud-ink);
+}
+.pipe-body{flex:1;min-width:0}
+.pipe-title{font-size:11.5px;font-weight:600;color:var(--ink)}
+.pipe-meta{font-size:10px;color:var(--faint);font-family:var(--font-mono);margin-top:1px}
+.pipe-val{font-family:var(--font-mono);font-size:10.5px;color:var(--muted);flex-shrink:0}
+
+.deep-content{padding:44px;display:flex;flex-direction:column;justify-content:center}
+.deep-step{
+  font-family:var(--font-mono);font-size:11.5px;font-weight:600;
+  color:var(--cloud);letter-spacing:.06em;margin-bottom:12px;
+}
+.deep-content h3{
+  font-size:clamp(22px,2.4vw,28px);font-weight:700;letter-spacing:-.025em;
+  line-height:1.18;margin-bottom:14px;
+}
+.deep-content p{font-size:15px;color:var(--muted);line-height:1.65;margin-bottom:20px}
+.deep-list{display:flex;flex-direction:column;gap:10px}
+.deep-item{display:flex;align-items:flex-start;gap:10px;font-size:13.8px;color:var(--ink-2);line-height:1.5}
+.deep-item svg{color:var(--cloud);flex-shrink:0;margin-top:3px}
+@media(max-width:900px){
+  .deep{grid-template-columns:1fr}
+  .deep.reverse{direction:ltr}
+  .deep-content{padding:32px 26px}
+  .deep-visual{min-height:280px;padding:26px}
+}
+
+/* ============================================================
+   METRICS
+============================================================ */
+.metrics{
+  background:linear-gradient(135deg,#041625 0%,#062A45 60%,#083A5E 100%);
+  border-radius:28px;padding:56px 48px;color:#fff;
+  position:relative;overflow:hidden;
+}
+.metrics::before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(600px 300px at 90% 20%, rgba(14,165,233,.4), transparent 60%),
+    radial-gradient(400px 300px at 10% 90%, rgba(56,189,248,.2), transparent 60%);
+  pointer-events:none;
+}
+.metrics::after{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size:44px 44px;
+  mask-image:radial-gradient(ellipse at 30% 50%,#000,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse at 30% 50%,#000,transparent 75%);
+  pointer-events:none;
+}
+.metrics-head{position:relative;z-index:1;text-align:center;max-width:640px;margin:0 auto 44px}
+.metrics-head .eyebrow{
+  background:rgba(14,165,233,.15);color:#7DD3FC;
+  border:1px solid rgba(14,165,233,.28);
+}
+.metrics-head .eyebrow .dot{background:#7DD3FC;box-shadow:0 0 0 3px rgba(14,165,233,.2)}
+.metrics-head h2{
+  font-size:clamp(26px,3.4vw,38px);font-weight:700;letter-spacing:-.028em;
+  line-height:1.18;margin-bottom:14px;
+}
+.metrics-head h2 em{
+  font-style:normal;
+  background:linear-gradient(100deg,#7DD3FC,#38BDF8 60%,#22D3EE);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.metrics-head p{font-size:15px;line-height:1.6;color:rgba(255,255,255,.62);max-width:520px;margin:0 auto}
+.metrics-grid{
+  position:relative;z-index:1;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:16px;
+}
+.metric{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;padding:26px 22px;
+  transition:.3s;
+}
+.metric:hover{
+  background:rgba(255,255,255,.06);
+  border-color:rgba(125,211,252,.35);
+  transform:translateY(-4px);
+}
+.metric .m-num{
+  font-size:clamp(30px,3.6vw,42px);font-weight:700;letter-spacing:-.03em;
+  font-feature-settings:"tnum";
+  background:linear-gradient(180deg,#fff 30%,#7DD3FC);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  line-height:1.05;
+}
+.metric .m-num .unit{font-size:.5em;color:#38BDF8;font-weight:700;margin-left:2px}
+.metric .m-lbl{font-size:12.5px;color:rgba(255,255,255,.62);margin-top:8px;line-height:1.45}
+@media(max-width:900px){
+  .metrics{padding:40px 24px}
+  .metrics-grid{grid-template-columns:1fr 1fr;gap:12px}
+}
+
+/* ============================================================
+   ENGAGEMENT MODELS
+============================================================ */
+.plans-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:stretch;
+}
+.plan{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius-lg);padding:32px 28px 28px;
+  display:flex;flex-direction:column;position:relative;
+  transition:transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s, border-color .25s;
+}
+.plan:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:#DEDEEA}
+.plan.featured{
+  border-color:rgba(14,165,233,.4);
+  box-shadow:0 20px 60px -20px rgba(14,165,233,.25), 0 6px 20px -6px rgba(14,165,233,.12);
+  transform:translateY(-6px);
+}
+.plan.featured:hover{transform:translateY(-9px)}
+.plan-flag{
+  position:absolute;top:-11px;left:50%;transform:translateX(-50%);
+  font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:#fff;background:var(--cloud);
+  padding:5px 12px;border-radius:99px;
+  box-shadow:0 6px 14px -4px rgba(14,165,233,.5);
+}
+.plan-name{font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px}
+.plan-desc{font-size:13px;color:var(--muted);line-height:1.55;margin-bottom:20px;min-height:40px}
+.plan-price{display:flex;align-items:baseline;gap:4px;margin-bottom:6px}
+.plan-price .amt{font-size:34px;font-weight:700;letter-spacing:-.035em;line-height:1}
+.plan-price .per{font-size:13px;color:var(--muted);font-weight:500}
+.plan-sub{font-size:12px;color:var(--faint);margin-bottom:24px}
+.plan-divider{height:1px;background:var(--line);margin:0 0 22px}
+.plan-features{display:flex;flex-direction:column;gap:11px;margin-bottom:26px;flex:1}
+.plan-feat{
+  display:flex;align-items:flex-start;gap:10px;
+  font-size:13.5px;color:var(--ink-2);line-height:1.5;
+}
+.plan-feat svg{color:var(--cloud);flex-shrink:0;margin-top:3px}
+.plan-cta{width:100%;justify-content:center}
+@media(max-width:900px){
+  .plans-grid{grid-template-columns:1fr;gap:14px}
+  .plan.featured{transform:none}
+  .plan.featured:hover{transform:translateY(-3px)}
+}
+
+/* ============================================================
+   TESTIMONIALS
+============================================================ */
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.testi{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius-lg);padding:28px 26px 26px;
+  display:flex;flex-direction:column;position:relative;
+  transition:transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s;
+}
+.testi:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+.testi-quote{
+  font-size:15px;line-height:1.65;color:var(--ink-2);
+  margin-bottom:22px;flex:1;position:relative;
+}
+.testi-quote::before{
+  content:"“";position:absolute;top:-18px;left:-6px;
+  font-size:52px;color:var(--cloud);opacity:.16;font-weight:700;line-height:1;
+}
+.testi-person{display:flex;align-items:center;gap:12px;padding-top:18px;border-top:1px solid var(--line-soft)}
+.testi-avatar{
+  width:42px;height:42px;border-radius:12px;flex-shrink:0;
+  display:grid;place-items:center;color:#fff;font-size:14px;font-weight:700;
+}
+.testi-name{font-size:13.5px;font-weight:650;letter-spacing:-.01em}
+.testi-role{font-size:12px;color:var(--muted);margin-top:2px}
+@media(max-width:900px){.testi-grid{grid-template-columns:1fr}}
+
+/* ============================================================
+   FAQ
+============================================================ */
+.faq-wrap{max-width:760px;margin:0 auto}
+.faq-item{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:14px;margin-bottom:10px;overflow:hidden;transition:.2s;
+}
+.faq-item.open{border-color:rgba(14,165,233,.3);box-shadow:var(--shadow-sm)}
+.faq-q{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  width:100%;padding:20px 22px;text-align:left;
+  font-size:15px;font-weight:600;letter-spacing:-.012em;
+  color:var(--ink);transition:.15s;
+}
+.faq-q:hover{color:var(--cloud-ink)}
+.faq-icon{
+  width:24px;height:24px;border-radius:7px;flex-shrink:0;
+  display:grid;place-items:center;
+  background:var(--cloud-soft);color:var(--cloud-ink);
+  transition:transform .3s cubic-bezier(.2,.8,.2,1), background .2s, color .2s;
+}
+.faq-item.open .faq-icon{transform:rotate(45deg);background:var(--cloud);color:#fff}
+.faq-a{
+  max-height:0;overflow:hidden;
+  transition:max-height .35s cubic-bezier(.2,.8,.2,1);
+}
+.faq-item.open .faq-a{max-height:460px}
+.faq-a-inner{padding:0 22px 22px;font-size:14.2px;color:var(--muted);line-height:1.65}
+
+/* ============================================================
+   FINAL CTA
+============================================================ */
+.cta-final{
+  background:linear-gradient(135deg,#041625 0%,#062A45 60%,#083A5E 100%);
+  border-radius:28px;padding:64px 48px;color:#fff;
+  position:relative;overflow:hidden;text-align:center;
+}
+.cta-final::before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(800px 400px at 50% 0%, rgba(14,165,233,.35), transparent 60%),
+    radial-gradient(600px 400px at 90% 90%, rgba(56,189,248,.18), transparent 60%);
+  pointer-events:none;
+}
+.cta-final > *{position:relative;z-index:1}
+.cta-final h2{
+  font-size:clamp(28px,4vw,44px);font-weight:700;letter-spacing:-.03em;
+  line-height:1.1;margin-bottom:16px;
+}
+.cta-final h2 em{
+  font-style:normal;
+  background:linear-gradient(100deg,#7DD3FC,#38BDF8 60%,#22D3EE);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.cta-final p{
+  font-size:16px;color:rgba(255,255,255,.7);line-height:1.65;
+  max-width:560px;margin:0 auto 32px;
+}
+.cta-final .actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.cta-final .btn-secondary{
+  background:rgba(255,255,255,.08);color:#fff;
+  border-color:rgba(255,255,255,.15);
+}
+.cta-final .btn-secondary:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25)}
+.cta-final .btn-cloud{
+  background:#fff;color:var(--cloud-ink);box-shadow:0 12px 32px -10px rgba(255,255,255,.3);
+}
+.cta-final .btn-cloud:hover{background:#F0F9FF;transform:translateY(-2px)}
+@media(max-width:620px){.cta-final{padding:48px 24px}}
+
+/* ============================================================
+   FOOTER
+============================================================ */
+.footer{
+  background:#0B0B16;color:rgba(255,255,255,.7);
+  padding:64px 0 28px;margin-top:40px;
+}
+.footer-grid{
+  display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px;
+  padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.08);
+}
+.footer-brand{display:flex;align-items:center;gap:10px;color:#fff;margin-bottom:14px}
+.footer-brand .brand-mark{box-shadow:none}
+.footer-brand .brand-name{font-size:16px}
+.footer-about{font-size:13.5px;line-height:1.65;max-width:320px;color:rgba(255,255,255,.55)}
+.footer-social{display:flex;gap:10px;margin-top:18px}
+.social-btn{
+  width:38px;height:38px;border-radius:11px;display:grid;place-items:center;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
+  color:rgba(255,255,255,.75);transition:.2s;
+}
+.social-btn:hover{
+  background:var(--cloud);color:#fff;transform:translateY(-2px);
+  border-color:var(--cloud);box-shadow:0 8px 20px -6px rgba(14,165,233,.6);
+}
+.footer h5{
+  font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  color:rgba(255,255,255,.5);margin-bottom:16px;
+}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13.5px;color:rgba(255,255,255,.7);transition:.15s;display:inline-block}
+.footer-links a:hover{color:#fff;transform:translateX(3px)}
+.footer-bottom{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:26px;gap:16px;flex-wrap:wrap;
+  font-size:12.5px;color:rgba(255,255,255,.4);
+}
+.footer-bottom .made{display:flex;align-items:center;gap:8px}
+.footer-bottom .made span.flag{font-size:15px}
+@media(max-width:820px){
+  .footer-grid{grid-template-columns:1fr 1fr;gap:32px}
+  .footer-grid > div:first-child{grid-column:1/-1}
+  .footer-bottom{flex-direction:column;text-align:center}
+}
+
+/* ============================================================
+   REVEAL
+============================================================ */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.8,.2,1), transform .7s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* ============================================================
+   MOBILE
+============================================================ */
+@media(max-width:720px){
+  .section{padding:56px 0}
+  .container{padding:0 18px}
+  .breadcrumb{padding:88px 18px 0;font-size:12px}
+
+  .section-head{margin-bottom:32px}
+  .section-head h2{font-size:clamp(24px,7vw,32px)}
+  .section-head p{font-size:14.5px}
+
+  .shero{padding:32px 0 48px}
+  .shero h1{font-size:clamp(30px,8vw,40px)}
+  .shero p.lead{font-size:15px}
+  .shero-cta .btn{width:100%}
+
+  .iw-body{padding:14px;min-height:auto}
+  .infra-row{flex-direction:column}
+  .infra-node{flex:0 0 44px}
+  .cost-strip{flex-direction:column;align-items:flex-start}
+
+  .ps-card{padding:24px 20px}
+  .ps-card h3{font-size:18px}
+
+  .build-card{padding:22px 20px}
+  .process-card{padding:22px 20px}
+  .plan{padding:24px 20px}
+
+  .testi{padding:24px 22px}
+  .faq-q{padding:16px 18px;font-size:14.5px}
+  .faq-a-inner{padding:0 18px 18px;font-size:13.5px}
+
+  .metrics{padding:40px 24px;border-radius:20px}
+  .cta-final{padding:40px 24px;border-radius:20px}
+  .cta-final .actions{flex-direction:column}
+  .cta-final .btn{width:100%;justify-content:center}
+
+  .obs-tiles{grid-template-columns:1fr 1fr}
+  .k8s-row{grid-template-columns:1.2fr 1fr 1fr;font-size:10px}
+  .k8s-row .k8s-col-4{display:none}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important}
+  .reveal{opacity:1;transform:none}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAV
+============================================================ -->
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="#" class="brand">
+      <span class="brand-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="3" fill="#fff" stroke="none"/>
+        </svg>
+      </span>
+      <span class="brand-name">HashVeno</span>
+    </a>
+
+    <div class="nav-links">
+      <a class="nav-link active" href="#">Services</a>
+      <a class="nav-link" href="#">Products</a>
+      <a class="nav-link" href="#process">Process</a>
+      <a class="nav-link" href="#pricing">Engagement</a>
+      <a class="nav-link" href="#contact">Contact</a>
+    </div>
+
+    <div class="nav-cta">
+      <a href="#contact" class="btn btn-cloud">
+        Book a call
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M4 7h16M4 12h16M4 17h16"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#">Services</a>
+  <a href="#">Products</a>
+  <a href="#process">Process</a>
+  <a href="#pricing">Engagement</a>
+  <a href="#contact">Contact</a>
+</div>
+
+<!-- ============================================================
+     BREADCRUMB
+============================================================ -->
+<div class="breadcrumb">
+  <a href="#">Services</a>
+  <span class="sep">/</span>
+  <span class="current">Cloud-Based Applications</span>
+</div>
+
+<!-- ============================================================
+     HERO
+============================================================ -->
+<header class="shero">
+  <div class="shero-bg"></div>
+  <div class="shero-grid"></div>
+
+  <div class="container">
+    <div class="shero-inner">
+
+      <div class="shero-copy">
+        <div class="shero-tags">
+          <span class="stag cloud"><span class="sdot"></span> Service</span>
+          <span class="stag">AWS · GCP · Azure</span>
+        </div>
+
+        <h1>
+          Cloud that scales<br>
+          <em>with your business.</em>
+        </h1>
+
+        <p class="lead">
+          We design, migrate, and operate cloud-native applications — multi-tenant
+          SaaS, auto-scaling workloads, and secure data platforms on AWS, GCP, or
+          Azure. Built for reliability, cost, and observability from day one.
+        </p>
+
+        <div class="shero-cta">
+          <a href="#contact" class="btn btn-cloud btn-lg">
+            Book a cloud consult
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#process" class="btn btn-secondary btn-lg">
+            See our process
+          </a>
+        </div>
+
+        <div class="shero-meta">
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            99.9% uptime SLA
+          </span>
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            Zero-downtime migrations
+          </span>
+        </div>
+      </div>
+
+      <div class="shero-visual">
+        <div class="infra-window">
+          <div class="iw-chrome">
+            <span class="iw-dot" style="background:#FF5F57"></span>
+            <span class="iw-dot" style="background:#FEBC2E"></span>
+            <span class="iw-dot" style="background:#28C840"></span>
+            <div class="iw-title">cloud.hashveno.io / production</div>
+          </div>
+
+          <div class="iw-body">
+            <div class="infra-grid">
+
+              <div class="infra-section-label">Edge</div>
+
+              <div class="infra-row">
+                <div class="infra-card">
+                  <div class="ic-head">
+                    <span class="ic-name">CDN · Global</span>
+                    <span class="ic-tag health">Healthy</span>
+                  </div>
+                  <div class="ic-meta">
+                    <span>1.8M req/day</span>
+                    <span class="dot-sep"></span>
+                    <span>p95 42ms</span>
+                  </div>
+                  <div class="ic-bars"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                </div>
+                <div class="infra-node">☁</div>
+              </div>
+
+              <div class="infra-section-label">Compute</div>
+
+              <div class="infra-row">
+                <div class="infra-card">
+                  <div class="ic-head">
+                    <span class="ic-name">K8s cluster</span>
+                    <span class="ic-tag live">Auto-scaling</span>
+                  </div>
+                  <div class="ic-meta">
+                    <span>6 → 14 nodes</span>
+                    <span class="dot-sep"></span>
+                    <span>v1.30</span>
+                  </div>
+                </div>
+                <div class="infra-card">
+                  <div class="ic-head">
+                    <span class="ic-name">Serverless</span>
+                    <span class="ic-tag health">Healthy</span>
+                  </div>
+                  <div class="ic-meta">
+                    <span>12 functions</span>
+                    <span class="dot-sep"></span>
+                    <span>99.98%</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="infra-section-label">Data</div>
+
+              <div class="infra-row">
+                <div class="infra-card">
+                  <div class="ic-head">
+                    <span class="ic-name">Postgres · primary</span>
+                    <span class="ic-tag health">Healthy</span>
+                  </div>
+                  <div class="ic-meta">
+                    <span>replica ×2</span>
+                    <span class="dot-sep"></span>
+                    <span>p95 8ms</span>
+                  </div>
+                </div>
+                <div class="infra-card">
+                  <div class="ic-head">
+                    <span class="ic-name">Redis · cache</span>
+                    <span class="ic-tag warn">72%</span>
+                  </div>
+                  <div class="ic-meta">
+                    <span>3.2 GB</span>
+                    <span class="dot-sep"></span>
+                    <span>hit 94%</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Cost strip -->
+              <div class="cost-strip">
+                <div>
+                  <div class="cs-label">Monthly spend</div>
+                  <div class="cs-value">$8,240</div>
+                  <div class="cs-delta">↓ 18% vs last month</div>
+                </div>
+                <svg class="cost-sparkline" viewBox="0 0 80 36" fill="none">
+                  <path d="M0 28 C10 26 18 18 28 20 C38 22 44 10 54 12 C64 14 70 6 80 8"
+                        stroke="#0EA5E9" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M0 28 C10 26 18 18 28 20 C38 22 44 10 54 12 C64 14 70 6 80 8 L80 36 L0 36 Z"
+                        fill="rgba(14,165,233,.12)"/>
+                </svg>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="float-badge fb-1">
+          <div class="fb-icon" style="background:#DBEAFE">⚡</div>
+          <div>
+            <div class="fb-title">Auto-scaled +4 nodes</div>
+            <div class="fb-sub">Traffic spike handled · 12s</div>
+          </div>
+        </div>
+
+        <div class="float-badge fb-2">
+          <div class="fb-icon" style="background:#DCFCE7">✓</div>
+          <div>
+            <div class="fb-title">Zero-downtime deploy</div>
+            <div class="fb-sub">v2.4.1 · Asia-South</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+     CLOUD PROVIDERS STRIP
+============================================================ -->
+<section class="provider-strip">
+  <div class="container">
+    <div class="provider-inner">
+      <div class="provider-label">Certified across</div>
+      <div class="provider-logos">
+        <div class="provider-logo"><span class="pl-mark">AWS</span>Amazon Web Services</div>
+        <div class="provider-logo"><span class="pl-mark">GCP</span>Google Cloud</div>
+        <div class="provider-logo"><span class="pl-mark">Az</span>Microsoft Azure</div>
+        <div class="provider-logo"><span class="pl-mark">K8s</span>Kubernetes</div>
+        <div class="provider-logo"><span class="pl-mark">Tf</span>Terraform</div>
+        <div class="provider-logo"><span class="pl-mark">Dk</span>Docker</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PROBLEM / SOLUTION
+============================================================ -->
+<section class="section">
+  <div class="container">
+    <div class="section-head center reveal">
+      <div class="eyebrow"><span class="dot"></span> Why cloud-native</div>
+      <h2>Servers you patch <em>aren't a strategy. They're a liability.</em></h2>
+      <p>Most businesses move to cloud for cost. They stay for reliability, scale, and the ability to ship without touching infrastructure.</p>
+    </div>
+
+    <div class="ps-grid">
+      <div class="ps-card problem reveal">
+        <span class="ps-badge problem">● The old way</span>
+        <h3>Servers, manual deploys, and 2 AM pages</h3>
+        <p>Traditional hosting works — until it doesn't. And when it doesn't, it's always at the worst possible time.</p>
+        <div class="ps-list">
+          <div class="ps-item problem"><span class="bullet">✕</span> Traffic spikes crash the app; you find out from customers</div>
+          <div class="ps-item problem"><span class="bullet">✕</span> Deploys are risky, slow, and done by hand</div>
+          <div class="ps-item problem"><span class="bullet">✕</span> No visibility into performance or cost until month-end</div>
+          <div class="ps-item problem"><span class="bullet">✕</span> Scaling requires buying servers and waiting weeks</div>
+        </div>
+      </div>
+
+      <div class="ps-card solution reveal">
+        <span class="ps-badge solution">● With cloud-native</span>
+        <h3>Infrastructure that scales without you thinking about it</h3>
+        <p>Auto-scaling, zero-downtime deploys, and real-time observability. The infrastructure gets out of the way so your team can ship.</p>
+        <div class="ps-list">
+          <div class="ps-item solution"><span class="bullet">✓</span> Scales from 100 to 100,000 users without re-architecture</div>
+          <div class="ps-item solution"><span class="bullet">✓</span> Deploys happen in seconds, safely, on every commit</div>
+          <div class="ps-item solution"><span class="bullet">✓</span> Live dashboards for cost, latency, and errors</div>
+          <div class="ps-item solution"><span class="bullet">✓</span> Disaster recovery baked in — multi-region from day one</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     WHAT WE BUILD
+============================================================ -->
+<section class="section" style="background:linear-gradient(180deg,transparent,rgba(255,255,255,.6),transparent)">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow"><span class="dot"></span> What we deliver</div>
+      <h2>Six cloud capabilities. <em>One platform team.</em></h2>
+      <p>From a single migration to a full multi-region platform — same standards, same accountability, same team from day one.</p>
+    </div>
+
+    <div class="build-grid">
+
+      <div class="build-card reveal">
+        <div class="build-icon">🚀</div>
+        <div class="build-title">Cloud migrations</div>
+        <div class="build-desc">Move from on-prem or legacy hosts to AWS, GCP, or Azure — with zero downtime and a rollback plan at every step.</div>
+        <div class="build-tags">
+          <span class="build-tag">Lift & shift</span>
+          <span class="build-tag">Re-platform</span>
+        </div>
+      </div>
+
+      <div class="build-card reveal">
+        <div class="build-icon">🏢</div>
+        <div class="build-title">Multi-tenant SaaS</div>
+        <div class="build-desc">Isolated tenants, per-tenant data, role-based access, and billing — architected correctly from the start.</div>
+        <div class="build-tags">
+          <span class="build-tag">Tenancy</span>
+          <span class="build-tag">RBAC</span>
+          <span class="build-tag">Billing</span>
+        </div>
+      </div>
+
+      <div class="build-card reveal">
+        <div class="build-icon">📈</div>
+        <div class="build-title">Auto-scaling workloads</div>
+        <div class="build-desc">Kubernetes, serverless, or managed containers — scales with real traffic, not with guesswork.</div>
+        <div class="build-tags">
+          <span class="build-tag">K8s</span>
+          <span class="build-tag">Lambda</span>
+          <span class="build-tag">Containers</span>
+        </div>
+      </div>
+
+      <div class="build-card reveal">
+        <div class="build-icon">🔐</div>
+        <div class="build-title">Security & compliance</div>
+        <div class="build-desc">Encryption at rest and in transit, secrets management, IAM policies, and audit trails — compliant by default.</div>
+        <div class="build-tags">
+          <span class="build-tag">SOC 2</span>
+          <span class="build-tag">ISO 27001</span>
+          <span class="build-tag">DPDP</span>
+        </div>
+      </div>
+
+      <div class="build-card reveal">
+        <div class="build-icon">📊</div>
+        <div class="build-title">Observability</div>
+        <div class="build-desc">Metrics, logs, and traces in one place. Know what's happening before your customers do.</div>
+        <div class="build-tags">
+          <span class="build-tag">Prometheus</span>
+          <span class="build-tag">Grafana</span>
+          <span class="build-tag">OpenTelemetry</span>
+        </div>
+      </div>
+
+      <div class="build-card reveal">
+        <div class="build-icon">💸</div>
+        <div class="build-title">Cost optimization</div>
+        <div class="build-desc">Right-sizing, reserved capacity, and spend alerts. Most clients save 30–50% in the first 90 days.</div>
+        <div class="build-tags">
+          <span class="build-tag">Right-sizing</span>
+          <span class="build-tag">Reserved</span>
+          <span class="build-tag">FinOps</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PROCESS
+============================================================ -->
+<section class="section" id="process">
+  <div class="container">
+    <div class="section-head center reveal">
+      <div class="eyebrow"><span class="dot"></span> How we work</div>
+      <h2>From assessment to <em>production in six steps.</em></h2>
+      <p>No black boxes. No surprise bills. Every step is documented and reversible.</p>
+    </div>
+
+    <div class="process-grid">
+
+      <div class="process-card reveal">
+        <div class="process-num">01</div>
+        <div class="process-icon">🔍</div>
+        <div class="process-title">Assessment</div>
+        <div class="process-desc">We audit your current stack, traffic patterns, and costs. You get a written report even if you don't hire us.</div>
+      </div>
+
+      <div class="process-card reveal">
+        <div class="process-num">02</div>
+        <div class="process-icon">📐</div>
+        <div class="process-title">Architecture</div>
+        <div class="process-desc">Target state on cloud — regions, services, data flow, security model, and a rollout plan with rollback.</div>
+      </div>
+
+      <div class="process-card reveal">
+        <div class="process-num">03</div>
+        <div class="process-icon">⚙️</div>
+        <div class="process-title">Infrastructure as code</div>
+        <div class="process-desc">Terraform or Pulumi from the first commit. Every resource is version-controlled and reproducible.</div>
+      </div>
+
+      <div class="process-card reveal">
+        <div class="process-num">04</div>
+        <div class="process-icon">🚀</div>
+        <div class="process-title">Migration</div>
+        <div class="process-desc">Phased cutover with parallel-run validation. Zero-downtime, with a tested rollback at every step.</div>
+      </div>
+
+      <div class="process-card reveal">
+        <div class="process-num">05</div>
+        <div class="process-icon">📊</div>
+        <div class="process-title">Observability</div>
+        <div class="process-desc">Dashboards, alerts, and runbooks live before go-live. You see everything from day one.</div>
+      </div>
+
+      <div class="process-card reveal">
+        <div class="process-num">06</div>
+        <div class="process-icon">🛡</div>
+        <div class="process-title">Operate & optimize</div>
+        <div class="process-desc">SLA-backed operations, cost reviews, and continuous right-sizing — from the team that built it.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     DEEP DIVE
+============================================================ -->
+<section class="section">
+  <div class="container">
+    <div class="section-head center reveal">
+      <div class="eyebrow"><span class="dot"></span> Inside the platform</div>
+      <h2>What a running cloud <em>actually looks like.</em></h2>
+      <p>Three views from a live production environment — orchestration, scaling, and observability.</p>
+    </div>
+
+    <!-- Step 1: Orchestration -->
+    <div class="deep reveal">
+      <div class="deep-visual" style="--d-g1:#E0F2FE;--d-g2:#BAE6FD">
+        <div class="deep-mock">
+          <div class="dm-head">
+            <span class="dot" style="background:#FF5F57"></span>
+            <span class="dot" style="background:#FEBC2E"></span>
+            <span class="dot" style="background:#28C840"></span>
+            <span class="dm-title">Kubernetes · production</span>
+          </div>
+          <div class="dm-body">
+            <div class="k8s-list">
+              <div class="k8s-row head">
+                <span>Workload</span><span>Replicas</span><span>CPU</span><span class="k8s-col-4">Status</span>
+              </div>
+              <div class="k8s-row">
+                <span class="k8s-name">api-gateway</span>
+                <span class="k8s-val">6 / 6</span>
+                <span class="k8s-val">42%</span>
+                <span class="k8s-tag green k8s-col-4">Running</span>
+              </div>
+              <div class="k8s-row">
+                <span class="k8s-name">web-frontend</span>
+                <span class="k8s-val">4 / 4</span>
+                <span class="k8s-val">28%</span>
+                <span class="k8s-tag green k8s-col-4">Running</span>
+              </div>
+              <div class="k8s-row">
+                <span class="k8s-name">worker-jobs</span>
+                <span class="k8s-val">8 / 12</span>
+                <span class="k8s-val">78%</span>
+                <span class="k8s-tag amber k8s-col-4">Scaling</span>
+              </div>
+              <div class="k8s-row">
+                <span class="k8s-name">analytics-etl</span>
+                <span class="k8s-val">3 / 3</span>
+                <span class="k8s-val">55%</span>
+                <span class="k8s-tag green k8s-col-4">Running</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="deep-content">
+        <div class="deep-step">STEP 01</div>
+        <h3>Containers orchestrated properly. Not just "on a server".</h3>
+        <p>Every service runs in its own container with declared resource limits, health checks, and rolling deployment strategy. Kubernetes handles the orchestration so you don't have to think about it.</p>
+        <div class="deep-list">
+          <div class="deep-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            Isolated workloads with declared resource limits
+          </div>
+          <div class="deep-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            Rolling deploys — no dropped requests, ever
+          </div>
+          <div class="deep-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            Self-healing — failed pods restart automatically
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Autoscaling -->
+    <div class="deep reverse reveal">
+      <div class="deep-visual" style="--d-g1:#E0F2FE;--d-g2:#7DD3FC">
+        <div class="deep-mock">
+          <div class="dm-head">
+            <span class="dot" style="background:#FF5F57"></span>
+            <span class="dot" style="background:#FEBC2E"></span>
+            <span class="dot" style="background:#28C840"></span>
+            <span class="dm-title">Auto-scaling · last 24h</span>
+          </div>
+          <div class="dm-body">
+            <div class="autoscale-chart">
+              <div class="as-head">
+                <span class="as-title">Traffic vs capacity</span>
+                <div class="as-legend">
+                  <span><i style="background:#0EA5E9"></i>Load</span>
+                  <span><i style="background:#CBD5E1"></i>Nodes</span>
+                </div>
+              </div>
+              <svg class="as-chart" viewBox="0 0 300 110" preserveAspectRatio="none" fill="none">
+                <defs>
+                  <linearGradient id="loadGrad" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0%" stop-color="#0EA5E9" stop-opacity=".35"/>
+                    <stop offset="100%" stop-color="#0EA5E9" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <!-- Load area -->
+                <path d="M0 78 C30 70 50 60 80 65 C110 70 130 40 160 38 C190 36 210 55 240 50 C270 45 285 25 300 22"
+                      fill="none" stroke="#0EA5E9" stroke-width="2.2" stroke-linecap="round"/>
+                <path d="M0 78 C30 70 50 60 80 65 C110 70 130 40 160 38 C190 36 210 55 240 50 C270 45 285 25 300 22 L300 110 L0 110 Z"
+                      fill="url(#loadGrad)"/>
+                <!-- Nodes line (stepped) -->
+                <path d="M0 92 H60 V84 H120 V76 H180 V62 H240 V50 H300"
+                      stroke="#CBD5E1" stroke-width="2" stroke-dasharray="4 3" stroke-linecap="round" fill="none"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="deep-content">
+        <div class="deep-step">STEP 02</div>
+        <h3>Scales up before users feel it. Scales down before you pay for it.</h3>
+        <p>Horizontal pod autoscaling watches real traffic signals and adjusts capacity in seconds. During the day it scales up; at night it scales back down. You pay for what you use.</p>
+        <div class="deep-list">
+          <div class="deep-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            Scales from 6 to 14 nodes in under 30 seconds
+          </div>
+          <div class="deep-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            Predictive scaling for known traffic patterns
+          </div>
+          <div class="deep-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            Scales down overnight — saves 30–50% on compute
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: Observability -->
+    <div class="deep reveal">
+      <div class="deep-visual" style="--d-g1:#DBEAFE;--d-g2:#93C5FD">
+        <div class="deep-mock">
+          <div class="dm-head">
+            <span class="dot" style="background:#FF5F57"></span>
+            <span class="dot" style="background:#FEBC2E"></span>
+            <span class="dot" style="background:#28C840"></span>
+            <span class="dm-title">Live observability · last 1h</span>
+          </div>
+          <div class="dm-body">
+            <div class="obs-tiles">
+              <div class="obs-tile">
+                <div class="ol">Requests</div>
+                <div class="ov">2.4M</div>
+                <div class="od">↑ 12%</div>
+              </div>
+              <div class="obs-tile">
+                <div class="ol">Error rate</div>
+                <div class="ov">0.04%</div>
+                <div class="od">↓ 0.02</div>
+              </div>
+              <div class="obs-tile">
+                <div class="ol">p95 latency</div>
+                <div class="ov">68ms</div>
+                <div class="od">↓ 8ms</div>
+              </div>
+              <div class="obs-tile">
+                <div class="ol">Open alerts</div>
+                <div class="ov">1</div>
+                <div class="od warn">P3 · watching</div>
+              </div>
+            </div>
+            <div class="obs-logs">
+              <div class="obs-log-line">
+                <span class="ts">14:22:08</span><span class="lvl">INFO</span><span class="msg">Deploy started · v2.4.1</span>
+              </div>
+              <div class="obs-log-line">
+                <span class="ts">14:22:19</span><span class="lvl">INFO</span><span class="msg">All pods healthy · 14/14</span>
+              </div>
+              <div class="obs-log-line">
+                <span class="ts">14:22:20</span><span class="lvl">INFO</span><span class="msg">Traffic shifting to new pods</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="deep-content">
+        <div class="deep-step">STEP 03</div>
+        <h3>You see everything. Before your customers do.</h3>
+        <p>Metrics, logs, and traces in one dashboard. Every request, every deploy, every error — timestamped, searchable, and alertable from day one.</p>
+        <div class="deep-list">
+          <div class="deep-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            Live dashboards for latency, errors, and throughput
+          </div>
+          <div class="deep-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            Distributed tracing across every service
+          </div>
+          <div class="deep-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            Alerts routed to Slack, PagerDuty, and email
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     METRICS
+============================================================ -->
+<section class="section">
+  <div class="container">
+    <div class="metrics reveal">
+      <div class="metrics-head">
+        <div class="eyebrow"><span class="dot"></span> Outcomes</div>
+        <h2>What cloud-native <em>actually delivers.</em></h2>
+        <p>Averages from HashVeno cloud engagements over the last 18 months.</p>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric">
+          <div class="m-num">99.9<span class="unit">%</span></div>
+          <div class="m-lbl">Average uptime across managed platforms</div>
+        </div>
+        <div class="metric">
+          <div class="m-num">38<span class="unit">%</span></div>
+          <div class="m-lbl">Average reduction in monthly cloud spend</div>
+        </div>
+        <div class="metric">
+          <div class="m-num">&lt;12<span class="unit">s</span></div>
+          <div class="m-lbl">Time to scale for a 10× traffic spike</div>
+        </div>
+        <div class="metric">
+          <div class="m-num">100<span class="unit">%</span></div>
+          <div class="m-lbl">Infrastructure as code — fully versioned</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     ENGAGEMENT MODELS
+============================================================ -->
+<section class="section" id="pricing">
+  <div class="container">
+    <div class="section-head center reveal">
+      <div class="eyebrow"><span class="dot"></span> Engagement models</div>
+      <h2>Three ways to work <em>with us.</em></h2>
+      <p>From a one-off migration to a fully managed platform — pick the model that fits where you are today.</p>
+    </div>
+
+    <div class="plans-grid">
+
+      <div class="plan reveal">
+        <div class="plan-name">Migration</div>
+        <div class="plan-desc">For a defined move from on-prem or legacy hosts to cloud. Fixed scope, fixed timeline.</div>
+        <div class="plan-price">
+          <span class="amt">Custom</span>
+        </div>
+        <div class="plan-sub">Fixed price · fixed timeline</div>
+        <div class="plan-divider"></div>
+        <div class="plan-features">
+          <div class="plan-feat">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            Current-state audit & target architecture
+          </div>
+          <div class="plan-feat">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            Zero-downtime cutover with rollback
+          </div>
+          <div class="plan-feat">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            Infrastructure as code handover
+          </div>
+          <div class="plan-feat">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            Post-migration cost report
+          </div>
+        </div>
+        <a href="#contact" class="btn btn-secondary plan-cta">Get a quote</a>
+      </div>
+
+      <div class="plan featured reveal">
+        <div class="plan-flag">Most popular</div>
+        <div class="plan-name">Managed platform</div>
+        <div class="plan-desc">For teams running on cloud who want it operated, optimized, and monitored by us.</div>
+        <div class="plan-price">
+          <span class="amt">Monthly</span>
+        </div>
+        <div class="plan-sub">Retainer · includes SRE coverage</div>
+        <div class="plan-divider"></div>
+        <div class="plan-features">
+          <div class="plan-feat">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            24/7 monitoring & on-call
+          </div>
+          <div class="plan-feat">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            SLA-backed response times
+          </div>
+          <div class="plan-feat">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            Monthly cost & performance review
+          </div>
+          <div class="plan-feat">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            Continuous security patching
+          </div>
+          <div class="plan-feat">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            Direct Slack with SREs
+          </div>
+        </div>
+        <a href="#contact" class="btn btn-cloud plan-cta">Start a conversation</a>
+      </div>
+
+      <div class="plan reveal">
+        <div class="plan-name">Platform build</div>
+        <div class="plan-desc">For teams building a new cloud-native product from scratch — architecture through launch.</div>
+        <div class="plan-price">
+          <span class="amt">Custom</span>
+        </div>
+        <div class="plan-sub">Milestone-based</div>
+        <div class="plan-divider"></div>
+        <div class="plan-features">
+          <div class="plan-feat">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            Cloud architecture from scratch
+          </div>
+          <div class="plan-feat">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            Multi-tenant or single-tenant design
+          </div>
+          <div class="plan-feat">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            CI/CD, IaC, observability from day one
+          </div>
+          <div class="plan-feat">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            Full handover with documentation
+          </div>
+        </div>
+        <a href="#contact" class="btn btn-secondary plan-cta">Discuss a build</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     TESTIMONIALS
+============================================================ -->
+<section class="section">
+  <div class="container">
+    <div class="section-head center reveal">
+      <div class="eyebrow"><span class="dot"></span> What clients say</div>
+      <h2>Teams who trusted us <em>to run their cloud.</em></h2>
+    </div>
+
+    <div class="testi-grid">
+
+      <div class="testi reveal">
+        <div class="testi-quote">
+          We went from 3 servers we were afraid to touch to a Kubernetes cluster that scales to 40,000 concurrent users. And we sleep at night now.
+        </div>
+        <div class="testi-person">
+          <div class="testi-avatar" style="background:linear-gradient(135deg,#0EA5E9,#38BDF8)">RK</div>
+          <div>
+            <div class="testi-name">Rohit Khanna</div>
+            <div class="testi-role">VP Engineering · Fintech platform</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi reveal">
+        <div class="testi-quote">
+          They cut our AWS bill by 42% in the first quarter — without downgrading any service. The cost review alone paid for the engagement.
+        </div>
+        <div class="testi-person">
+          <div class="testi-avatar" style="background:linear-gradient(135deg,#5B4BE8,#8B7BFF)">SM</div>
+          <div>
+            <div class="testi-name">Sneha Mehta</div>
+            <div class="testi-role">CTO · D2C retail brand</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi reveal">
+        <div class="testi-quote">
+          The migration happened on a Tuesday at 2 PM and nobody noticed. That's the highest compliment I can give an infrastructure team.
+        </div>
+        <div class="testi-person">
+          <div class="testi-avatar" style="background:linear-gradient(135deg,#00C48C,#0FA47F)">AJ</div>
+          <div>
+            <div class="testi-name">Arjun Joshi</div>
+            <div class="testi-role">Head of Platform · Logistics SaaS</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FAQ
+============================================================ -->
+<section class="section" id="faq">
+  <div class="container">
+    <div class="section-head center reveal">
+      <div class="eyebrow"><span class="dot"></span> FAQ</div>
+      <h2>Questions, <em>answered.</em></h2>
+      <p>Can't find what you need? <a href="#contact" style="color:var(--cloud-ink);font-weight:600">Talk to us</a>.</p>
+    </div>
+
+    <div class="faq-wrap reveal">
+
+      <div class="faq-item">
+        <button class="faq-q" data-faq>
+          Can you migrate without downtime?
+          <span class="faq-icon">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          </span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">
+            Yes — every migration we do runs with a parallel-run validation phase. Old and new systems run side by side until the new one is proven. Traffic is shifted gradually (typically 1% → 10% → 50% → 100%) with a tested rollback plan at each step. In practice, customers see no downtime.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" data-faq>
+          Which cloud provider do you recommend?
+          <span class="faq-icon">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          </span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">
+            It depends on your workload, existing team skills, and compliance requirements. AWS has the broadest service catalog and the largest talent pool in India. GCP is often better for data-heavy and ML workloads. Azure tends to fit enterprises already on Microsoft. We're certified across all three and will recommend honestly — not the one we prefer.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" data-faq>
+          How do you keep cloud costs under control?
+          <span class="faq-icon">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          </span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">
+            Three levers: right-sizing (most teams over-provision by 40–60%), reserved capacity for steady-state workloads, and auto-scaling for variable ones. We also set up spend alerts and a monthly cost review so nothing surprises you. Most clients save 30–50% in the first 90 days without downgrading any service.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" data-faq>
+          Who owns the cloud account and infrastructure?
+          <span class="faq-icon">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          </span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">
+            You do — 100% from day one. Every cloud account is on your billing, every resource is provisioned via Terraform in your repo, and every credential is in your secrets manager. We get time-limited, scoped access to do the work — nothing more. There's no lock-in and no "we'll transfer it later."
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" data-faq>
+          Do you handle security and compliance?
+          <span class="faq-icon">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          </span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">
+            Yes. Encryption at rest and in transit, secrets rotation, IAM policy design, network segmentation, and audit trails are part of every build. We help clients reach SOC 2, ISO 27001, and India's DPDP compliance. If you need a formal audit, we work with your chosen auditor and provide the required evidence.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" data-faq>
+          What if we need to move off cloud later?
+          <span class="faq-icon">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          </span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">
+            We design for portability. Containerized workloads, managed open-source services where possible, and no proprietary cloud services that lock you in. Multi-cloud and hybrid setups are also supported if that's what your business needs. Moving off is always possible — it just shouldn't be necessary.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FINAL CTA
+============================================================ -->
+<section class="section" id="contact">
+  <div class="container">
+    <div class="cta-final reveal">
+      <h2>Ready to run<br><em>on cloud that just works?</em></h2>
+      <p>Book a free 45-minute cloud assessment. We'll review your current stack, flag what's risky, and tell you honestly whether a migration is worth it right now.</p>
+      <div class="actions">
+        <a href="#" class="btn btn-cloud btn-lg">
+          Book a cloud assessment
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#" class="btn btn-secondary btn-lg">See case studies</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <span class="brand-mark">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="3" fill="#fff" stroke="none"/>
+            </svg>
+          </span>
+          <span class="brand-name">HashVeno</span>
+        </div>
+        <p class="footer-about">
+          IT product &amp; service provider helping businesses grow through
+          smart technology solutions. Built and operated from Chennai, India.
+        </p>
+        <div class="footer-social">
+          <a href="#" class="social-btn" aria-label="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="LinkedIn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="Facebook">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M15 3h-3a4 4 0 0 0-4 4v3H5v4h3v7h4v-7h3l1-4h-4V7a1 1 0 0 1 1-1h3V3z"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="YouTube">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="6" width="18" height="12" rx="3"/><path d="M11 10l4 2-4 2v-4z" fill="currentColor"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h5>Services</h5>
+        <div class="footer-links">
+          <a href="#">Custom Software</a>
+          <a href="#">Cloud Applications</a>
+          <a href="#">Support &amp; Maintenance</a>
+          <a href="#">Integrations</a>
+        </div>
+      </div>
+
+      <div>
+        <h5>Products</h5>
+        <div class="footer-links">
+          <a href="#">HashVeno Retail</a>
+          <a href="#">HashRail</a>
+          <a href="#">HashRoute</a>
+          <a href="#">Tutorials</a>
+        </div>
+      </div>
+
+      <div>
+        <h5>Company</h5>
+        <div class="footer-links">
+          <a href="#">Articles</a>
+          <a href="#">Careers</a>
+          <a href="#">Terms</a>
+          <a href="#">Privacy</a>
+          <a href="#">Why Choose Us?</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2026 HashVeno. All rights reserved.</div>
+      <div class="made">
+        <span class="flag">🇮🇳</span>
+        made in India · Chennai
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 12);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+const navToggle = document.getElementById('navToggle');
+const mobileMenu = document.getElementById('mobileMenu');
+navToggle.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+mobileMenu.querySelectorAll('a').forEach(a =>
+  a.addEventListener('click', () => mobileMenu.classList.remove('open'))
+);
+
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+document.querySelectorAll('[data-faq]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.faq-item');
+    const open = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    if (!open) item.classList.add('open');
+  });
+});
+</script>
+</body>
+</html>

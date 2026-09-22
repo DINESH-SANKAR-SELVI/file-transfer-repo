@@ -1,0 +1,1612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Future-Proof Retail with Cloud and Automation — HashVeno</title>
+<meta name="description" content="Small changes today lead to big competitive advantages tomorrow. Integrating cloud POS, automated billing, and smart dashboards can elevate your entire retail game." />
+<meta name="theme-color" content="#0A0A12" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   DESIGN TOKENS
+============================================================ */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F7FB;
+  --surface:#FFFFFF;
+  --ink:#0A0A12;
+  --ink-2:#252532;
+  --muted:#63637A;
+  --faint:#9B9BAA;
+  --line:#E8E8F0;
+  --line-soft:#F1F1F7;
+
+  --brand:#5B4BE8;
+  --brand-2:#8B7BFF;
+  --brand-soft:#EFECFF;
+  --brand-ink:#3D2FC9;
+
+  --cloud:#0EA5E9;
+  --cloud-2:#38BDF8;
+  --cloud-soft:#E0F2FE;
+  --cloud-ink:#075985;
+
+  --accent:#00C48C;
+  --amber:#D98A0B;
+  --rose:#E0526B;
+
+  --radius:14px;
+  --radius-lg:20px;
+  --shadow-sm:0 1px 2px rgba(15,15,30,.04);
+  --shadow-md:0 8px 24px -8px rgba(20,20,40,.08),0 2px 6px rgba(20,20,40,.03);
+  --shadow-lg:0 24px 60px -20px rgba(20,20,50,.18),0 8px 20px rgba(20,20,40,.06);
+  --shadow-brand:0 12px 32px -8px rgba(91,75,232,.35);
+
+  --font-sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --font-serif:'Lora',Georgia,serif;
+  --font-mono:'JetBrains Mono',ui-monospace,monospace;
+
+  --container:1200px;
+  --article-width:720px;
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--font-sans);background:var(--bg);color:var(--ink);
+  line-height:1.55;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
+}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input{font:inherit;border:none;outline:none;background:none;color:inherit}
+::selection{background:var(--cloud);color:#fff}
+
+/* ============================================================
+   READING PROGRESS
+============================================================ */
+.progress{
+  position:fixed;top:0;left:0;right:0;
+  height:3px;z-index:200;
+  background:transparent;pointer-events:none;
+}
+.progress-bar{
+  height:100%;width:0%;
+  background:linear-gradient(90deg,var(--cloud),var(--cloud-2));
+  box-shadow:0 0 12px rgba(14,165,233,.5);
+  transition:width .1s linear;
+}
+
+/* ============================================================
+   NAV
+============================================================ */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 0;
+  transition:background .25s ease, backdrop-filter .25s ease, border-color .25s ease, padding .25s ease;
+  border-bottom:1px solid transparent;
+}
+.nav.scrolled{
+  background:rgba(247,247,251,.85);
+  backdrop-filter:saturate(180%) blur(20px);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-bottom-color:var(--line);padding:10px 0;
+}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.02em}
+.brand-mark{
+  width:34px;height:34px;border-radius:10px;
+  background:linear-gradient(135deg,var(--brand),var(--brand-2));
+  display:grid;place-items:center;color:#fff;
+  box-shadow:0 6px 16px -4px rgba(91,75,232,.45);position:relative;
+}
+.brand-mark::after{
+  content:"";position:absolute;inset:0;border-radius:10px;
+  background:linear-gradient(135deg,rgba(255,255,255,.35),transparent 55%);pointer-events:none;
+}
+.brand-name{font-size:17px}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-link{
+  font-size:14px;font-weight:500;color:var(--muted);
+  padding:8px 14px;border-radius:9px;transition:.15s;
+}
+.nav-link:hover{color:var(--ink);background:rgba(255,255,255,.7)}
+.nav-link.active{color:var(--cloud-ink);background:var(--cloud-soft)}
+.nav-cta{display:flex;align-items:center;gap:8px}
+.nav-toggle{
+  display:none;width:40px;height:40px;border-radius:10px;
+  align-items:center;justify-content:center;
+  border:1px solid var(--line);background:var(--surface);
+}
+@media(max-width:900px){
+  .nav-links{display:none}
+  .nav-toggle{display:flex}
+  .nav-cta .btn{display:none}
+}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-size:14.5px;font-weight:600;letter-spacing:-.005em;
+  padding:11px 20px;border-radius:11px;
+  transition:transform .15s ease, box-shadow .18s ease, background .15s ease, color .15s ease;
+  white-space:nowrap;cursor:pointer;
+}
+.btn-primary{background:var(--brand);color:#fff;box-shadow:var(--shadow-brand)}
+.btn-primary:hover{background:#4E3FD4;transform:translateY(-1px);box-shadow:0 16px 36px -10px rgba(91,75,232,.5)}
+.btn svg{transition:transform .18s}
+.btn:hover svg{transform:translateX(2px)}
+
+.mobile-menu{
+  position:fixed;inset:56px 0 auto 0;z-index:99;
+  background:var(--surface);border-bottom:1px solid var(--line);
+  padding:12px 24px 20px;transform:translateY(-8px);opacity:0;pointer-events:none;
+  transition:.22s ease;box-shadow:var(--shadow-lg);
+}
+.mobile-menu.open{transform:none;opacity:1;pointer-events:auto}
+.mobile-menu a{display:block;padding:13px 4px;font-size:15px;font-weight:500;border-bottom:1px solid var(--line-soft)}
+.mobile-menu a:last-child{border:none}
+
+.container{width:100%;max-width:var(--container);margin:0 auto;padding:0 24px}
+
+/* ============================================================
+   BREADCRUMB
+============================================================ */
+.breadcrumb{
+  max-width:var(--container);margin:0 auto;
+  padding:112px 24px 0;
+  display:flex;align-items:center;gap:8px;
+  font-size:13px;color:var(--faint);flex-wrap:wrap;
+}
+.breadcrumb a{transition:.15s}
+.breadcrumb a:hover{color:var(--cloud-ink)}
+.breadcrumb .sep{opacity:.5}
+.breadcrumb .current{color:var(--ink-2);font-weight:500;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:280px}
+
+/* ============================================================
+   ARTICLE HEADER
+============================================================ */
+.article-header{max-width:820px;margin:0 auto;padding:28px 24px 0}
+.cat-chip{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--cloud-ink);background:var(--cloud-soft);
+  padding:6px 12px;border-radius:99px;margin-bottom:20px;
+}
+.cat-chip .dot{width:6px;height:6px;border-radius:50%;background:var(--cloud)}
+
+.article-header h1{
+  font-family:var(--font-serif);
+  font-size:clamp(32px,5.2vw,52px);
+  font-weight:600;letter-spacing:-.022em;line-height:1.12;
+  color:var(--ink);margin-bottom:20px;
+}
+.article-header .lede{
+  font-family:var(--font-serif);
+  font-size:clamp(18px,1.6vw,21px);
+  line-height:1.55;color:var(--muted);
+  margin-bottom:32px;font-style:italic;
+}
+
+.article-meta{
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  padding-top:22px;border-top:1px solid var(--line);
+  margin-bottom:44px;
+}
+.author-mini{display:flex;align-items:center;gap:11px}
+.author-mini .av{
+  width:38px;height:38px;border-radius:11px;
+  display:grid;place-items:center;color:#fff;font-size:13px;font-weight:700;
+  background:linear-gradient(135deg,var(--cloud),var(--cloud-2));
+  flex-shrink:0;
+}
+.author-mini .name{font-size:13px;font-weight:600;color:var(--ink);line-height:1.2}
+.author-mini .role{font-size:11.5px;color:var(--faint);margin-top:2px}
+
+.meta-dot{width:4px;height:4px;border-radius:50%;background:var(--faint)}
+
+.meta-info{
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  font-size:12.5px;color:var(--faint);
+  font-family:var(--font-mono);letter-spacing:.01em;
+}
+.meta-info span{display:flex;align-items:center;gap:6px}
+
+/* ============================================================
+   HERO VISUAL
+============================================================ */
+.hero-visual{max-width:960px;margin:0 auto 56px;padding:0 24px}
+.hv-frame{
+  background:linear-gradient(135deg,#E0F2FE,#DBEAFE 40%,#EDE9FE);
+  border-radius:22px;padding:36px;position:relative;overflow:hidden;
+  border:1px solid rgba(14,165,233,.15);
+}
+.hv-frame::before{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,.5) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,.5) 1px, transparent 1px);
+  background-size:32px 32px;
+  mask-image:radial-gradient(circle at 50% 50%,#000,transparent 80%);
+  -webkit-mask-image:radial-gradient(circle at 50% 50%,#000,transparent 80%);
+  opacity:.5;pointer-events:none;
+}
+
+.hv-dashboard{
+  position:relative;background:#fff;border-radius:14px;
+  box-shadow:0 30px 60px -20px rgba(20,20,50,.25), 0 10px 24px -10px rgba(20,20,40,.12);
+  overflow:hidden;
+}
+.hv-chrome{
+  padding:11px 14px;display:flex;align-items:center;gap:7px;
+  border-bottom:1px solid var(--line-soft);background:#FBFBFE;
+}
+.hv-chrome .dot{width:9px;height:9px;border-radius:50%}
+.hv-chrome .title{
+  font-size:11px;font-weight:600;color:var(--faint);
+  margin-left:6px;letter-spacing:.02em;font-family:var(--font-mono);
+}
+
+/* cloud dashboard body */
+.hv-body{padding:18px}
+
+/* stores strip */
+.hv-stores{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:8px;margin-bottom:14px;
+}
+.hv-store{
+  background:#FBFBFE;border:1px solid var(--line-soft);border-radius:9px;
+  padding:9px 11px;position:relative;
+}
+.hv-store .hvs-name{
+  font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--faint);margin-bottom:5px;
+}
+.hv-store .hvs-value{
+  font-size:15px;font-weight:700;letter-spacing:-.02em;
+  color:var(--ink);font-feature-settings:"tnum";
+}
+.hv-store .hvs-status{
+  display:flex;align-items:center;gap:5px;
+  font-size:9.5px;font-weight:600;
+  color:var(--accent);margin-top:3px;
+  font-family:var(--font-mono);
+}
+.hv-store .hvs-status::before{
+  content:"";width:5px;height:5px;border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 0 2px rgba(0,196,140,.18);
+}
+.hv-store.s1 .hvs-status{color:var(--accent)}
+.hv-store.s2 .hvs-status{color:var(--accent)}
+.hv-store.s3 .hvs-status{color:var(--amber)}
+.hv-store.s3 .hvs-status::before{background:var(--amber);box-shadow:0 0 0 2px rgba(217,138,11,.18)}
+
+/* cloud panels */
+.hv-panels{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+}
+.hv-panel{
+  background:#FBFBFE;border:1px solid var(--line-soft);
+  border-radius:10px;padding:12px;
+}
+.hv-panel-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:10px;
+}
+.hv-panel-title{font-size:11px;font-weight:650;color:var(--ink)}
+.hv-panel-tag{
+  font-size:9px;font-weight:700;letter-spacing:.04em;
+  padding:3px 7px;border-radius:5px;
+}
+.hv-panel-tag.blue{background:var(--cloud-soft);color:var(--cloud-ink)}
+.hv-panel-tag.green{background:rgba(0,196,140,.12);color:var(--accent)}
+.hv-panel-tag.amber{background:rgba(217,138,11,.12);color:var(--amber)}
+
+/* mini chart */
+.hv-chart{
+  display:flex;gap:3px;height:42px;align-items:flex-end;
+  margin-top:4px;
+}
+.hv-chart span{
+  flex:1;
+  background:linear-gradient(180deg,rgba(14,165,233,.6),rgba(14,165,233,.2));
+  border-radius:2px 2px 1px 1px;
+  min-height:3px;
+}
+.hv-chart span:nth-child(1){height:42%}
+.hv-chart span:nth-child(2){height:58%}
+.hv-chart span:nth-child(3){height:52%}
+.hv-chart span:nth-child(4){height:74%}
+.hv-chart span:nth-child(5){height:88%}
+.hv-chart span:nth-child(6){height:66%}
+.hv-chart span:nth-child(7){height:92%}
+.hv-chart span:nth-child(8){height:78%}
+
+/* sync list */
+.hv-sync{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.hv-sync-row{
+  display:flex;align-items:center;gap:8px;
+  font-size:10px;padding:5px 8px;
+  background:#fff;border-radius:6px;
+  border:1px solid var(--line-soft);
+}
+.hv-sync-icon{
+  width:16px;height:16px;border-radius:4px;
+  display:grid;place-items:center;font-size:9px;font-weight:700;
+  flex-shrink:0;
+}
+.hv-sync-name{font-weight:600;color:var(--ink);font-family:var(--font-mono);flex:1}
+.hv-sync-status{
+  font-family:var(--font-mono);font-size:9.5px;
+  color:var(--accent);font-weight:600;
+}
+
+@media(max-width:640px){
+  .hv-frame{padding:22px}
+  .hv-body{padding:14px}
+  .hv-stores{grid-template-columns:1fr 1fr}
+  .hv-panels{grid-template-columns:1fr}
+}
+
+/* ============================================================
+   ARTICLE LAYOUT
+============================================================ */
+.article-layout{
+  max-width:1080px;margin:0 auto;
+  padding:0 24px 80px;
+  display:grid;grid-template-columns:220px 1fr;
+  gap:56px;align-items:flex-start;
+}
+
+/* TOC */
+.toc{position:sticky;top:100px;font-size:13px}
+.toc-label{
+  font-size:10.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--faint);margin-bottom:14px;
+  display:flex;align-items:center;gap:8px;
+}
+.toc-label::before{
+  content:"";width:3px;height:11px;border-radius:2px;
+  background:var(--cloud);
+}
+.toc-nav{display:flex;flex-direction:column;gap:1px}
+.toc-nav a{
+  display:block;padding:7px 11px;border-radius:8px;
+  font-size:12.8px;color:var(--muted);line-height:1.4;
+  border-left:2px solid transparent;transition:.15s;
+}
+.toc-nav a:hover{color:var(--ink);background:var(--line-soft)}
+.toc-nav a.active{
+  color:var(--cloud-ink);background:var(--cloud-soft);
+  border-left-color:var(--cloud);font-weight:600;
+}
+
+.toc-share{
+  margin-top:28px;padding-top:22px;border-top:1px solid var(--line);
+}
+.toc-share .label{
+  font-size:10.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--faint);margin-bottom:12px;
+}
+.share-row{display:flex;gap:6px}
+.share-btn{
+  width:36px;height:36px;border-radius:10px;
+  display:grid;place-items:center;
+  background:var(--surface);border:1px solid var(--line);
+  color:var(--muted);transition:.18s;cursor:pointer;
+}
+.share-btn:hover{
+  color:#fff;background:var(--cloud);border-color:var(--cloud);
+  transform:translateY(-2px);
+  box-shadow:0 8px 20px -6px rgba(14,165,233,.5);
+}
+.share-btn.copied{
+  background:var(--accent);border-color:var(--accent);color:#fff;
+}
+
+/* ============================================================
+   ARTICLE BODY
+============================================================ */
+.article-body{
+  max-width:var(--article-width);
+  font-size:17.5px;line-height:1.72;color:#2C2C36;
+}
+.article-body > * + *{margin-top:24px}
+.article-body p{color:#2C2C36}
+.article-body p.lede-para{
+  font-size:19.5px;color:var(--ink);line-height:1.65;
+}
+.article-body strong{color:var(--ink);font-weight:650}
+
+.article-body a{
+  color:var(--cloud-ink);
+  font-weight:500;text-decoration:underline;
+  text-decoration-color:rgba(14,165,233,.3);
+  text-underline-offset:3px;transition:.15s;
+}
+.article-body a:hover{text-decoration-color:var(--cloud)}
+
+.article-body h2{
+  font-family:var(--font-serif);
+  font-size:30px;font-weight:600;letter-spacing:-.02em;
+  line-height:1.2;color:var(--ink);
+  margin-top:64px;margin-bottom:6px;
+  scroll-margin-top:100px;
+}
+.article-body h2:first-child{margin-top:0}
+
+.article-body h3{
+  font-family:var(--font-sans);
+  font-size:20px;font-weight:650;letter-spacing:-.012em;
+  line-height:1.3;color:var(--ink);
+  margin-top:40px;margin-bottom:2px;
+  scroll-margin-top:100px;
+}
+
+.article-body ul,
+.article-body ol{padding-left:0;list-style:none}
+.article-body ul li,
+.article-body ol li{
+  position:relative;padding-left:26px;margin-bottom:12px;color:#2C2C36;
+}
+.article-body ul li::before{
+  content:"";position:absolute;left:6px;top:12px;
+  width:7px;height:7px;border-radius:50%;
+  background:var(--cloud);opacity:.5;
+}
+.article-body ol{counter-reset:item}
+.article-body ol li{counter-increment:item}
+.article-body ol li::before{
+  content:counter(item);
+  position:absolute;left:0;top:2px;
+  width:20px;height:20px;border-radius:6px;
+  background:var(--cloud-soft);color:var(--cloud-ink);
+  font-size:11px;font-weight:700;
+  display:grid;place-items:center;font-family:var(--font-mono);
+}
+
+.article-body blockquote{
+  border-left:3px solid var(--cloud);
+  padding:4px 0 4px 22px;margin:32px 0;
+  font-family:var(--font-serif);font-style:italic;
+  font-size:20px;line-height:1.55;color:var(--ink-2);
+}
+.article-body blockquote p{margin:0}
+
+.pullquote{
+  margin:44px 0;padding:32px 36px;
+  background:linear-gradient(135deg,var(--cloud-soft) 0%,#F0F9FF 100%);
+  border-radius:var(--radius-lg);
+  border:1px solid rgba(14,165,233,.12);
+  position:relative;
+}
+.pullquote::before{
+  content:"“";position:absolute;top:-14px;left:24px;
+  font-family:var(--font-serif);font-size:88px;line-height:1;
+  color:var(--cloud);opacity:.25;
+}
+.pullquote p{
+  font-family:var(--font-serif);font-size:23px;
+  font-weight:500;line-height:1.42;letter-spacing:-.012em;
+  color:var(--ink);margin:0 !important;
+}
+
+.callout{
+  margin:32px 0;padding:20px 22px 20px 24px;
+  border-radius:14px;border-left:3px solid;
+  font-size:15.5px;line-height:1.65;
+}
+.callout .co-label{
+  display:flex;align-items:center;gap:8px;
+  font-size:11px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;margin-bottom:10px;
+}
+.callout p{margin:0}
+.callout p + p{margin-top:10px}
+
+.callout.info{background:#F0F9FF;border-color:var(--cloud)}
+.callout.info .co-label{color:var(--cloud-ink)}
+.callout.warn{background:#FFF8EA;border-color:var(--amber)}
+.callout.warn .co-label{color:#8B5A00}
+.callout.success{background:#F0FDF9;border-color:var(--accent)}
+.callout.success .co-label{color:#047857}
+
+.data-table{
+  margin:32px 0;background:var(--surface);
+  border:1px solid var(--line);border-radius:14px;
+  overflow:hidden;font-size:14.5px;
+}
+.data-table .dt-head{
+  padding:14px 20px;
+  background:linear-gradient(180deg,#FBFBFE,#F7F7FB);
+  border-bottom:1px solid var(--line);
+  font-size:11px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--faint);
+}
+.data-table table{width:100%;border-collapse:collapse}
+.data-table th,
+.data-table td{
+  padding:14px 20px;text-align:left;
+  border-bottom:1px solid var(--line-soft);vertical-align:top;
+}
+.data-table tr:last-child td{border-bottom:none}
+.data-table th{
+  font-weight:600;font-size:12px;color:var(--faint);
+  letter-spacing:.04em;text-transform:uppercase;background:#FAFAFD;
+}
+.data-table td:last-child,
+.data-table th:last-child{
+  text-align:right;font-family:var(--font-mono);font-weight:600;
+}
+.data-table tr.total td{
+  background:#FAFAFD;font-weight:700;color:var(--ink);
+  border-top:1.5px solid var(--line);
+}
+.data-table tr.total td:last-child{color:var(--cloud-ink)}
+
+.figure{margin:36px 0}
+.figure-visual{
+  background:linear-gradient(135deg,#FBFBFE,#F0F9FF);
+  border:1px solid var(--line);border-radius:16px;
+  padding:26px;position:relative;overflow:hidden;
+}
+.figure-caption{
+  margin-top:12px;font-size:13px;color:var(--faint);
+  line-height:1.55;font-style:italic;text-align:center;
+}
+
+.compare-inline{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.compare-box{border-radius:12px;padding:16px;border:1px solid}
+.compare-box.old{background:linear-gradient(180deg,#FFF8F5,#FFF);border-color:#F8E0D6}
+.compare-box.new{background:linear-gradient(180deg,#F0F9FF,#FFF);border-color:#BAE6FD}
+.compare-box .cb-label{
+  font-size:10.5px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;margin-bottom:10px;
+}
+.compare-box.old .cb-label{color:var(--rose)}
+.compare-box.new .cb-label{color:var(--cloud-ink)}
+.compare-box .cb-value{
+  font-size:26px;font-weight:700;letter-spacing:-.025em;
+  font-family:var(--font-mono);margin-bottom:4px;
+}
+.compare-box.old .cb-value{color:var(--ink)}
+.compare-box.new .cb-value{color:var(--cloud)}
+.compare-box .cb-note{font-size:12px;color:var(--muted);line-height:1.5}
+
+/* Timeline / 90-day plan */
+.plan-list{display:flex;flex-direction:column;gap:14px;margin:28px 0}
+.plan-item{
+  display:grid;grid-template-columns:70px 1fr;gap:16px;
+  padding:18px 20px;
+  background:linear-gradient(135deg,#FBFBFE,#FFFFFF);
+  border:1px solid var(--line);border-radius:14px;
+}
+.plan-day{
+  display:flex;flex-direction:column;
+}
+.plan-day .num{
+  font-family:var(--font-mono);font-size:20px;font-weight:700;
+  color:var(--cloud-ink);line-height:1;
+}
+.plan-day .unit{
+  font-size:10.5px;font-weight:600;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--faint);margin-top:4px;
+}
+.plan-body h4{
+  font-size:15.5px;font-weight:650;letter-spacing:-.012em;
+  margin-bottom:8px;color:var(--ink);
+}
+.plan-body p{
+  font-size:14.5px;color:var(--muted);line-height:1.6;margin:0;
+}
+@media(max-width:520px){
+  .compare-inline{grid-template-columns:1fr}
+  .plan-item{grid-template-columns:1fr;gap:10px;padding:16px}
+}
+
+/* ============================================================
+   AUTHOR CARD
+============================================================ */
+.author-card{
+  max-width:var(--article-width);
+  margin:64px 0 40px;padding:28px;
+  background:linear-gradient(135deg,#FBFBFE,#FFFFFF);
+  border:1px solid var(--line);border-radius:var(--radius-lg);
+  display:flex;gap:18px;align-items:flex-start;
+}
+.author-card .ac-av{
+  width:56px;height:56px;border-radius:16px;
+  display:grid;place-items:center;color:#fff;
+  font-size:18px;font-weight:700;
+  background:linear-gradient(135deg,var(--cloud),var(--cloud-2));
+  flex-shrink:0;
+  box-shadow:0 8px 20px -6px rgba(14,165,233,.4);
+}
+.author-card .ac-body{flex:1;min-width:0}
+.author-card .ac-name{font-size:15px;font-weight:650;letter-spacing:-.01em;margin-bottom:2px}
+.author-card .ac-role{font-size:12.5px;color:var(--muted);margin-bottom:10px}
+.author-card .ac-bio{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:12px}
+.author-card .ac-links{display:flex;gap:8px;flex-wrap:wrap}
+.ac-link{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:12px;font-weight:600;color:var(--cloud-ink);
+  padding:6px 11px;border-radius:8px;
+  background:var(--cloud-soft);transition:.15s;
+}
+.ac-link:hover{background:var(--cloud);color:#fff}
+
+@media(max-width:520px){
+  .author-card{flex-direction:column;gap:14px;padding:22px}
+}
+
+.share-footer{
+  max-width:var(--article-width);
+  margin-bottom:64px;padding:24px 0;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;
+  gap:16px;flex-wrap:wrap;
+}
+.share-footer .sf-label{font-size:13px;font-weight:600;color:var(--muted)}
+.share-footer .sf-row{display:flex;gap:8px}
+.share-footer .share-btn{width:40px;height:40px}
+
+/* ============================================================
+   RELATED
+============================================================ */
+.related-section{max-width:1080px;margin:0 auto;padding:0 24px 80px}
+.related-head{margin-bottom:32px}
+.related-head .eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--faint);margin-bottom:12px;
+}
+.related-head .eyebrow::before{
+  content:"";width:3px;height:11px;border-radius:2px;
+  background:var(--brand);
+}
+.related-head h2{
+  font-family:var(--font-serif);
+  font-size:clamp(24px,3vw,32px);font-weight:600;
+  letter-spacing:-.022em;line-height:1.2;
+}
+
+.related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.rel-card{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius-lg);padding:24px 22px 20px;
+  display:flex;flex-direction:column;
+  transition:transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s, border-color .25s;
+  text-align:left;
+}
+.rel-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:#DEDEEA}
+.rel-cat{
+  display:inline-flex;align-items:center;gap:6px;
+  align-self:flex-start;
+  font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:4px 9px;border-radius:6px;margin-bottom:14px;
+}
+.rel-cat.retail{color:#9A3412;background:#FFEDD5}
+.rel-cat.cloud{color:var(--cloud-ink);background:var(--cloud-soft)}
+.rel-cat.transport{color:#047857;background:#D1FAE5}
+
+.rel-card h3{
+  font-size:16px;font-weight:650;letter-spacing:-.015em;
+  line-height:1.35;margin-bottom:8px;color:var(--ink);
+}
+.rel-card p{font-size:13.5px;color:var(--muted);line-height:1.55;flex:1;margin-bottom:16px}
+.rel-meta{
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:11.5px;color:var(--faint);
+  padding-top:14px;border-top:1px solid var(--line-soft);
+  font-family:var(--font-mono);
+}
+.rel-meta .read{display:flex;align-items:center;gap:5px}
+@media(max-width:820px){.related-grid{grid-template-columns:1fr;gap:12px}}
+
+/* ============================================================
+   NEWSLETTER
+============================================================ */
+.newsletter{max-width:1080px;margin:0 auto 60px;padding:0 24px}
+.newsletter-inner{
+  background:linear-gradient(135deg,#0F0F1E 0%,#1A1A33 60%,#252550 100%);
+  border-radius:24px;padding:48px 44px;color:#fff;
+  position:relative;overflow:hidden;
+  display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center;
+}
+.newsletter-inner::before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(600px 300px at 90% 20%, rgba(139,123,255,.35), transparent 60%),
+    radial-gradient(400px 300px at 10% 90%, rgba(14,165,233,.15), transparent 60%);
+  pointer-events:none;
+}
+.newsletter-inner::after{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size:44px 44px;
+  mask-image:radial-gradient(ellipse at 30% 50%,#000,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse at 30% 50%,#000,transparent 75%);
+  pointer-events:none;
+}
+.newsletter-inner > *{position:relative;z-index:1}
+.newsletter-inner h3{
+  font-family:var(--font-serif);
+  font-size:clamp(22px,2.6vw,28px);font-weight:600;
+  letter-spacing:-.02em;line-height:1.2;margin-bottom:12px;
+}
+.newsletter-inner h3 em{
+  font-style:normal;
+  background:linear-gradient(100deg,#C7B6FF,#8B7BFF 60%,#38BDF8);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.newsletter-inner p{font-size:14.5px;line-height:1.6;color:rgba(255,255,255,.65)}
+.newsletter-form{display:flex;flex-direction:column;gap:10px}
+.newsletter-row{
+  display:flex;gap:8px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:12px;padding:5px 5px 5px 14px;transition:.2s;
+}
+.newsletter-row:focus-within{
+  background:rgba(255,255,255,.09);
+  border-color:rgba(199,182,255,.4);
+  box-shadow:0 0 0 4px rgba(139,123,255,.15);
+}
+.newsletter-row input{flex:1;font-size:14px;color:#fff;min-width:0}
+.newsletter-row input::placeholder{color:rgba(255,255,255,.4)}
+.newsletter-row button{
+  background:#fff;color:#0F0F1E;font-size:13px;font-weight:600;
+  padding:10px 18px;border-radius:9px;transition:.15s;white-space:nowrap;
+}
+.newsletter-row button:hover{background:#F2F2F8;transform:translateY(-1px)}
+.newsletter-note{
+  font-size:11.5px;color:rgba(255,255,255,.45);
+  display:flex;align-items:center;gap:6px;
+}
+@media(max-width:820px){
+  .newsletter-inner{grid-template-columns:1fr;gap:24px;padding:36px 24px;border-radius:20px}
+  .newsletter-row{flex-direction:column;padding:10px;gap:8px}
+  .newsletter-row input{padding:6px 8px;font-size:15px}
+  .newsletter-row button{padding:12px;font-size:14px}
+}
+
+/* ============================================================
+   FOOTER
+============================================================ */
+.footer{background:#0B0B16;color:rgba(255,255,255,.7);padding:64px 0 28px}
+.footer-grid{
+  display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px;
+  padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.08);
+}
+.footer-brand{display:flex;align-items:center;gap:10px;color:#fff;margin-bottom:14px}
+.footer-brand .brand-mark{box-shadow:none}
+.footer-brand .brand-name{font-size:16px}
+.footer-about{font-size:13.5px;line-height:1.65;max-width:320px;color:rgba(255,255,255,.55)}
+.footer-social{display:flex;gap:10px;margin-top:18px}
+.social-btn{
+  width:38px;height:38px;border-radius:11px;display:grid;place-items:center;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
+  color:rgba(255,255,255,.75);transition:.2s;
+}
+.social-btn:hover{background:var(--cloud);color:#fff;transform:translateY(-2px);border-color:var(--cloud)}
+.footer h5{
+  font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  color:rgba(255,255,255,.5);margin-bottom:16px;
+}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13.5px;color:rgba(255,255,255,.7);transition:.15s;display:inline-block}
+.footer-links a:hover{color:#fff;transform:translateX(3px)}
+.footer-bottom{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:26px;gap:16px;flex-wrap:wrap;
+  font-size:12.5px;color:rgba(255,255,255,.4);
+}
+.footer-bottom .made{display:flex;align-items:center;gap:8px}
+.footer-bottom .made span.flag{font-size:15px}
+@media(max-width:820px){
+  .footer-grid{grid-template-columns:1fr 1fr;gap:32px}
+  .footer-grid > div:first-child{grid-column:1/-1}
+  .footer-bottom{flex-direction:column;text-align:center}
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media(max-width:960px){
+  .article-layout{grid-template-columns:1fr;gap:0;padding:0 24px 60px}
+  .toc{display:none}
+  .article-body{max-width:100%;margin:0 auto}
+  .author-card,.share-footer{max-width:100%;margin-left:auto;margin-right:auto}
+}
+
+@media(max-width:640px){
+  .breadcrumb{padding:96px 18px 0;font-size:12px}
+  .breadcrumb .current{max-width:180px}
+  .article-header{padding:22px 18px 0}
+  .article-header h1{font-size:clamp(28px,8vw,38px);line-height:1.15}
+  .article-header .lede{font-size:16.5px;line-height:1.55;margin-bottom:24px}
+  .article-meta{gap:12px;padding-top:18px;margin-bottom:32px}
+  .meta-info{font-size:11.5px;gap:12px}
+  .author-mini .av{width:34px;height:34px;font-size:12px;border-radius:10px}
+  .hero-visual{padding:0 18px;margin-bottom:40px}
+  .article-layout{padding:0 18px 48px}
+  .article-body{font-size:16.5px;line-height:1.7}
+  .article-body h2{font-size:24px;margin-top:48px}
+  .article-body h3{font-size:18px;margin-top:32px}
+  .article-body blockquote{font-size:17.5px;padding-left:18px;margin:24px 0}
+  .pullquote{padding:24px 22px 22px;margin:32px 0;border-radius:16px}
+  .pullquote::before{font-size:64px;top:-10px;left:18px}
+  .pullquote p{font-size:19px}
+  .callout{padding:16px 18px;font-size:14.5px;margin:24px 0}
+  .data-table{font-size:13px}
+  .data-table th,.data-table td{padding:11px 14px}
+  .data-table th{font-size:10.5px}
+  .figure-visual{padding:16px;border-radius:14px}
+  .author-card{margin:44px 0 32px;padding:20px;border-radius:16px}
+  .share-footer{padding:18px 0;margin-bottom:48px}
+  .related-section{padding:0 18px 56px}
+  .related-head h2{font-size:22px}
+  .rel-card{padding:20px 18px 16px}
+  .newsletter{padding:0 18px;margin-bottom:40px}
+  .container{padding:0 18px}
+  .footer{padding:48px 0 22px}
+}
+@media(max-width:380px){
+  .article-header h1{font-size:26px}
+  .article-body{font-size:16px}
+  .article-body h2{font-size:22px}
+  .pullquote p{font-size:17px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- READING PROGRESS -->
+<div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="#" class="brand">
+      <span class="brand-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="3" fill="#fff" stroke="none"/>
+        </svg>
+      </span>
+      <span class="brand-name">HashVeno</span>
+    </a>
+
+    <div class="nav-links">
+      <a class="nav-link" href="#">Services</a>
+      <a class="nav-link" href="#">Products</a>
+      <a class="nav-link active" href="#">Articles</a>
+      <a class="nav-link" href="#">Careers</a>
+      <a class="nav-link" href="#contact">Contact</a>
+    </div>
+
+    <div class="nav-cta">
+      <a href="#contact" class="btn btn-primary">
+        Get in touch
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M4 7h16M4 12h16M4 17h16"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#">Services</a>
+  <a href="#">Products</a>
+  <a href="#">Articles</a>
+  <a href="#">Careers</a>
+  <a href="#contact">Contact</a>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <a href="#">Articles</a>
+  <span class="sep">/</span>
+  <a href="#">Cloud</a>
+  <span class="sep">/</span>
+  <span class="current">Future-Proof Retail with Cloud and Automation</span>
+</div>
+
+<!-- ARTICLE HEADER -->
+<header class="article-header">
+  <span class="cat-chip"><span class="dot"></span> Cloud</span>
+
+  <h1>Future-Proof Retail with Cloud and Automation</h1>
+
+  <p class="lede">
+    Small changes today lead to big competitive advantages tomorrow.
+    Integrating cloud POS, automated billing, and smart dashboards can
+    elevate your entire retail game.
+  </p>
+
+  <div class="article-meta">
+    <div class="author-mini">
+      <div class="av">PK</div>
+      <div>
+        <div class="name">Priya Krishnan</div>
+        <div class="role">Head of Cloud Practice</div>
+      </div>
+    </div>
+    <span class="meta-dot"></span>
+    <div class="meta-info">
+      <span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+        Mar 04, 2026
+      </span>
+      <span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        9 min read
+      </span>
+    </div>
+  </div>
+</header>
+
+<!-- HERO VISUAL -->
+<div class="hero-visual">
+  <div class="hv-frame">
+    <div class="hv-dashboard">
+      <div class="hv-chrome">
+        <span class="dot" style="background:#FF5F57"></span>
+        <span class="dot" style="background:#FEBC2E"></span>
+        <span class="dot" style="background:#28C840"></span>
+        <span class="title">cloud.hashveno.io / multi-store-view</span>
+      </div>
+
+      <div class="hv-body">
+
+        <!-- Stores strip -->
+        <div class="hv-stores">
+          <div class="hv-store s1">
+            <div class="hvs-name">Chennai · Anna Nagar</div>
+            <div class="hvs-value">₹84,210</div>
+            <div class="hvs-status">Live · synced 4s ago</div>
+          </div>
+          <div class="hv-store s2">
+            <div class="hvs-name">Chennai · T. Nagar</div>
+            <div class="hvs-value">₹62,480</div>
+            <div class="hvs-status">Live · synced 6s ago</div>
+          </div>
+          <div class="hv-store s3">
+            <div class="hvs-name">Coimbatore · RS Puram</div>
+            <div class="hvs-value">₹41,900</div>
+            <div class="hvs-status">Sync lag 12s</div>
+          </div>
+        </div>
+
+        <!-- Panels -->
+        <div class="hv-panels">
+
+          <div class="hv-panel">
+            <div class="hv-panel-head">
+              <span class="hv-panel-title">Consolidated revenue</span>
+              <span class="hv-panel-tag green">↑ 14.2% WoW</span>
+            </div>
+            <div class="hv-chart">
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+
+          <div class="hv-panel">
+            <div class="hv-panel-head">
+              <span class="hv-panel-title">Automated flows</span>
+              <span class="hv-panel-tag blue">4 active</span>
+            </div>
+            <div class="hv-sync">
+              <div class="hv-sync-row">
+                <div class="hv-sync-icon" style="background:#E0F2FE;color:#075985">₹</div>
+                <span class="hv-sync-name">billing → GST</span>
+                <span class="hv-sync-status">✓ synced</span>
+              </div>
+              <div class="hv-sync-row">
+                <div class="hv-sync-icon" style="background:#DCFCE7;color:#166534">📦</div>
+                <span class="hv-sync-name">stock → PO</span>
+                <span class="hv-sync-status">✓ synced</span>
+              </div>
+              <div class="hv-sync-row">
+                <div class="hv-sync-icon" style="background:#F3E8FF;color:#6D28D9">📊</div>
+                <span class="hv-sync-name">daily → board</span>
+                <span class="hv-sync-status">✓ sent</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ARTICLE LAYOUT -->
+<div class="article-layout">
+
+  <!-- TOC -->
+  <aside class="toc">
+    <div class="toc-label">On this page</div>
+    <nav class="toc-nav" id="tocNav">
+      <a href="#splitting">Retail is splitting</a>
+      <a href="#what-cloud">What cloud changes</a>
+      <a href="#automations">Three automations</a>
+      <a href="#advantage">The hidden advantage</a>
+      <a href="#ninety">The 90-day plan</a>
+      <a href="#mistakes">Mistakes to avoid</a>
+      <a href="#bottom-line">The bottom line</a>
+    </nav>
+
+    <div class="toc-share">
+      <div class="label">Share</div>
+      <div class="share-row">
+        <button class="share-btn" data-share="twitter" aria-label="Share on X">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.2 2H21l-6.6 7.5L22 22h-6.8l-5.3-7-6.1 7H1l7-8L2 2h6.9l4.8 6.4L18.2 2zm-2.4 18h1.6L7.8 3.9H6l9.8 16.1z"/></svg>
+        </button>
+        <button class="share-btn" data-share="linkedin" aria-label="Share on LinkedIn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4"/></svg>
+        </button>
+        <button class="share-btn" data-share="copy" aria-label="Copy link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- BODY -->
+  <article class="article-body" id="articleBody">
+
+    <h2 id="splitting">Retail in India is splitting into two kinds of shops</h2>
+
+    <p class="lede-para">
+      Walk into any market in Chennai and you can tell within 30 seconds which kind of shop you're standing in.
+    </p>
+
+    <p>
+      In the first kind, the owner knows their numbers in real time. Stock, sales, margins, what's selling today, what
+      isn't. The system tells them, and they act.
+    </p>
+
+    <p>
+      In the second kind, the owner <strong>feels</strong> their numbers. "Sales feel good this week." "I think the
+      new SKU is moving." "Ask Suresh, he knows." The data exists — somewhere — but by the time it reaches a decision
+      maker, it's usually a week old.
+    </p>
+
+    <p>
+      The gap between these two types of shops isn't about size. It's not about budget. It's not even about
+      technology in the usual sense.
+    </p>
+
+    <p>
+      It's about <strong>how fast information moves from the shop floor to the decision</strong>.
+    </p>
+
+    <div class="pullquote">
+      <p>The shops that will survive the next five years aren't the ones with the most capital — they're the ones with the fastest feedback loops.</p>
+    </div>
+
+    <h2 id="what-cloud">What "cloud" actually changes</h2>
+
+    <p>
+      Let me be careful here, because "cloud" is one of those words that's been used so much it's started to mean
+      nothing. Most vendors slap the word on any product that has a login page.
+    </p>
+
+    <p>
+      So let's be specific. Cloud, done properly, changes five things that matter to a shop:
+    </p>
+
+    <h3>1. Access from anywhere</h3>
+    <p>
+      You can see today's numbers from your phone while you're at your second location, your accountant's office, or
+      your home. Not "the manager will send me a screenshot later." Right now, on your screen.
+    </p>
+
+    <h3>2. Multiple locations on one view</h3>
+    <p>
+      Every store, every counter, every cashier — one dashboard. Consolidated revenue, per-store comparison, chain-wide
+      stock position. This is the single biggest operational upgrade most multi-location shops make.
+    </p>
+
+    <h3>3. Automatic backups and zero data loss</h3>
+    <p>
+      The POS system on a local computer in the back room crashes, the hard disk dies, and three years of customer
+      records disappear. Cloud means the data lives independently of any single machine.
+    </p>
+
+    <h3>4. Continuous updates</h3>
+    <p>
+      New features ship to you automatically. No "please update to version 4.2" disk arriving in the mail. No
+      downtime during update windows. No six-month delays waiting for a new version.
+    </p>
+
+    <h3>5. Integration with everything else</h3>
+    <p>
+      Your accounting, your bank, your supplier's order system, your GST filing, your delivery partners. Cloud makes
+      these connections easy because everything speaks the same language. Local software makes them nearly impossible.
+    </p>
+
+    <div class="callout info">
+      <div class="co-label">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><path d="M12 8v.01M12 12v4"/></svg>
+        Worth noting
+      </div>
+      <p>
+        Cloud isn't a hosting decision. It's a <strong>data architecture decision</strong>. Two systems can both be
+        "on the cloud" and one can still be useless because the data model underneath is 15 years old.
+      </p>
+    </div>
+
+    <h2 id="automations">The three automations worth building first</h2>
+
+    <p>
+      You don't need to automate everything at once. Most successful cloud migrations I've seen focus on three
+      automations in the first quarter. These three.
+    </p>
+
+    <h3>1. Automated billing and tax</h3>
+    <p>
+      Every sale generates an invoice automatically. GST is calculated and filed to the portal without manual entry.
+      Payment reconciliation happens overnight, matching bank credits against issued invoices. Your accountant stops
+      doing data entry and starts doing actual accounting.
+    </p>
+
+    <div class="callout success">
+      <div class="co-label">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        Real impact
+      </div>
+      <p>
+        One retailer in Coimbatore we worked with cut their month-end close from <strong>4 days to 4 hours</strong> by
+        automating billing and reconciliation. Their accountant was initially skeptical. She became the biggest
+        advocate after the first cycle.
+      </p>
+    </div>
+
+    <h3>2. Automated inventory reorder</h3>
+    <p>
+      Set a reorder threshold for each SKU. When stock crosses it, a purchase order is generated and sent to the
+      supplier automatically. You approve exceptions, not every order. No more "we ran out of the fast-moving item
+      on our busiest day."
+    </p>
+
+    <h3>3. Automated reporting</h3>
+    <p>
+      A daily digest lands in your inbox every morning: yesterday's sales, top SKUs, low stock alerts, unusual
+      activity. A weekly report shows trends. A monthly pack goes out to your board or your investors if you have
+      them — all generated without anyone touching Excel.
+    </p>
+
+    <p>
+      The pattern is the same across all three: <strong>take a task that requires a human to notice something, and
+      let the system notice it instead.</strong>
+    </p>
+
+    <h2 id="advantage">The hidden competitive advantage</h2>
+
+    <p>
+      Here's what most shop owners miss when they think about cloud.
+    </p>
+
+    <p>
+      A single-location shop using cloud gets the same operational intelligence as a chain ten times its size.
+      Same dashboards. Same analytics. Same automation. Same ability to answer "what's profitable?" in seconds.
+    </p>
+
+    <p>
+      Twenty years ago, that was impossible. Chains had IT departments. Small shops had paper. The gap was
+      structural and permanent.
+    </p>
+
+    <p>
+      Now the gap is just a decision. And the shops making it are compounding the advantage every single day.
+    </p>
+
+    <div class="figure">
+      <div class="figure-visual">
+        <div class="compare-inline">
+          <div class="compare-box old">
+            <div class="cb-label">● Local POS + spreadsheets</div>
+            <div class="cb-value">7–10d</div>
+            <div class="cb-note">Time to close monthly books, reconcile, and produce reports</div>
+          </div>
+          <div class="compare-box new">
+            <div class="cb-label">● Cloud POS + automation</div>
+            <div class="cb-value">4–8h</div>
+            <div class="cb-note">Same close, most of it automatic, rest is verification</div>
+          </div>
+        </div>
+      </div>
+      <div class="figure-caption">
+        Averages across 12 retail shops that migrated from local POS to cloud between 2024 and 2026.
+      </div>
+    </div>
+
+    <h2 id="ninety">What to do in the next 90 days</h2>
+
+    <p>
+      If you're convinced, here's the plan I'd actually recommend. Not the "migrate everything in a weekend"
+      fantasy. The realistic version.
+    </p>
+
+    <div class="plan-list">
+
+      <div class="plan-item">
+        <div class="plan-day">
+          <span class="num">01–30</span>
+          <span class="unit">Days</span>
+        </div>
+        <div class="plan-body">
+          <h4>Audit and decide</h4>
+          <p>
+            List every tool you use today. Every spreadsheet. Every WhatsApp group where numbers get exchanged.
+            Write down what's working and what's bleeding time. Get quotes from two or three cloud POS vendors.
+            Pick one.
+          </p>
+        </div>
+      </div>
+
+      <div class="plan-item">
+        <div class="plan-day">
+          <span class="num">31–60</span>
+          <span class="unit">Days</span>
+        </div>
+        <div class="plan-body">
+          <h4>Migrate one store first</h4>
+          <p>
+            Don't migrate everything at once. Pick your busiest store and move it. Prove the system works with real
+            traffic for four weeks. Fix what breaks. Only then expand.
+          </p>
+        </div>
+      </div>
+
+      <div class="plan-item">
+        <div class="plan-day">
+          <span class="num">61–90</span>
+          <span class="unit">Days</span>
+        </div>
+        <div class="plan-body">
+          <h4>Automate the three things</h4>
+          <p>
+            Billing, reorder, reports. Turn them on one at a time, week apart. Train your staff on the new
+            workflows. By day 90 you should be closing books in a single day and knowing your numbers in real time.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <h2 id="mistakes">Three mistakes to avoid</h2>
+
+    <p>
+      I've watched dozens of migrations. Here are the three failure modes that kill most of them.
+    </p>
+
+    <h3>Mistake 1: Migrating everything in one weekend</h3>
+    <p>
+      It never works. You end up with two half-migrated systems, staff who don't know which screen to use, and
+      customers waiting while the team figures it out. Phased migration is slower on paper and much faster in
+      practice.
+    </p>
+
+    <h3>Mistake 2: Choosing by price alone</h3>
+    <p>
+      The cheapest cloud POS is usually the one that's missing the automation you actually need. When you compare
+      vendors, compare the three automations — billing, reorder, reports — specifically. Ask for demos of each.
+      The price difference is almost always smaller than the time cost of doing it twice.
+    </p>
+
+    <h3>Mistake 3: Not training the team</h3>
+    <p>
+      Your staff will resist a system they don't understand. That's not stubbornness — it's rational. Two hours of
+      proper training per person, delivered before go-live, saves you six weeks of "the old system worked fine."
+      Plan for it.
+    </p>
+
+    <div class="callout warn">
+      <div class="co-label">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 14H4l8-14z"/><path d="M12 10v4M12 17v.01"/></svg>
+        The biggest one
+      </div>
+      <p>
+        The single biggest cause of failed migrations is <strong>going live without a rollback plan</strong>. Always
+        keep the old system running in parallel for at least two weeks. Always. The cost of running both is trivial
+        compared to the cost of losing a week of sales.
+      </p>
+    </div>
+
+    <h2 id="bottom-line">The bottom line</h2>
+
+    <p>
+      Cloud isn't a technology upgrade. It's a decision about <strong>how fast you want to see your business</strong>.
+    </p>
+
+    <p>
+      A shop that knows its numbers in real time will always beat a shop that knows them at month-end. Not because
+      the owner is smarter — because the feedback loop is faster. Decisions get made earlier. Problems get caught
+      sooner. Opportunities get acted on before they expire.
+    </p>
+
+    <p>
+      The migration takes 90 days. The advantage compounds for years. That's the trade. It's a good one.
+    </p>
+
+    <!-- AUTHOR CARD -->
+    <div class="author-card">
+      <div class="ac-av">PK</div>
+      <div class="ac-body">
+        <div class="ac-name">Priya Krishnan</div>
+        <div class="ac-role">Head of Cloud Practice · HashVeno</div>
+        <p class="ac-bio">
+          Priya leads HashVeno's cloud engineering team and has architected multi-tenant SaaS platforms for retail,
+          logistics, and fintech across India. She writes about cloud architecture, migration strategy, and the
+          practical side of running software at scale.
+        </p>
+        <div class="ac-links">
+          <a href="#" class="ac-link">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.2 2H21l-6.6 7.5L22 22h-6.8l-5.3-7-6.1 7H1l7-8L2 2h6.9l4.8 6.4L18.2 2zm-2.4 18h1.6L7.8 3.9H6l9.8 16.1z"/></svg>
+            Follow on X
+          </a>
+          <a href="#" class="ac-link">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4"/></svg>
+            Connect on LinkedIn
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- SHARE FOOTER -->
+    <div class="share-footer">
+      <span class="sf-label">Share this article</span>
+      <div class="sf-row">
+        <button class="share-btn" data-share="twitter" aria-label="Share on X">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.2 2H21l-6.6 7.5L22 22h-6.8l-5.3-7-6.1 7H1l7-8L2 2h6.9l4.8 6.4L18.2 2zm-2.4 18h1.6L7.8 3.9H6l9.8 16.1z"/></svg>
+        </button>
+        <button class="share-btn" data-share="linkedin" aria-label="Share on LinkedIn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4"/></svg>
+        </button>
+        <button class="share-btn" data-share="copy" aria-label="Copy link">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+        </button>
+      </div>
+    </div>
+
+  </article>
+</div>
+
+<!-- RELATED -->
+<section class="related-section">
+  <div class="related-head">
+    <div class="eyebrow">Continue reading</div>
+    <h2>Related articles</h2>
+  </div>
+
+  <div class="related-grid">
+
+    <a href="#" class="rel-card">
+      <span class="rel-cat retail">Retail</span>
+      <h3>Is Your Shop Management Holding You Back?</h3>
+      <p>Legacy tools slowly drain your store's efficiency. Here's how modern shop management moves beyond inventory tracking into real-time analytics and customer engagement.</p>
+      <div class="rel-meta">
+        <span>Feb 2026</span>
+        <span class="read">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          8 min
+        </span>
+      </div>
+    </a>
+
+    <a href="#" class="rel-card">
+      <span class="rel-cat transport">Transport</span>
+      <h3>Rising Unauthorized Travel in Indian Railways</h3>
+      <p>Indian Railways faces increasing numbers of passengers traveling without valid tickets — causing revenue loss and overcrowding. Real-time monitoring can help detect it early.</p>
+      <div class="rel-meta">
+        <span>Mar 2026</span>
+        <span class="read">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          7 min
+        </span>
+      </div>
+    </a>
+
+    <a href="#" class="rel-card">
+      <span class="rel-cat transport">Transport</span>
+      <h3>Overcrowding &amp; Fare Evasion in MTC Buses</h3>
+      <p>MTC buses struggle with unauthorized passengers and overcrowding — leading to revenue loss and delays. Smart tracking enables better passenger management.</p>
+      <div class="rel-meta">
+        <span>Mar 2026</span>
+        <span class="read">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          5 min
+        </span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter" id="contact">
+  <div class="newsletter-inner">
+    <div>
+      <h3>Engineering notes, <em>monthly.</em></h3>
+      <p>
+        Short essays on building software for Indian businesses — retail, transit,
+        and enterprise. No fluff, no marketing. Just what we've learned.
+      </p>
+    </div>
+
+    <form class="newsletter-form" onsubmit="event.preventDefault(); this.reset(); alert('Thanks — check your inbox to confirm.');">
+      <div class="newsletter-row">
+        <input type="email" placeholder="you@company.com" required />
+        <button type="submit">Subscribe</button>
+      </div>
+      <div class="newsletter-note">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+        One email per month. Unsubscribe any time.
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <span class="brand-mark">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="3" fill="#fff" stroke="none"/>
+            </svg>
+          </span>
+          <span class="brand-name">HashVeno</span>
+        </div>
+        <p class="footer-about">
+          IT product &amp; service provider helping businesses grow through
+          smart technology solutions. Built and operated from Chennai, India.
+        </p>
+        <div class="footer-social">
+          <a href="#" class="social-btn" aria-label="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="LinkedIn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="Facebook">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M15 3h-3a4 4 0 0 0-4 4v3H5v4h3v7h4v-7h3l1-4h-4V7a1 1 0 0 1 1-1h3V3z"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="YouTube">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="6" width="18" height="12" rx="3"/><path d="M11 10l4 2-4 2v-4z" fill="currentColor"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h5>Services</h5>
+        <div class="footer-links">
+          <a href="#">Custom Software</a>
+          <a href="#">Cloud Applications</a>
+          <a href="#">Support &amp; Maintenance</a>
+          <a href="#">Integrations</a>
+        </div>
+      </div>
+
+      <div>
+        <h5>Products</h5>
+        <div class="footer-links">
+          <a href="#">HashVeno Retail</a>
+          <a href="#">HashRail</a>
+          <a href="#">HashRoute</a>
+          <a href="#">Tutorials</a>
+        </div>
+      </div>
+
+      <div>
+        <h5>Company</h5>
+        <div class="footer-links">
+          <a href="#">Articles</a>
+          <a href="#">Careers</a>
+          <a href="#">Terms</a>
+          <a href="#">Privacy</a>
+          <a href="#">Why Choose Us?</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2026 HashVeno. All rights reserved.</div>
+      <div class="made">
+        <span class="flag">🇮🇳</span>
+        made in India · Chennai
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* NAV SCROLL */
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 12);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+/* MOBILE MENU */
+const navToggle = document.getElementById('navToggle');
+const mobileMenu = document.getElementById('mobileMenu');
+navToggle.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+mobileMenu.querySelectorAll('a').forEach(a =>
+  a.addEventListener('click', () => mobileMenu.classList.remove('open'))
+);
+
+/* READING PROGRESS */
+const progressBar = document.getElementById('progressBar');
+const articleBody = document.getElementById('articleBody');
+function updateProgress(){
+  const rect = articleBody.getBoundingClientRect();
+  const total = articleBody.offsetHeight - window.innerHeight + 200;
+  const scrolled = Math.min(Math.max(-rect.top + 100, 0), total);
+  const pct = Math.min((scrolled / total) * 100, 100);
+  progressBar.style.width = pct + '%';
+}
+window.addEventListener('scroll', updateProgress, { passive: true });
+window.addEventListener('resize', updateProgress);
+updateProgress();
+
+/* TOC ACTIVE */
+const tocLinks = document.querySelectorAll('#tocNav a');
+const headings = [...document.querySelectorAll('.article-body h2[id]')];
+function setActiveToc(){
+  const scrollY = window.scrollY + 130;
+  let current = headings[0]?.id;
+  headings.forEach(h => { if (h.offsetTop <= scrollY) current = h.id; });
+  tocLinks.forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+}
+window.addEventListener('scroll', setActiveToc, { passive: true });
+setActiveToc();
+
+/* SHARE BUTTONS */
+const pageUrl = window.location.href;
+const pageTitle = document.title;
+document.querySelectorAll('[data-share]').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const type = btn.dataset.share;
+    if (type === 'twitter'){
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(pageTitle)}&url=${encodeURIComponent(pageUrl)}`, '_blank', 'noopener');
+    }
+    if (type === 'linkedin'){
+      window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`, '_blank', 'noopener');
+    }
+    if (type === 'copy'){
+      try{
+        await navigator.clipboard.writeText(pageUrl);
+        btn.classList.add('copied');
+        const original = btn.innerHTML;
+        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
+        setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = original; }, 1800);
+      } catch(e){}
+    }
+  });
+});
+</script>
+</body>
+</html>
