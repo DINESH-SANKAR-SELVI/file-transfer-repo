@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Concierge — Chat Shopping Dashboard</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#F5F5F7; --panel:#FFFFFF; --line:#E9E9EF; --line-soft:#F1F1F5;
+    --text:#14141B; --muted:#71717F; --faint:#9C9CAA;
+    --accent:#5B4BE8; --accent-2:#8B7BFF; --soft:#F0EEFF;
+    --green:#0FA47F; --amber:#D98A0B;
+  }
+  body{
+    font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    background:var(--bg); color:var(--text); height:100vh; overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+  input{font:inherit;border:none;outline:none;background:none;color:inherit}
+  ::-webkit-scrollbar{width:8px;height:8px}
+  ::-webkit-scrollbar-thumb{background:#D8D8E0;border-radius:8px}
+  ::-webkit-scrollbar-thumb:hover{background:#C3C3CE}
+  ::-webkit-scrollbar-track{background:transparent}
+
+  .app{display:grid;grid-template-columns:68px 268px 1fr 340px;height:100vh}
+
+  /* ---------- RAIL ---------- */
+  .rail{
+    background:var(--panel);border-right:1px solid var(--line);
+    display:flex;flex-direction:column;align-items:center;
+    padding:16px 0;gap:6px;
+  }
+  .logo{
+    width:38px;height:38px;border-radius:11px;margin-bottom:14px;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    display:grid;place-items:center;color:#fff;font-size:17px;
+    box-shadow:0 6px 14px rgba(91,75,232,.32);
+  }
+  .rail-btn{
+    width:40px;height:40px;border-radius:11px;display:grid;place-items:center;
+    color:var(--faint);transition:.16s;position:relative;
+  }
+  .rail-btn:hover{background:var(--line-soft);color:var(--text)}
+  .rail-btn.active{background:var(--soft);color:var(--accent)}
+  .rail-btn.active::before{
+    content:"";position:absolute;left:-16px;top:50%;transform:translateY(-50%);
+    width:3px;height:20px;border-radius:0 3px 3px 0;background:var(--accent);
+  }
+  .rail-spacer{flex:1}
+  .avatar-sm{
+    width:34px;height:34px;border-radius:50%;margin-top:8px;
+    background:linear-gradient(135deg,#FFB86B,#FF7A59);
+    display:grid;place-items:center;color:#fff;font-size:12px;font-weight:600;
+  }
+
+  /* ---------- SIDEBAR ---------- */
+  .sidebar{
+    background:var(--panel);border-right:1px solid var(--line);
+    display:flex;flex-direction:column;min-width:0;
+  }
+  .sb-head{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 16px 12px;
+  }
+  .sb-head h2{font-size:14px;font-weight:600;letter-spacing:-.01em}
+  .new-btn{
+    width:26px;height:26px;border-radius:8px;background:var(--accent);color:#fff;
+    display:grid;place-items:center;font-size:16px;line-height:1;
+    box-shadow:0 3px 8px rgba(91,75,232,.3);
+  }
+  .search{
+    margin:0 12px 12px;display:flex;align-items:center;gap:8px;
+    background:var(--bg);border-radius:10px;padding:8px 10px;color:var(--faint);
+  }
+  .search input{flex:1;font-size:12.5px;color:var(--text)}
+  .search input::placeholder{color:var(--faint)}
+  .sb-scroll{flex:1;overflow-y:auto;padding:0 8px 16px}
+  .sb-label{
+    font-size:10.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
+    color:var(--faint);padding:14px 8px 7px;
+  }
+  .thread{
+    display:flex;gap:10px;padding:9px 8px;border-radius:11px;
+    cursor:pointer;transition:.14s;align-items:flex-start;
+  }
+  .thread:hover{background:var(--line-soft)}
+  .thread.active{background:var(--soft)}
+  .t-avatar{
+    width:32px;height:32px;border-radius:9px;flex-shrink:0;
+    display:grid;place-items:center;font-size:15px;background:var(--bg);
+  }
+  .thread.active .t-avatar{background:#fff}
+  .t-body{flex:1;min-width:0}
+  .t-row{display:flex;justify-content:space-between;align-items:baseline;gap:6px}
+  .t-name{
+    font-size:12.8px;font-weight:550;white-space:nowrap;overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .t-time{font-size:10.5px;color:var(--faint);flex-shrink:0}
+  .t-prev{
+    font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;
+    text-overflow:ellipsis;margin-top:2px;
+  }
+  .badge{
+    background:var(--accent);color:#fff;font-size:10px;font-weight:600;
+    min-width:17px;height:17px;border-radius:9px;display:grid;place-items:center;
+    padding:0 5px;
+  }
+  .order-mini{
+    display:flex;align-items:center;gap:9px;padding:9px 8px;border-radius:11px;
+    transition:.14s;cursor:pointer;
+  }
+  .order-mini:hover{background:var(--line-soft)}
+  .om-icon{
+    width:30px;height:30px;border-radius:9px;display:grid;place-items:center;
+    font-size:14px;flex-shrink:0;
+  }
+  .om-title{font-size:12.3px;font-weight:500}
+  .om-sub{font-size:11px;color:var(--muted);margin-top:1px}
+
+  /* ---------- MAIN CHAT ---------- */
+  .main{
+    display:flex;flex-direction:column;min-width:0;
+    background:var(--panel);border-right:1px solid var(--line);
+  }
+  .topbar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 20px;border-bottom:1px solid var(--line);flex-shrink:0;
+  }
+  .agent{display:flex;align-items:center;gap:11px}
+  .agent-avatar{
+    width:38px;height:38px;border-radius:12px;position:relative;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    display:grid;place-items:center;color:#fff;font-weight:600;font-size:15px;
+  }
+  .agent-avatar::after{
+    content:"";position:absolute;right:-2px;bottom:-2px;width:11px;height:11px;
+    border-radius:50%;background:var(--green);border:2.5px solid #fff;
+  }
+  .agent-name{font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:6px}
+  .badge-ai{
+    font-size:9.5px;font-weight:600;letter-spacing:.04em;color:var(--accent);
+    background:var(--soft);padding:2px 6px;border-radius:5px;
+  }
+  .agent-status{font-size:11.5px;color:var(--muted);margin-top:1px}
+  .top-actions{display:flex;align-items:center;gap:8px}
+  .ghost-btn{
+    font-size:12.3px;font-weight:500;padding:7px 13px;border-radius:9px;
+    border:1px solid var(--line);color:var(--text);transition:.14s;
+  }
+  .ghost-btn:hover{background:var(--bg);border-color:#DCDCE5}
+  .icon-btn{
+    width:32px;height:32px;border-radius:9px;display:grid;place-items:center;
+    color:var(--muted);transition:.14s;
+  }
+  .icon-btn:hover{background:var(--bg);color:var(--text)}
+
+  .thread-scroll{flex:1;overflow-y:auto;padding:24px 24px 8px}
+  .thread-inner{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+
+  .msg{display:flex;gap:10px;align-items:flex-start;animation:pop .28s ease both}
+  @keyframes pop{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+  .msg.user{flex-direction:row-reverse}
+  .m-av{
+    width:29px;height:29px;border-radius:9px;flex-shrink:0;display:grid;
+    place-items:center;font-size:12px;font-weight:600;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;
+  }
+  .msg.user .m-av{background:linear-gradient(135deg,#FFB86B,#FF7A59)}
+  .bubble{
+    background:var(--bg);border-radius:14px;padding:11px 14px;font-size:13.4px;
+    line-height:1.55;max-width:560px;color:#26262F;
+  }
+  .bubble strong{font-weight:600;color:var(--text)}
+  .msg.user .bubble{
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    color:#fff;border-bottom-right-radius:5px;
+  }
+  .bubble.plain{background:var(--bg);border-bottom-left-radius:5px}
+  .bubble + .bubble{margin-top:7px}
+  .m-col{display:flex;flex-direction:column;min-width:0}
+
+  /* chips */
+  .chips-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+  .chip{
+    font-size:12.3px;font-weight:500;padding:6px 12px;border-radius:20px;
+    background:#fff;border:1px solid var(--line);color:var(--text);transition:.14s;
+  }
+  .chip:hover{border-color:var(--accent);color:var(--accent);background:var(--soft)}
+
+  /* product carousel */
+  .carousel{
+    display:flex;gap:10px;overflow-x:auto;padding:14px 2px 6px;margin:0 -2px;
+    max-width:560px;
+  }
+  .pcard{
+    width:176px;flex-shrink:0;background:#fff;border:1px solid var(--line);
+    border-radius:14px;overflow:hidden;position:relative;transition:.18s;
+  }
+  .pcard:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(20,20,27,.09);border-color:#DCDCE5}
+  .pimg{
+    height:94px;display:grid;place-items:center;font-size:34px;
+    background:linear-gradient(140deg,var(--g1),var(--g2));
+  }
+  .pbody{padding:10px 11px 11px}
+  .pname{font-size:12.4px;font-weight:600;line-height:1.35}
+  .pmeta{font-size:10.8px;color:var(--muted);margin-top:3px}
+  .prow{display:flex;align-items:center;justify-content:space-between;margin-top:9px}
+  .pprice{font-size:13.5px;font-weight:650;letter-spacing:-.01em}
+  .add{
+    font-size:11.5px;font-weight:600;padding:5px 11px;border-radius:8px;
+    background:var(--soft);color:var(--accent);transition:.14s;
+  }
+  .add:hover{background:var(--accent);color:#fff}
+  .ptag{
+    position:absolute;top:8px;left:8px;font-size:9.8px;font-weight:650;
+    padding:3px 7px;border-radius:6px;background:rgba(255,255,255,.92);
+    color:var(--accent);letter-spacing:.02em;
+  }
+  .ptag.warn{color:var(--amber)}
+
+  /* comparison */
+  .compare{
+    background:#fff;border:1px solid var(--line);border-radius:13px;
+    overflow:hidden;margin-top:11px;max-width:470px;
+  }
+  .cmp-row{
+    display:grid;grid-template-columns:1.35fr 1fr 1fr;font-size:12.1px;
+    padding:8px 13px;border-bottom:1px solid var(--line-soft);
+  }
+  .cmp-row:last-child{border-bottom:none}
+  .cmp-row span:first-child{color:var(--muted)}
+  .cmp-row span:not(:first-child){text-align:center;font-weight:500}
+  .cmp-head{background:var(--bg);font-weight:600;font-size:11.5px}
+  .cmp-head span:first-child{color:var(--text)}
+  .win{color:var(--green);font-weight:650}
+
+  /* order card */
+  .order-card{
+    background:#fff;border:1px solid var(--line);border-radius:14px;
+    padding:14px;margin-top:11px;max-width:420px;
+  }
+  .oc-head{
+    font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.03em;
+    text-transform:uppercase;margin-bottom:11px;display:flex;
+    align-items:center;justify-content:space-between;
+  }
+  .oc-item{
+    display:flex;justify-content:space-between;font-size:12.8px;padding:5px 0;
+  }
+  .oc-item span:first-child{color:#33333D}
+  .oc-total{
+    display:flex;justify-content:space-between;font-size:13.5px;font-weight:650;
+    border-top:1px solid var(--line);margin-top:8px;padding-top:10px;
+  }
+  .oc-note{
+    font-size:11.7px;color:var(--amber);background:#FFF8EA;border-radius:9px;
+    padding:8px 10px;margin-top:10px;line-height:1.45;
+  }
+  .oc-actions{display:flex;gap:8px;margin-top:12px}
+  .btn-primary{
+    flex:1;background:var(--accent);color:#fff;font-size:12.6px;font-weight:600;
+    padding:9px;border-radius:10px;transition:.14s;
+    box-shadow:0 4px 12px rgba(91,75,232,.26);
+  }
+  .btn-primary:hover{background:#4F40D6}
+  .btn-ghost{
+    font-size:12.6px;font-weight:550;padding:9px 14px;border-radius:10px;
+    border:1px solid var(--line);transition:.14s;
+  }
+  .btn-ghost:hover{background:var(--bg)}
+
+  /* typing */
+  .typing{display:flex;gap:4px;padding:13px 15px}
+  .typing i{
+    width:6px;height:6px;border-radius:50%;background:#BFBFCC;
+    animation:blink 1.3s infinite;
+  }
+  .typing i:nth-child(2){animation-delay:.18s}
+  .typing i:nth-child(3){animation-delay:.36s}
+  @keyframes blink{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+
+  /* composer */
+  .composer{padding:10px 24px 18px;flex-shrink:0}
+  .composer-inner{max-width:720px;margin:0 auto}
+  .chips{display:flex;gap:7px;margin-bottom:9px;flex-wrap:wrap}
+  .inputbar{
+    display:flex;align-items:center;gap:8px;background:var(--bg);
+    border:1px solid var(--line);border-radius:15px;padding:7px 8px 7px 12px;
+    transition:.16s;
+  }
+  .inputbar:focus-within{
+    border-color:var(--accent);background:#fff;
+    box-shadow:0 0 0 3.5px rgba(91,75,232,.11);
+  }
+  .inputbar input{flex:1;font-size:13.2px;padding:6px 0}
+  .inputbar input::placeholder{color:var(--faint)}
+  .send{
+    width:32px;height:32px;border-radius:10px;display:grid;place-items:center;
+    background:var(--accent);color:#fff;transition:.14s;flex-shrink:0;
+  }
+  .send:hover{background:#4F40D6;transform:scale(1.05)}
+
+  /* ---------- CONTEXT PANEL ---------- */
+  .context{
+    background:var(--panel);display:flex;flex-direction:column;min-width:0;
+  }
+  .ctx-scroll{flex:1;overflow-y:auto;padding:18px 16px 24px}
+  .ctx-title{
+    font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;
+    color:var(--faint);margin-bottom:11px;
+  }
+  .ctx-block{margin-bottom:22px}
+  .cart-item{display:flex;gap:10px;align-items:center;padding:8px 0}
+  .ci-img{
+    width:38px;height:38px;border-radius:10px;display:grid;place-items:center;
+    font-size:17px;flex-shrink:0;
+  }
+  .ci-body{flex:1;min-width:0}
+  .ci-name{font-size:12.4px;font-weight:550;line-height:1.3}
+  .ci-sub{font-size:11px;color:var(--muted);margin-top:2px}
+  .ci-price{font-size:12.6px;font-weight:600;flex-shrink:0}
+  .divider{height:1px;background:var(--line);margin:10px 0}
+  .sum-row{
+    display:flex;justify-content:space-between;font-size:12.4px;
+    padding:3px 0;color:var(--muted);
+  }
+  .sum-row.total{
+    font-size:14px;font-weight:650;color:var(--text);padding-top:9px;
+    margin-top:5px;border-top:1px solid var(--line);
+  }
+  .checkout-btn{
+    width:100%;background:var(--accent);color:#fff;font-size:13px;font-weight:600;
+    padding:11px;border-radius:11px;margin-top:13px;transition:.14s;
+    box-shadow:0 5px 14px rgba(91,75,232,.26);
+  }
+  .checkout-btn:hover{background:#4F40D6}
+
+  .budget-head{display:flex;justify-content:space-between;font-size:12.4px;margin-bottom:8px}
+  .budget-head b{font-weight:650}
+  .bar{height:7px;border-radius:6px;background:var(--line-soft);overflow:hidden}
+  .bar-fill{
+    height:100%;border-radius:6px;width:100%;
+    background:linear-gradient(90deg,var(--accent),var(--amber));
+  }
+  .budget-note{font-size:11.2px;color:var(--amber);margin-top:8px;line-height:1.45}
+
+  .track{position:relative;padding-left:20px}
+  .track::before{
+    content:"";position:absolute;left:5px;top:8px;bottom:8px;width:2px;
+    background:var(--line);border-radius:2px;
+  }
+  .step{position:relative;padding-bottom:15px}
+  .step:last-child{padding-bottom:0}
+  .step::before{
+    content:"";position:absolute;left:-20px;top:4px;width:12px;height:12px;
+    border-radius:50%;background:#fff;border:2.5px solid var(--line);
+  }
+  .step.done::before{background:var(--green);border-color:var(--green)}
+  .step.now::before{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 4px rgba(91,75,232,.15)}
+  .step-title{font-size:12.4px;font-weight:550}
+  .step.done .step-title,.step.now .step-title{color:var(--text)}
+  .step:not(.done):not(.now) .step-title{color:var(--faint);font-weight:450}
+  .step-sub{font-size:11px;color:var(--muted);margin-top:2px}
+
+  .saved{display:flex;gap:9px;align-items:center;padding:7px 0;cursor:pointer}
+  .saved:hover .sv-name{color:var(--accent)}
+  .sv-img{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;font-size:14px}
+  .sv-name{font-size:12.2px;font-weight:500;transition:.14s}
+  .sv-price{font-size:11px;color:var(--muted);margin-top:1px}
+
+  @media (max-width:1300px){
+    .app{grid-template-columns:68px 268px 1fr}
+    .context{display:none}
+  }
+  @media (max-width:900px){
+    .app{grid-template-columns:1fr}
+    .rail,.sidebar{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ================= RAIL ================= -->
+  <nav class="rail">
+    <div class="logo">◆</div>
+
+    <button class="rail-btn active" title="Chat">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round">
+        <path d="M20 4H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3v4l5-4h8a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1z"/>
+      </svg>
+    </button>
+
+    <button class="rail-btn" title="Orders">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round">
+        <path d="M5 8h14l1 12H4L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>
+      </svg>
+    </button>
+
+    <button class="rail-btn" title="Wishlist">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round">
+        <path d="M12 20.5 4.5 13a4.6 4.6 0 0 1 6.5-6.5l1 1 1-1A4.6 4.6 0 0 1 19.5 13L12 20.5z"/>
+      </svg>
+    </button>
+
+    <button class="rail-btn" title="Insights">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <path d="M3 20h18M6 20V11M11 20V5M16 20v-6"/>
+      </svg>
+    </button>
+
+    <div class="rail-spacer"></div>
+
+    <button class="rail-btn" title="Settings">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <path d="M4 8h9M17 8h3M4 16h3M11 16h9"/>
+        <circle cx="15" cy="8" r="2.2"/><circle cx="9" cy="16" r="2.2"/>
+      </svg>
+    </button>
+    <div class="avatar-sm">M</div>
+  </nav>
+
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="sidebar">
+    <div class="sb-head">
+      <h2>Conversations</h2>
+      <button class="new-btn">+</button>
+    </div>
+
+    <div class="search">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5" stroke-linecap="round"/>
+      </svg>
+      <input placeholder="Search chats &amp; orders">
+    </div>
+
+    <div class="sb-scroll">
+      <div class="sb-label">Active</div>
+
+      <div class="thread active">
+        <div class="t-avatar">🎁</div>
+        <div class="t-body">
+          <div class="t-row"><span class="t-name">Birthday gift for Sara</span><span class="t-time">now</span></div>
+          <div class="t-prev">Added Timemore C2 + beans…</div>
+        </div>
+      </div>
+
+      <div class="thread">
+        <div class="t-avatar">👟</div>
+        <div class="t-body">
+          <div class="t-row"><span class="t-name">Running shoes under $120</span><span class="t-time">2h</span></div>
+          <div class="t-prev">3 options narrowed down</div>
+        </div>
+        <span class="badge">2</span>
+      </div>
+
+      <div class="thread">
+        <div class="t-avatar">🍳</div>
+        <div class="t-body">
+          <div class="t-row"><span class="t-name">Kitchen upgrade</span><span class="t-time">Yesterday</span></div>
+          <div class="t-prev">Order #4802 confirmed</div>
+        </div>
+      </div>
+
+      <div class="thread">
+        <div class="t-avatar">📱</div>
+        <div class="t-body">
+          <div class="t-row"><span class="t-name">New phone + case</span><span class="t-time">Mon</span></div>
+          <div class="t-prev">Comparing Pixel vs iPhone</div>
+        </div>
+      </div>
+
+      <div class="sb-label">Orders in progress</div>
+
+      <div class="order-mini">
+        <div class="om-icon" style="background:#E8F7F2">🚚</div>
+        <div>
+          <div class="om-title">#4821 · Out for delivery</div>
+          <div class="om-sub">Arriving today, 4–8 PM</div>
+        </div>
+      </div>
+
+      <div class="order-mini">
+        <div class="om-icon" style="background:#F0EEFF">📦</div>
+        <div>
+          <div class="om-title">#4802 · Packed</div>
+          <div class="om-sub">Ships tomorrow</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ================= MAIN CHAT ================= -->
+  <main class="main">
+    <header class="topbar">
+      <div class="agent">
+        <div class="agent-avatar">A</div>
+        <div>
+          <div class="agent-name">Aria <span class="badge-ai">AI</span></div>
+          <div class="agent-status">Online · avg reply 2s</div>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="ghost-btn">Handoff to human</button>
+        <button class="icon-btn" title="More">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+            <circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="thread-scroll">
+      <div class="thread-inner">
+
+        <!-- user -->
+        <div class="msg user">
+          <div class="m-av">M</div>
+          <div class="m-col">
+            <div class="bubble">I need a birthday gift for my sister. She's really into coffee. Budget is around $60.</div>
+          </div>
+        </div>
+
+        <!-- agent -->
+        <div class="msg">
+          <div class="m-av">A</div>
+          <div class="m-col">
+            <div class="bubble plain">
+              Love that brief. Two quick things so I don't waste your time — is she more of a
+              <strong>gear nerd</strong> or a <strong>cozy ritual</strong> person? And does she already own a grinder?
+            </div>
+            <div class="chips-row">
+              <button class="chip">Gear nerd</button>
+              <button class="chip">Cozy ritual</button>
+              <button class="chip">Not sure</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- user -->
+        <div class="msg user">
+          <div class="m-av">M</div>
+          <div class="m-col">
+            <div class="bubble">Gear nerd. She has a drip machine but no grinder.</div>
+          </div>
+        </div>
+
+        <!-- agent + products -->
+        <div class="msg">
+          <div class="m-av">A</div>
+          <div class="m-col">
+            <div class="bubble plain">
+              Then a <strong>burr grinder</strong> is the sweet spot — it's the single biggest upgrade
+              you can make to drip coffee. Here are three that land near your budget:
+            </div>
+
+            <div class="carousel">
+              <article class="pcard">
+                <div class="pimg" style="--g1:#EDE9FE;--g2:#DDD6FE">☕</div>
+                <span class="ptag">Best value</span>
+                <div class="pbody">
+                  <div class="pname">Timemore Chestnut C2</div>
+                  <div class="pmeta">★ 4.8 · 2,140 reviews</div>
+                  <div class="prow"><span class="pprice">$49</span><button class="add">Add</button></div>
+                </div>
+              </article>
+
+              <article class="pcard">
+                <div class="pimg" style="--g1:#FEF3C7;--g2:#FDE68A">⚙️</div>
+                <span class="ptag warn">Over budget</span>
+                <div class="pbody">
+                  <div class="pname">Fellow Ode Gen 2</div>
+                  <div class="pmeta">★ 4.7 · 890 reviews</div>
+                  <div class="prow"><span class="pprice">$85</span><button class="add">Add</button></div>
+                </div>
+              </article>
+
+              <article class="pcard">
+                <div class="pimg" style="--g1:#DBEAFE;--g2:#BFDBFE">🫙</div>
+                <span class="ptag">Budget pick</span>
+                <div class="pbody">
+                  <div class="pname">Hario Skerton Pro</div>
+                  <div class="pmeta">★ 4.4 · 3,020 reviews</div>
+                  <div class="prow"><span class="pprice">$42</span><button class="add">Add</button></div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+
+        <!-- user -->
+        <div class="msg user">
+          <div class="m-av">M</div>
+          <div class="m-col">
+            <div class="bubble">The Ode looks great but it's $85. Is the $49 one actually worth it?</div>
+          </div>
+        </div>
+
+        <!-- agent + comparison -->
+        <div class="msg">
+          <div class="m-av">A</div>
+          <div class="m-col">
+            <div class="bubble plain">
+              Yes — for drip, the C2 gets you <strong>~90% of the grind quality</strong> at half the price.
+              The Ode only pulls ahead if she ever moves to espresso.
+            </div>
+
+            <div class="compare">
+              <div class="cmp-row cmp-head"><span></span><span>Timemore C2</span><span>Fellow Ode 2</span></div>
+              <div class="cmp-row"><span>Price</span><span class="win">$49</span><span>$85</span></div>
+              <div class="cmp-row"><span>Burr type</span><span>Steel conical</span><span>Flat</span></div>
+              <div class="cmp-row"><span>Drip quality</span><span class="win">Excellent</span><span>Excellent</span></div>
+              <div class="cmp-row"><span>Espresso-ready</span><span>No</span><span>Yes</span></div>
+              <div class="cmp-row"><span>Portable</span><span class="win">Yes</span><span>No</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- user -->
+        <div class="msg user">
+          <div class="m-av">M</div>
+          <div class="m-col">
+            <div class="bubble">Sold. Add the Timemore, and a bag of beans under $15.</div>
+          </div>
+        </div>
+
+        <!-- agent + order card -->
+        <div class="msg">
+          <div class="m-av">A</div>
+          <div class="m-col">
+            <div class="bubble plain">
+              Done — I picked <strong>Onyx Monarch</strong> because it's a medium roast that works
+              beautifully in a drip machine, and it's a nice "gift-y" bag.
+            </div>
+
+            <div class="order-card">
+              <div class="oc-head"><span>Order draft</span><span>#DRAFT-219</span></div>
+              <div class="oc-item"><span>Timemore Chestnut C2</span><span>$49.00</span></div>
+              <div class="oc-item"><span>Onyx Monarch · 12 oz</span><span>$14.50</span></div>
+              <div class="oc-total"><span>Subtotal</span><span>$63.50</span></div>
+              <div class="oc-note">
+                You're <strong>$3.50 over</strong> your $60 budget. Want me to swap the beans
+                for a $10 bag, or keep it as is?
+              </div>
+              <div class="oc-actions">
+                <button class="btn-primary">Checkout</button>
+                <button class="btn-ghost">Keep browsing</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- typing -->
+        <div class="msg">
+          <div class="m-av">A</div>
+          <div class="m-col">
+            <div class="bubble plain typing"><i></i><i></i><i></i></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- composer -->
+    <div class="composer">
+      <div class="composer-inner">
+        <div class="chips">
+          <button class="chip">Compare top 2</button>
+          <button class="chip">Find cheaper</button>
+          <button class="chip">Track my order</button>
+          <button class="chip">Gift wrap?</button>
+        </div>
+
+        <div class="inputbar">
+          <button class="icon-btn" title="Attach">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round">
+              <path d="M12 5v14M5 12h14"/>
+            </svg>
+          </button>
+          <input placeholder="Ask Aria anything — try “find a gift under $50”">
+          <button class="icon-btn" title="Voice">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round">
+              <rect x="9" y="3" width="6" height="11" rx="3"/>
+              <path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>
+            </svg>
+          </button>
+          <button class="send" title="Send">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h13M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= CONTEXT PANEL ================= -->
+  <aside class="context">
+    <div class="ctx-scroll">
+
+      <!-- live cart -->
+      <div class="ctx-block">
+        <div class="ctx-title">Live cart · 3 items</div>
+
+        <div class="cart-item">
+          <div class="ci-img" style="background:#EDE9FE">☕</div>
+          <div class="ci-body">
+            <div class="ci-name">Timemore Chestnut C2</div>
+            <div class="ci-sub">Qty 1 · Grinder</div>
+          </div>
+          <div class="ci-price">$49.00</div>
+        </div>
+
+        <div class="cart-item">
+          <div class="ci-img" style="background:#FEF3C7">🫘</div>
+          <div class="ci-body">
+            <div class="ci-name">Onyx Monarch</div>
+            <div class="ci-sub">Qty 1 · 12 oz</div>
+          </div>
+          <div class="ci-price">$14.50</div>
+        </div>
+
+        <div class="cart-item">
+          <div class="ci-img" style="background:#DCFCE7">🎀</div>
+          <div class="ci-body">
+            <div class="ci-name">Gift wrap + note</div>
+            <div class="ci-sub">Added by Aria</div>
+          </div>
+          <div class="ci-price">$0.00</div>
+        </div>
+
+        <div class="divider"></div>
+        <div class="sum-row"><span>Subtotal</span><span>$63.50</span></div>
+        <div class="sum-row"><span>Shipping</span><span>Free</span></div>
+        <div class="sum-row total"><span>Total</span><span>$63.50</span></div>
+
+        <button class="checkout-btn">Checkout · $63.50</button>
+      </div>
+
+      <!-- budget -->
+      <div class="ctx-block">
+        <div class="ctx-title">Budget</div>
+        <div class="budget-head"><span>Spent</span><b>$63.50 / $60</b></div>
+        <div class="bar"><div class="bar-fill"></div></div>
+        <div class="budget-note">$3.50 over — Aria suggested swapping the beans.</div>
+      </div>
+
+      <!-- tracking -->
+      <div class="ctx-block">
+        <div class="ctx-title">Order tracking</div>
+        <div class="track">
+          <div class="step done">
+            <div class="step-title">Order placed</div>
+            <div class="step-sub">Today, 10:24 AM</div>
+          </div>
+          <div class="step now">
+            <div class="step-title">Packed</div>
+            <div class="step-sub">In progress</div>
+          </div>
+          <div class="step">
+            <div class="step-title">Shipped</div>
+            <div class="step-sub">Est. tomorrow</div>
+          </div>
+          <div class="step">
+            <div class="step-title">Delivered</div>
+            <div class="step-sub">Est. Fri, Sep 26</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- saved -->
+      <div class="ctx-block">
+        <div class="ctx-title">Saved for later</div>
+        <div class="saved">
+          <div class="sv-img" style="background:#FEF3C7">⚙️</div>
+          <div>
+            <div class="sv-name">Fellow Ode Gen 2</div>
+            <div class="sv-price">$85 · over budget</div>
+          </div>
+        </div>
+        <div class="saved">
+          <div class="sv-img" style="background:#DBEAFE">🫙</div>
+          <div>
+            <div class="sv-name">Hario Skerton Pro</div>
+            <div class="sv-price">$42</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </aside>
+
+</div>
+</body>
+</html>
