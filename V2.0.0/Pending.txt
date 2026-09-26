@@ -1,5 +1,0 @@
-product - 3
-
-article - 4
-
-dev - 1
