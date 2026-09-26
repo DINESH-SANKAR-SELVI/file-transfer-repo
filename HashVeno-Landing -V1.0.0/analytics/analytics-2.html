@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Behavioral Analytics — HashVeno</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07080F;--surface:#0F1119;--surface-2:#161824;--surface-3:#1D1F2E;
+  --ink:#F4F5FA;--muted:#8B8BA3;--faint:#5A5A78;
+  --line:rgba(255,255,255,.06);--line-2:rgba(255,255,255,.1);
+  --accent:#6366F1;--accent-2:#818CF8;--accent-soft:rgba(99,102,241,.15);
+  --green:#10B981;--green-soft:rgba(16,185,129,.12);
+  --amber:#F59E0B;--amber-soft:rgba(245,158,11,.12);
+  --rose:#EF4444;--rose-soft:rgba(239,68,68,.12);
+  --cyan:#06B6D4;--violet:#8B5CF6;--violet-soft:rgba(139,92,246,.15);
+  --font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+}
+html,body{height:100%}
+body{
+  font-family:var(--font);background:var(--bg);color:var(--ink);
+  -webkit-font-smoothing:antialiased;font-size:14px;line-height:1.5;
+  display:grid;grid-template-columns:224px 1fr;min-height:100vh;
+}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:8px}
+
+/* ============ SIDEBAR ============ */
+aside{
+  background:var(--surface);border-right:1px solid var(--line);
+  padding:18px 12px;display:flex;flex-direction:column;
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+}
+.brand{display:flex;align-items:center;gap:10px;padding:6px 10px 20px;margin-bottom:8px;border-bottom:1px solid var(--line)}
+.brand-mark{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#6366F1,#8B5CF6);display:grid;place-items:center;color:#fff;font-size:12px;font-weight:700}
+.brand-name{font-size:14.5px;font-weight:700;letter-spacing:-.02em}
+.brand-sub{font-size:10.5px;color:var(--faint);font-family:var(--mono);margin-top:1px}
+
+.nav-group{margin-bottom:10px}
+.nav-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);padding:8px 10px 4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:.15s;position:relative}
+.nav-item:hover{background:rgba(255,255,255,.04);color:var(--ink)}
+.nav-item.active{background:var(--accent-soft);color:var(--accent-2);font-weight:600}
+.nav-item svg{width:16px;height:16px;flex-shrink:0;opacity:.75}
+.nav-item.active svg{opacity:1}
+.nav-item .new-tag{
+  font-size:8.5px;font-weight:700;letter-spacing:.05em;
+  background:var(--green-soft);color:var(--green);
+  padding:2px 5px;border-radius:4px;margin-left:auto;
+  text-transform:uppercase;
+}
+
+/* ============ MAIN ============ */
+main{overflow-y:auto;height:100vh}
+.topbar{
+  position:sticky;top:0;z-index:10;
+  background:rgba(7,8,15,.85);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--line);padding:16px 28px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:16px;flex-wrap:wrap;
+}
+.topbar h1{font-size:17px;font-weight:700;letter-spacing:-.02em}
+.topbar .sub{font-size:11.5px;color:var(--faint);font-family:var(--mono);margin-top:2px}
+.range-picker{display:flex;gap:2px;background:var(--surface);padding:3px;border-radius:9px;border:1px solid var(--line)}
+.range-picker button{padding:6px 12px;border-radius:6px;color:var(--muted);font-size:12.5px;font-weight:500;transition:.15s}
+.range-picker button:hover{color:var(--ink)}
+.range-picker button.active{background:var(--accent);color:#fff;font-weight:600}
+
+.content{padding:24px 28px 60px;max-width:1600px}
+.view{display:none;animation:fade .2s ease}
+.view.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+/* ============ LAYOUT ============ */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.kpis.three{grid-template-columns:repeat(3,1fr)}
+.grid{display:grid;gap:14px}
+.grid-2{grid-template-columns:1fr 1fr}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+
+@media(max-width:1200px){.kpis{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:1fr 1fr}}
+@media(max-width:800px){
+  body{grid-template-columns:1fr}
+  aside{display:none}
+  .kpis{grid-template-columns:1fr 1fr}
+  .grid-2,.grid-3{grid-template-columns:1fr}
+  .content{padding:16px}
+  .topbar{padding:14px 16px}
+}
+
+/* ============ CARDS ============ */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+.card-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;gap:12px;flex-wrap:wrap}
+.card-title{font-size:13.5px;font-weight:650;letter-spacing:-.005em}
+.card-sub{font-size:11px;color:var(--faint);font-family:var(--mono);margin-top:3px}
+
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.kpi .lbl{font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);margin-bottom:10px}
+.kpi .val{font-size:28px;font-weight:700;letter-spacing:-.03em;font-feature-settings:"tnum";line-height:1}
+.kpi .sub{font-size:11.5px;color:var(--muted);margin-top:8px}
+.kpi .trend{display:inline-block;font-size:11px;font-weight:600;padding:2px 7px;border-radius:5px;margin-left:6px}
+.kpi .trend.up{color:var(--green);background:var(--green-soft)}
+.kpi .trend.down{color:var(--rose);background:var(--rose-soft)}
+
+/* ============ BAR LISTS ============ */
+.bar-row{display:grid;grid-template-columns:minmax(0,1fr) 100px 60px;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}
+.bar-row:last-child{border-bottom:none}
+.bar-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink);font-weight:500}
+.bar-label .badge{
+  display:inline-block;font-size:9.5px;font-weight:700;
+  padding:1px 5px;border-radius:4px;margin-right:6px;
+  background:var(--surface-2);color:var(--muted);
+  font-family:var(--mono);letter-spacing:.02em;
+}
+.bar-track{height:6px;background:var(--surface-2);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:3px;transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.bar-fill.green{background:linear-gradient(90deg,#059669,#10B981)}
+.bar-fill.amber{background:linear-gradient(90deg,#D97706,#F59E0B)}
+.bar-fill.rose{background:linear-gradient(90deg,#DC2626,#EF4444)}
+.bar-fill.violet{background:linear-gradient(90deg,#7C3AED,#8B5CF6)}
+.bar-val{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--muted);text-align:right}
+.bar-val .small{color:var(--faint);font-size:10.5px;margin-left:4px;font-weight:500}
+
+/* ============ TABLES ============ */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+thead th.num{text-align:right}
+tbody td{padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:rgba(255,255,255,.02)}
+td.num{text-align:right;font-family:var(--mono);font-weight:600;font-feature-settings:"tnum";white-space:nowrap}
+td.path{font-family:var(--mono);font-size:12px;color:var(--ink);word-break:break-all;max-width:280px}
+td.mono{font-family:var(--mono);font-size:12px;color:var(--muted)}
+
+.pill{display:inline-block;padding:2px 8px;border-radius:6px;font-size:10.5px;font-weight:700;letter-spacing:.03em;font-family:var(--mono);text-transform:uppercase;white-space:nowrap}
+.pill.cta{background:var(--accent-soft);color:var(--accent-2)}
+.pill.nav{background:var(--surface-2);color:var(--muted)}
+.pill.footer{background:var(--violet-soft);color:var(--violet)}
+.pill.form{background:var(--green-soft);color:var(--green)}
+.pill.outbound{background:var(--amber-soft);color:var(--amber)}
+.pill.social{background:rgba(6,182,212,.15);color:var(--cyan)}
+
+/* ============ BUTTON CLICK GRID ============ */
+.click-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.click-card{
+  background:var(--surface-2);border:1px solid var(--line);border-radius:12px;
+  padding:18px 20px;transition:.2s;
+}
+.click-card:hover{border-color:var(--line-2);background:var(--surface-3)}
+.click-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:10px}
+.click-btn-name{
+  font-size:13.5px;font-weight:600;color:var(--ink);
+  letter-spacing:-.005em;word-break:break-word;
+}
+.click-section-tag{
+  font-size:9.5px;font-weight:700;letter-spacing:.05em;
+  padding:3px 8px;border-radius:5px;text-transform:uppercase;
+  flex-shrink:0;
+}
+.click-section-tag.hero{background:var(--accent-soft);color:var(--accent-2)}
+.click-section-tag.nav{background:var(--surface-3);color:var(--muted)}
+.click-section-tag.footer{background:var(--violet-soft);color:var(--violet)}
+.click-section-tag.inline{background:var(--green-soft);color:var(--green)}
+.click-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.click-stat{text-align:left}
+.click-stat .num{font-family:var(--mono);font-size:17px;font-weight:700;letter-spacing:-.02em;font-feature-settings:"tnum"}
+.click-stat .lbl{font-size:10px;color:var(--faint);letter-spacing:.05em;text-transform:uppercase;margin-top:3px}
+
+/* ============ SCROLL DEPTH ============ */
+.scroll-page{margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid var(--line)}
+.scroll-page:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.scroll-page-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:10px}
+.scroll-page-path{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--ink)}
+.scroll-page-visitors{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+
+.scroll-bars{display:flex;flex-direction:column;gap:8px}
+.scroll-bar-row{display:grid;grid-template-columns:60px 1fr 50px 60px;gap:12px;align-items:center;font-size:12px}
+.scroll-bar-label{font-family:var(--mono);color:var(--muted);font-size:11.5px}
+.scroll-bar-track{height:8px;background:var(--surface-2);border-radius:4px;overflow:hidden;position:relative}
+.scroll-bar-fill{height:100%;border-radius:4px;transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.scroll-bar-fill.s25{background:linear-gradient(90deg,#4F46E5,#6366F1)}
+.scroll-bar-fill.s50{background:linear-gradient(90deg,#7C3AED,#8B5CF6)}
+.scroll-bar-fill.s75{background:linear-gradient(90deg,#0891B2,#06B6D4)}
+.scroll-bar-fill.s100{background:linear-gradient(90deg,#059669,#10B981)}
+.scroll-bar-val{font-family:var(--mono);font-size:11.5px;font-weight:600;color:var(--ink);text-align:right}
+.scroll-bar-pct{font-family:var(--mono);font-size:11px;color:var(--faint);text-align:right}
+
+/* ============ FORM FIELDS ============ */
+.form-group{margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--line)}
+.form-group:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.form-group-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:16px;gap:12px;flex-wrap:wrap;
+}
+.form-group-name{
+  font-size:14px;font-weight:650;letter-spacing:-.01em;
+  display:flex;align-items:center;gap:10px;
+}
+.form-group-name .form-icon{
+  width:26px;height:26px;border-radius:7px;
+  background:var(--accent-soft);color:var(--accent-2);
+  display:grid;place-items:center;font-size:13px;
+}
+.form-meta-inline{
+  display:flex;gap:14px;font-family:var(--mono);font-size:11.5px;color:var(--muted);
+}
+.form-meta-inline .val{color:var(--ink);font-weight:600}
+.form-meta-inline .val.green{color:var(--green)}
+.form-meta-inline .val.rose{color:var(--rose)}
+
+.field-list{display:flex;flex-direction:column;gap:10px}
+.field-row{
+  display:grid;grid-template-columns:160px 1fr 80px 70px;
+  gap:14px;align-items:center;font-size:12.5px;
+  padding:10px 12px;background:var(--surface-2);border-radius:9px;
+  border:1px solid transparent;transition:.15s;
+}
+.field-row:hover{border-color:var(--line-2)}
+.field-name{
+  font-weight:500;color:var(--ink);
+  display:flex;align-items:center;gap:8px;
+}
+.field-name .required{
+  font-size:8.5px;font-weight:700;padding:1px 5px;border-radius:4px;
+  background:var(--rose-soft);color:var(--rose);
+  letter-spacing:.04em;
+}
+.field-funnel{display:flex;gap:3px;height:22px;align-items:center}
+.field-funnel .seg{
+  flex:1;height:100%;border-radius:3px;
+  background:var(--surface-3);position:relative;overflow:hidden;
+}
+.field-funnel .seg.fill{
+  background:linear-gradient(135deg,var(--green),#059669);
+}
+.field-funnel .seg.partial{
+  background:linear-gradient(135deg,var(--amber),#D97706);
+}
+.field-funnel .seg.drop{
+  background:linear-gradient(135deg,var(--rose),#DC2626);
+}
+.field-val{
+  font-family:var(--mono);font-size:12px;font-weight:600;
+  color:var(--ink);text-align:right;
+}
+.field-drop{
+  font-family:var(--mono);font-size:11.5px;font-weight:600;
+  text-align:right;
+}
+.field-drop.good{color:var(--green)}
+.field-drop.warn{color:var(--amber)}
+.field-drop.bad{color:var(--rose)}
+
+/* ============ CUSTOM EVENTS ============ */
+.custom-event-card{
+  display:grid;grid-template-columns:1fr auto;gap:16px;
+  padding:16px 18px;background:var(--surface-2);
+  border:1px solid var(--line);border-radius:11px;
+  margin-bottom:10px;transition:.15s;
+}
+.custom-event-card:hover{border-color:var(--line-2)}
+.custom-event-card:last-child{margin-bottom:none}
+.custom-event-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.custom-event-icon{
+  width:28px;height:28px;border-radius:8px;
+  display:grid;place-items:center;font-size:13px;flex-shrink:0;
+}
+.custom-event-icon.video{background:var(--violet-soft);color:var(--violet)}
+.custom-event-icon.download{background:var(--green-soft);color:var(--green)}
+.custom-event-icon.share{background:var(--accent-soft);color:var(--accent-2)}
+.custom-event-icon.theme{background:var(--amber-soft);color:var(--amber)}
+.custom-event-icon.api{background:var(--surface-3);color:var(--muted)}
+.custom-event-name{
+  font-family:var(--mono);font-size:12.5px;
+  font-weight:600;color:var(--ink);
+}
+.custom-event-desc{font-size:12.5px;color:var(--muted);margin-bottom:6px}
+.custom-event-pages{
+  font-family:var(--mono);font-size:11px;color:var(--faint);
+}
+.custom-event-stats{
+  display:flex;flex-direction:column;align-items:flex-end;
+  justify-content:center;gap:4px;text-align:right;
+}
+.custom-event-count{
+  font-family:var(--mono);font-size:20px;font-weight:700;
+  letter-spacing:-.02em;font-feature-settings:"tnum";
+}
+.custom-event-visitors{
+  font-family:var(--mono);font-size:11px;color:var(--muted);
+}
+
+/* ============ TABS ============ */
+.tabs{display:flex;gap:2px;background:var(--surface-2);padding:3px;border-radius:9px;margin-bottom:16px;width:max-content}
+.tabs button{padding:6px 14px;border-radius:6px;font-size:12.5px;font-weight:500;color:var(--muted);transition:.15s}
+.tabs button.active{background:var(--accent);color:#fff;font-weight:600}
+
+/* ============ EMPTY ============ */
+.empty{text-align:center;padding:48px 20px;color:var(--muted);font-size:13px}
+.empty .icon{font-size:32px;opacity:.4;margin-bottom:12px}
+
+/* ============ DEMO BADGE ============ */
+.demo-badge{
+  position:fixed;bottom:20px;right:20px;z-index:50;
+  background:var(--accent);color:#fff;font-size:11px;font-weight:700;
+  letter-spacing:.06em;padding:8px 14px;border-radius:9px;
+  box-shadow:0 10px 30px rgba(99,102,241,.4);text-transform:uppercase;
+  display:flex;align-items:center;gap:7px;
+}
+.demo-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:#fff;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(.85)}}
+</style>
+</head>
+<body>
+
+<aside>
+  <div class="brand">
+    <div class="brand-mark">HV</div>
+    <div>
+      <div class="brand-name">HashVeno</div>
+      <div class="brand-sub">analytics</div>
+    </div>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-label">Overview</div>
+    <div class="nav-item" data-view="overview">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3v18h18M7 14l4-4 4 4 6-6"/></svg>
+      Dashboard
+    </div>
+    <div class="nav-item" data-view="live">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      Live
+    </div>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-label">Behavioral Events</div>
+    <div class="nav-item active" data-view="clicks">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Button Clicks
+      <span class="new-tag">New</span>
+    </div>
+    <div class="nav-item" data-view="scroll">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+      Scroll Depth
+      <span class="new-tag">New</span>
+    </div>
+    <div class="nav-item" data-view="formfields">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/></svg>
+      Form Fields
+      <span class="new-tag">New</span>
+    </div>
+    <div class="nav-item" data-view="custom">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      Custom Events
+      <span class="new-tag">New</span>
+    </div>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-label">Analysis</div>
+    <div class="nav-item" data-view="pages">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+      Pages
+    </div>
+    <div class="nav-item" data-view="funnels">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h18l-7 9v7l-4 2v-9L3 4z"/></svg>
+      Funnels
+    </div>
+    <div class="nav-item" data-view="outbound">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+      Outbound Links
+    </div>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-label">Audience</div>
+    <div class="nav-item" data-view="sessions">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
+      Sessions
+    </div>
+  </div>
+</aside>
+
+<main>
+  <div class="topbar">
+    <div>
+      <h1 id="viewTitle">Button Clicks</h1>
+      <div class="sub" id="viewSub">hashveno.com · interaction tracking · last 7 days</div>
+    </div>
+    <div class="range-picker" id="rangePicker">
+      <button data-range="24h">24h</button>
+      <button data-range="7d" class="active">7d</button>
+      <button data-range="30d">30d</button>
+      <button data-range="90d">90d</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ============ BUTTON CLICKS ============ -->
+    <div class="view active" id="view-clicks">
+      <div class="kpis">
+        <div class="kpi">
+          <div class="lbl">Total Clicks</div>
+          <div class="val">8,420</div>
+          <div class="sub">across all pages</div>
+        </div>
+        <div class="kpi">
+          <div class="lbl">Unique Clickers</div>
+          <div class="val">3,486</div>
+          <div class="sub">visitors who clicked something</div>
+        </div>
+        <div class="kpi">
+          <div class="lbl">CTA Clicks</div>
+          <div class="val">1,124</div>
+          <div class="sub">book-demo, view-product etc.</div>
+        </div>
+        <div class="kpi">
+          <div class="lbl">Click-through Rate</div>
+          <div class="val">13.3%</div>
+          <div class="sub">visitors who clicked a CTA</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:14px">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Every button and link clicked</div>
+            <div class="card-sub">grouped by element · sorted by clicks</div>
+          </div>
+        </div>
+        <div class="click-grid" id="clickGrid"></div>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Clicks by page</div>
+              <div class="card-sub">which pages drive interactions</div>
+            </div>
+          </div>
+          <div id="clicksByPage"></div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Clicks by section</div>
+              <div class="card-sub">hero · nav · footer · inline</div>
+            </div>
+          </div>
+          <div id="clicksBySection"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ SCROLL DEPTH ============ -->
+    <div class="view" id="view-scroll">
+      <div class="kpis">
+        <div class="kpi">
+          <div class="lbl">Avg Scroll Depth</div>
+          <div class="val">62%</div>
+          <div class="sub">across all pages</div>
+        </div>
+        <div class="kpi">
+          <div class="lbl">Read to Bottom</div>
+          <div class="val">38.4%</div>
+          <div class="sub">reached 100% scroll</div>
+        </div>
+        <div class="kpi">
+          <div class="lbl">Dropped Early</div>
+          <div class="val">18.2%</div>
+          <div class="sub">left before 25%</div>
+        </div>
+        <div class="kpi">
+          <div class="lbl">Best Page</div>
+          <div class="val">78%</div>
+          <div class="sub">articles/shop-management</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Scroll depth per page</div>
+            <div class="card-sub">where visitors stop scrolling</div>
+          </div>
+        </div>
+        <div id="scrollPages"></div>
+      </div>
+    </div>
+
+    <!-- ============ FORM FIELDS ============ -->
+    <div class="view" id="view-formfields">
+      <div class="kpis">
+        <div class="kpi">
+          <div class="lbl">Form Starts</div>
+          <div class="val">1,592</div>
+          <div class="sub">visitors who started filling</div>
+        </div>
+        <div class="kpi">
+          <div class="lbl">Form Submits</div>
+          <div class="val">938</div>
+          <div class="sub">completed forms</div>
+        </div>
+        <div class="kpi">
+          <div class="lbl">Abandonment</div>
+          <div class="val">41.1%</div>
+          <div class="sub">dropped before submit</div>
+        </div>
+        <div class="kpi">
+          <div class="lbl">Avg Fill Time</div>
+          <div class="val">1m 24s</div>
+          <div class="sub">start to submit</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Field-level form analytics</div>
+            <div class="card-sub">which fields lose visitors</div>
+          </div>
+        </div>
+        <div id="formFields"></div>
+      </div>
+    </div>
+
+    <!-- ============ CUSTOM EVENTS ============ -->
+    <div class="view" id="view-custom">
+      <div class="kpis">
+        <div class="kpi">
+          <div class="lbl">Total Custom Events</div>
+          <div class="val">2,842</div>
+          <div class="sub">explicit tracking calls</div>
+        </div>
+        <div class="kpi">
+          <div class="lbl">Distinct Events</div>
+          <div class="val">12</div>
+          <div class="sub">unique event names</div>
+        </div>
+        <div class="kpi">
+          <div class="lbl">Top Event</div>
+          <div class="val">video_play</div>
+          <div class="sub">842 fires · 28.6%</div>
+        </div>
+        <div class="kpi">
+          <div class="lbl">Event Success Rate</div>
+          <div class="val">99.7%</div>
+          <div class="sub">beacon delivery</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:14px">
+        <div class="card-head">
+          <div>
+            <div class="card-title">All custom events</div>
+            <div class="card-sub">tracked via hvAnalytics.track() calls</div>
+          </div>
+        </div>
+        <div id="customEvents"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Event properties</div>
+            <div class="card-sub">metadata attached to each event</div>
+          </div>
+        </div>
+        <div class="table-wrap" id="eventProps"></div>
+      </div>
+    </div>
+
+    <!-- ============ PAGES ============ -->
+    <div class="view" id="view-pages">
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Top pages</div>
+            <div class="card-sub">ranked by visitors</div>
+          </div>
+        </div>
+        <div class="table-wrap" id="pagesTable"></div>
+      </div>
+    </div>
+
+    <!-- ============ FUNNELS ============ -->
+    <div class="view" id="view-funnels">
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Conversion funnel</div>
+            <div class="card-sub">home → products → contact → submit</div>
+          </div>
+        </div>
+        <div id="funnel"></div>
+      </div>
+    </div>
+
+    <!-- ============ OUTBOUND ============ -->
+    <div class="view" id="view-outbound">
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Outbound link clicks</div>
+            <div class="card-sub">external destinations</div>
+          </div>
+        </div>
+        <div class="table-wrap" id="outboundTable"></div>
+      </div>
+    </div>
+
+    <!-- ============ SESSIONS ============ -->
+    <div class="view" id="view-sessions">
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Recent sessions</div>
+            <div class="card-sub">click a row for full timeline</div>
+          </div>
+        </div>
+        <div class="table-wrap" id="sessionsTable"></div>
+      </div>
+    </div>
+
+    <!-- ============ OVERVIEW ============ -->
+    <div class="view" id="view-overview">
+      <div class="kpis">
+        <div class="kpi"><div class="lbl">Visitors</div><div class="val">8,429</div><div class="sub">unique today · 1,204</div></div>
+        <div class="kpi"><div class="lbl">Pageviews</div><div class="val">24,873</div><div class="sub">2.95 per visitor</div></div>
+        <div class="kpi"><div class="lbl">Avg Session</div><div class="val">3m 34s</div><div class="sub">38.4% bounce rate</div></div>
+        <div class="kpi"><div class="lbl">Top Device</div><div class="val">Mobile</div><div class="sub">50.8% of visitors</div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><div class="card-title">Traffic overview</div><div class="card-sub">daily visitors · last 7 days</div></div></div>
+        <div id="overviewChart" style="display:flex;align-items:flex-end;gap:4px;height:200px;padding:14px 0 28px"></div>
+      </div>
+    </div>
+
+    <!-- ============ LIVE ============ -->
+    <div class="view" id="view-live">
+      <div class="kpis three">
+        <div class="kpi"><div class="lbl">Active Now</div><div class="val" style="color:var(--green)">47</div><div class="sub">in last 5 minutes</div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><div class="card-title">Live activity feed</div><div class="card-sub">last 10 minutes</div></div></div>
+        <div id="liveFeed"></div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<div class="demo-badge">Behavioral tracking · Demo</div>
+
+<script>
+/* ============================================================
+   MOCK BEHAVIORAL DATA
+   ============================================================ */
+
+const CLICKS = [
+  { name: 'Book demo', section: 'hero', page: '/products/retail', clicks: 384, visitors: 348, ctr: 18.4 },
+  { name: 'View product', section: 'hero', page: '/products/rail', clicks: 342, visitors: 308, ctr: 15.2 },
+  { name: 'Request pilot', section: 'inline', page: '/products/rail', clicks: 218, visitors: 198, ctr: 11.4 },
+  { name: 'Start free trial', section: 'hero', page: '/products/retail', clicks: 186, visitors: 172, ctr: 9.8 },
+  { name: 'Explore products', section: 'nav', page: '/', clicks: 168, visitors: 154, ctr: 8.4 },
+  { name: 'Get in touch', section: 'nav', page: 'all pages', clicks: 142, visitors: 132, ctr: 7.2 },
+  { name: 'Read article', section: 'inline', page: '/articles/shop-management', clicks: 128, visitors: 118, ctr: 6.8 },
+  { name: 'Book discovery call', section: 'footer', page: 'all pages', clicks: 112, visitors: 106, ctr: 5.6 },
+  { name: 'See case studies', section: 'inline', page: '/why-hashveno', clicks: 94, visitors: 88, ctr: 4.8 },
+  { name: 'Subscribe', section: 'footer', page: '/articles/cloud-retail', clicks: 82, visitors: 76, ctr: 4.2 },
+  { name: 'Watch tutorial', section: 'hero', page: '/tutorials', clicks: 74, visitors: 68, ctr: 3.8 },
+  { name: 'View open roles', section: 'hero', page: '/careers', clicks: 62, visitors: 58, ctr: 3.2 }
+];
+
+const SCROLL_PAGES = [
+  { path: '/articles/shop-management', visitors: 892, s25: 92, s50: 84, s75: 72, s100: 58 },
+  { path: '/articles/railways-unauthorized', visitors: 418, s25: 88, s50: 78, s75: 64, s100: 48 },
+  { path: '/why-hashveno', visitors: 524, s25: 86, s50: 72, s75: 58, s100: 42 },
+  { path: '/products/retail', visitors: 2140, s25: 78, s50: 58, s75: 42, s100: 28 },
+  { path: '/services/custom-software', visitors: 1248, s25: 74, s50: 54, s75: 38, s100: 24 },
+  { path: '/', visitors: 1842, s25: 68, s50: 44, s75: 28, s100: 16 }
+];
+
+const FORMS = [
+  {
+    id: 'contact',
+    icon: '✉',
+    starts: 848,
+    submits: 486,
+    abandons: 362,
+    fields: [
+      { name: 'Name', required: true, filled: 848, dropped: 0 },
+      { name: 'Email', required: true, filled: 812, dropped: 36 },
+      { name: 'Company', required: false, filled: 628, dropped: 184 },
+      { name: 'Phone', required: false, filled: 486, dropped: 142 },
+      { name: 'Topic', required: true, filled: 542, dropped: 56 },
+      { name: 'Budget', required: false, filled: 486, dropped: 56 },
+      { name: 'Message', required: true, filled: 486, dropped: 0 }
+    ]
+  },
+  {
+    id: 'newsletter',
+    icon: '📮',
+    starts: 512,
+    submits: 342,
+    abandons: 170,
+    fields: [
+      { name: 'Email', required: true, filled: 512, dropped: 170 }
+    ]
+  },
+  {
+    id: 'careers-application',
+    icon: '💼',
+    starts: 148,
+    submits: 62,
+    abandons: 86,
+    fields: [
+      { name: 'Name', required: true, filled: 148, dropped: 0 },
+      { name: 'Email', required: true, filled: 142, dropped: 6 },
+      { name: 'Portfolio link', required: true, filled: 108, dropped: 34 },
+      { name: 'Resume upload', required: true, filled: 78, dropped: 30 },
+      { name: 'Cover letter', required: false, filled: 62, dropped: 16 }
+    ]
+  }
+];
+
+const CUSTOM_EVENTS = [
+  { name: 'video_play', icon: '▶', type: 'video', desc: 'Tutorial video started', pages: '/tutorials, /products/retail', count: 842, visitors: 748 },
+  { name: 'video_complete', icon: '✓', type: 'video', desc: 'Tutorial watched to end', pages: '/tutorials', count: 384, visitors: 348 },
+  { name: 'brochure_download', icon: '↓', type: 'download', desc: 'Product brochure PDF downloaded', pages: '/products/retail, /products/rail', count: 284, visitors: 268 },
+  { name: 'price_calculator_open', icon: '∑', type: 'api', desc: 'Pricing calculator opened', pages: '/products/retail', count: 218, visitors: 198 },
+  { name: 'chat_opened', icon: '💬', type: 'share', desc: 'Live chat widget opened', pages: 'all pages', count: 186, visitors: 172 },
+  { name: 'share_article', icon: '↗', type: 'share', desc: 'Article shared to social', pages: '/articles/*', count: 142, visitors: 138 },
+  { name: 'theme_toggled', icon: '◐', type: 'theme', desc: 'Dark/light mode toggled', pages: 'all pages', count: 98, visitors: 92 },
+  { name: 'demo_video_played', icon: '▶', type: 'video', desc: 'Product demo video started', pages: '/products/*', count: 224, visitors: 208 },
+  { name: 'gst_calculator_used', icon: '₹', type: 'api', desc: 'GST calculator ran', pages: '/products/retail', count: 168, visitors: 158 },
+  { name: 'integration_checked', icon: '⌘', type: 'api', desc: 'Checked if tool integrates', pages: '/services/integrations', count: 138, visitors: 128 },
+  { name: 'newsletter_opened', icon: '✉', type: 'share', desc: 'Opened newsletter link', pages: 'email → landing', count: 462, visitors: 418 },
+  { name: 'language_changed', icon: '🌐', type: 'theme', desc: 'Switched site language', pages: 'all pages', count: 62, visitors: 58 }
+];
+
+const EVENT_PROPS = [
+  { event: 'video_play', props: 'video_id, tutorial_name, position', samples: '"hashveno-retail-setup", "setup", 0 },
+  { event: 'brochure_download', props: 'file_name, product, format', samples: '"retail-brochure.pdf", "retail", "pdf"' },
+  { event: 'share_article', props: 'article_slug, platform', samples: '"shop-management", "linkedin"' },
+  { event: 'price_calculator_open', props: 'product, plan', samples: '"retail", "growth"' },
+  { event: 'chat_opened', props: 'page, source', samples: '"/products/retail", "cta"' },
+  { event: 'theme_toggled', props: 'from, to', samples: '"light", "dark"' }
+];
+
+const PAGES = [
+  { path: '/products/retail', visitors: 2140, views: 6482 },
+  { path: '/', visitors: 1842, views: 2984 },
+  { path: '/services/custom-software', visitors: 1248, views: 3240 },
+  { path: '/products/rail', visitors: 1104, views: 2812 },
+  { path: '/articles/shop-management', visitors: 892, views: 2104 },
+  { path: '/services/cloud-applications', visitors: 748, views: 1842 },
+  { path: '/products/route', visitors: 684, views: 1518 },
+  { path: '/articles/cloud-retail', visitors: 582, views: 1244 },
+  { path: '/why-hashveno', visitors: 524, views: 1108 },
+  { path: '/contact', visitors: 486, views: 892 }
+];
+
+const OUTBOUND = [
+  { url: 'linkedin.com/company/hashveno', clicks: 384, source: 'footer' },
+  { url: 'twitter.com/hashveno', clicks: 242, source: 'footer' },
+  { url: 'github.com/hashveno', clicks: 218, source: 'footer' },
+  { url: 'youtube.com/@hashveno', clicks: 148, source: 'footer' },
+  { url: 'wa.me/919000000000', clicks: 84, source: 'contact page' },
+  { url: 'calendly.com/hashveno', clicks: 62, source: 'why-hashveno' },
+  { url: 'instagram.com/hashveno', clicks: 48, source: 'footer' },
+  { url: 'facebook.com/hashveno', clicks: 32, source: 'footer' }
+];
+
+const SESSIONS = [
+  { id: 'a4f3b2c1d8e9f0a1', started_at: Date.now() - 8000, landing_path: '/products/retail', device: 'mobile', city: 'Chennai', country: 'IN', pageview_count: 8, duration_ms: 342000, is_bounce: 0, email: 'rajesh@retailco.in' },
+  { id: 'b2c1d8e9f0a1b3c4', started_at: Date.now() - 34000, landing_path: '/', device: 'desktop', city: 'Bangalore', country: 'IN', pageview_count: 4, duration_ms: 186000, is_bounce: 0, email: null },
+  { id: 'c3d4e5f6a7b8c9d0', started_at: Date.now() - 92000, landing_path: '/articles/railways-unauthorized', device: 'desktop', city: 'Mumbai', country: 'IN', pageview_count: 3, duration_ms: 284000, is_bounce: 0, email: null },
+  { id: 'd4e5f6a7b8c9d0e1', started_at: Date.now() - 148000, landing_path: '/services/custom-software', device: 'desktop', city: 'Hyderabad', country: 'IN', pageview_count: 6, duration_ms: 428000, is_bounce: 0, email: 'priya@techcorp.io' },
+  { id: 'e5f6a7b8c9d0e1f2', started_at: Date.now() - 212000, landing_path: '/products/rail', device: 'tablet', city: 'Delhi', country: 'IN', pageview_count: 5, duration_ms: 246000, is_bounce: 0, email: null },
+  { id: 'f6a7b8c9d0e1f2a3', started_at: Date.now() - 288000, landing_path: '/articles/cloud-retail', device: 'mobile', city: 'Coimbatore', country: 'IN', pageview_count: 2, duration_ms: 68000, is_bounce: 0, email: null },
+  { id: 'a7b8c9d0e1f2a3b4', started_at: Date.now() - 384000, landing_path: '/why-hashveno', device: 'desktop', city: 'Pune', country: 'IN', pageview_count: 7, duration_ms: 512000, is_bounce: 0, email: 'arun@startup.in' },
+  { id: 'b8c9d0e1f2a3b4c5', started_at: Date.now() - 448000, landing_path: '/contact', device: 'mobile', city: 'Chennai', country: 'IN', pageview_count: 1, duration_ms: 34000, is_bounce: 1, email: null }
+];
+
+const FUNNEL = [
+  { step: 1, name: 'Visited Home', sessions: 1842 },
+  { step: 2, name: 'Viewed Products', sessions: 748 },
+  { step: 3, name: 'Viewed Contact', sessions: 384 },
+  { step: 4, name: 'Submitted Contact Form', sessions: 142 }
+];
+
+const OVERVIEW_TS = [
+  { day: 'Sep 15', visitors: 1042 },
+  { day: 'Sep 16', visitors: 1188 },
+  { day: 'Sep 17', visitors: 1084 },
+  { day: 'Sep 18', visitors: 1290 },
+  { day: 'Sep 19', visitors: 1424 },
+  { day: 'Sep 20', visitors: 1290 },
+  { day: 'Sep 21', visitors: 1111 }
+];
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => document.querySelectorAll(s);
+
+function fmt(n) { return n == null ? '—' : Number(n).toLocaleString('en-IN'); }
+function escapeHtml(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+function fmtDuration(ms) { const s = Math.round(ms / 1000); if (s < 60) return s + 's'; return Math.floor(s / 60) + 'm ' + (s % 60) + 's'; }
+function timeAgo(ts) { const s = Math.round((Date.now() - ts) / 1000); if (s < 60) return s + 's ago'; if (s < 3600) return Math.floor(s / 60) + 'm ago'; if (s < 86400) return Math.floor(s / 3600) + 'h ago'; return Math.floor(s / 86400) + 'd ago'; }
+
+/* ============================================================
+   VIEW RENDERERS
+   ============================================================ */
+
+function renderClicks() {
+  // Click cards grid
+  const totalClicks = CLICKS.reduce((s, c) => s + c.clicks, 0);
+  const maxClicks = Math.max(...CLICKS.map(c => c.clicks));
+
+  $('#clickGrid').innerHTML = CLICKS.map(c => {
+    const sectionClass = c.section === 'hero' ? 'hero' : c.section === 'footer' ? 'footer' : c.section === 'inline' ? 'inline' : 'nav';
+    return `
+      <div class="click-card">
+        <div class="click-card-head">
+          <div class="click-btn-name">"${escapeHtml(c.name)}"</div>
+          <span class="click-section-tag ${sectionClass}">${c.section}</span>
+        </div>
+        <div class="click-stats">
+          <div class="click-stat">
+            <div class="num">${fmt(c.clicks)}</div>
+            <div class="lbl">Clicks</div>
+          </div>
+          <div class="click-stat">
+            <div class="num">${fmt(c.visitors)}</div>
+            <div class="lbl">Visitors</div>
+          </div>
+          <div class="click-stat">
+            <div class="num" style="color:${c.ctr > 10 ? 'var(--green)' : c.ctr > 5 ? 'var(--accent-2)' : 'var(--muted)'}">${c.ctr}%</div>
+            <div class="lbl">CTR</div>
+          </div>
+        </div>
+        <div style="margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--faint)">${escapeHtml(c.page)}</div>
+      </div>
+    `;
+  }).join('');
+
+  // Clicks by page
+  const byPage = {};
+  CLICKS.forEach(c => {
+    if (c.page === 'all pages') return;
+    byPage[c.page] = (byPage[c.page] || 0) + c.clicks;
+  });
+  const pageRows = Object.entries(byPage).map(([path, clicks]) => ({ path, clicks })).sort((a, b) => b.clicks - a.clicks);
+  const pageMax = Math.max(...pageRows.map(p => p.clicks), 1);
+
+  $('#clicksByPage').innerHTML = pageRows.map(p => `
+    <div class="bar-row">
+      <div class="bar-label" title="${escapeHtml(p.path)}">${escapeHtml(p.path)}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${(p.clicks / pageMax) * 100}%"></div></div>
+      <div class="bar-val">${fmt(p.clicks)}</div>
+    </div>
+  `).join('');
+
+  // Clicks by section
+  const bySection = {};
+  CLICKS.forEach(c => { bySection[c.section] = (bySection[c.section] || 0) + c.clicks; });
+  const sectionRows = Object.entries(bySection).map(([section, clicks]) => ({ section, clicks })).sort((a, b) => b.clicks - a.clicks);
+  const secMax = Math.max(...sectionRows.map(s => s.clicks), 1);
+  const sectionColors = { hero: '', footer: 'violet', nav: '', inline: 'green' };
+
+  $('#clicksBySection').innerHTML = sectionRows.map(s => `
+    <div class="bar-row">
+      <div class="bar-label"><span class="badge">${s.section}</span></div>
+      <div class="bar-track"><div class="bar-fill ${sectionColors[s.section] || ''}" style="width:${(s.clicks / secMax) * 100}%"></div></div>
+      <div class="bar-val">${fmt(s.clicks)}</div>
+    </div>
+  `).join('');
+}
+
+function renderScroll() {
+  $('#scrollPages').innerHTML = SCROLL_PAGES.map(p => `
+    <div class="scroll-page">
+      <div class="scroll-page-head">
+        <div class="scroll-page-path">${escapeHtml(p.path)}</div>
+        <div class="scroll-page-visitors">${fmt(p.visitors)} visitors</div>
+      </div>
+      <div class="scroll-bars">
+        ${[
+          { depth: 25, pct: p.s25, cls: 's25' },
+          { depth: 50, pct: p.s50, cls: 's50' },
+          { depth: 75, pct: p.s75, cls: 's75' },
+          { depth: 100, pct: p.s100, cls: 's100' }
+        ].map(b => `
+          <div class="scroll-bar-row">
+            <div class="scroll-bar-label">${b.depth}%</div>
+            <div class="scroll-bar-track">
+              <div class="scroll-bar-fill ${b.cls}" style="width:${b.pct}%"></div>
+            </div>
+            <div class="scroll-bar-val">${b.pct}%</div>
+            <div class="scroll-bar-pct">${fmt(Math.round(p.visitors * b.pct / 100))} users</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderFormFields() {
+  $('#formFields').innerHTML = FORMS.map(f => {
+    const completionRate = ((f.submits / f.starts) * 100).toFixed(1);
+    return `
+      <div class="form-group">
+        <div class="form-group-head">
+          <div class="form-group-name">
+            <span class="form-icon">${f.icon}</span>
+            ${escapeHtml(f.id)}
+          </div>
+          <div class="form-meta-inline">
+            <span>Starts: <span class="val">${fmt(f.starts)}</span></span>
+            <span>Submits: <span class="val green">${fmt(f.submits)}</span></span>
+            <span>Abandons: <span class="val rose">${fmt(f.abandons)}</span></span>
+            <span>Rate: <span class="val">${completionRate}%</span></span>
+          </div>
+        </div>
+        <div class="field-list">
+          ${f.fields.map(field => {
+            const drop = f.starts - field.filled - (field.dropped || 0);
+            const dropPct = ((field.filled / f.starts) * 100).toFixed(0);
+            const dropClass = dropPct >= 90 ? 'good' : dropPct >= 70 ? 'warn' : 'bad';
+            return `
+              <div class="field-row">
+                <div class="field-name">
+                  ${escapeHtml(field.name)}
+                  ${field.required ? '<span class="required">req</span>' : ''}
+                </div>
+                <div class="field-funnel">
+                  ${Array.from({ length: 10 }).map((_, i) => {
+                    const segPct = (i + 1) * 10;
+                    const filled = segPct <= dropPct;
+                    const partial = !filled && segPct <= dropPct + 20;
+                    return `<div class="seg ${filled ? 'fill' : partial ? 'partial' : 'drop'}"></div>`;
+                  }).join('')}
+                </div>
+                <div class="field-val">${fmt(field.filled)}</div>
+                <div class="field-drop ${dropClass}">${dropPct}%</div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderCustom() {
+  $('#customEvents').innerHTML = CUSTOM_EVENTS.map(e => `
+    <div class="custom-event-card">
+      <div>
+        <div class="custom-event-head">
+          <div class="custom-event-icon ${e.type}">${e.icon}</div>
+          <div class="custom-event-name">${escapeHtml(e.name)}</div>
+        </div>
+        <div class="custom-event-desc">${escapeHtml(e.desc)}</div>
+        <div class="custom-event-pages">${escapeHtml(e.pages)}</div>
+      </div>
+      <div class="custom-event-stats">
+        <div class="custom-event-count">${fmt(e.count)}</div>
+        <div class="custom-event-visitors">${fmt(e.visitors)} visitors</div>
+      </div>
+    </div>
+  `).join('');
+
+  $('#eventProps').innerHTML = `
+    <table>
+      <thead><tr><th>Event</th><th>Properties tracked</th><th>Sample values</th></tr></thead>
+      <tbody>
+        ${EVENT_PROPS.map(p => `
+          <tr>
+            <td class="mono" style="color:var(--accent-2)">${escapeHtml(p.event)}</td>
+            <td class="mono">${escapeHtml(p.props)}</td>
+            <td class="mono" style="color:var(--muted)">${escapeHtml(p.samples)}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+function renderPages() {
+  $('#pagesTable').innerHTML = `
+    <table>
+      <thead><tr><th>Path</th><th class="num">Views</th><th class="num">Visitors</th><th class="num">Avg time</th></tr></thead>
+      <tbody>
+        ${PAGES.map(p => `
+          <tr>
+            <td class="path">${escapeHtml(p.path)}</td>
+            <td class="num">${fmt(p.views)}</td>
+            <td class="num">${fmt(p.visitors)}</td>
+            <td class="num">${fmt(Math.round(p.views * 14))}s</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+function renderFunnel() {
+  const firstCount = FUNNEL[0].sessions;
+  $('#funnel').innerHTML = FUNNEL.map(s => {
+    const pctFromFirst = (s.sessions / firstCount) * 100;
+    return `
+      <div style="display:grid;grid-template-columns:42px 1fr auto auto;gap:16px;align-items:center;padding:18px 20px;background:var(--surface-2);border:1px solid var(--line);border-radius:11px;margin-bottom:10px;position:relative;overflow:hidden">
+        <div style="font-family:var(--mono);font-size:11px;color:var(--faint)">${String(s.step).padStart(2, '0')}</div>
+        <div style="font-weight:600;font-size:14px">${escapeHtml(s.name)}</div>
+        <div style="font-family:var(--mono);font-weight:700;font-size:16px">${fmt(s.sessions)}</div>
+        <div style="font-family:var(--mono);font-size:12px;color:var(--muted);min-width:56px;text-align:right">${pctFromFirst.toFixed(1)}%</div>
+        <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--line);overflow:hidden">
+          <div style="height:100%;width:${pctFromFirst}%;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .8s"></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderOutbound() {
+  $('#outboundTable').innerHTML = `
+    <table>
+      <thead><tr><th>Destination</th><th>Source</th><th class="num">Clicks</th></tr></thead>
+      <tbody>
+        ${OUTBOUND.map(o => `
+          <tr>
+            <td class="path">${escapeHtml(o.url)}</td>
+            <td><span class="pill social">${escapeHtml(o.source)}</span></td>
+            <td class="num">${fmt(o.clicks)}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+function renderSessions() {
+  $('#sessionsTable').innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th>Started</th><th>Landing</th><th>Device</th><th>Location</th>
+          <th class="num">Pages</th><th class="num">Duration</th><th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${SESSIONS.map(s => `
+          <tr>
+            <td class="mono">${timeAgo(s.started_at)}</td>
+            <td class="path">${escapeHtml(s.landing_path)}</td>
+            <td><span class="pill cta" style="background:var(--surface-2);color:var(--muted)">${s.device}</span></td>
+            <td class="mono">${escapeHtml(s.city)}, ${s.country}</td>
+            <td class="num">${s.pageview_count}</td>
+            <td class="num">${fmtDuration(s.duration_ms)}</td>
+            <td>
+              ${s.is_bounce ? '<span class="pill" style="background:var(--rose-soft);color:var(--rose)">Bounce</span>' : '<span class="pill form">Engaged</span>'}
+              ${s.email ? ' <span class="pill" style="background:var(--violet-soft);color:var(--violet)">' + escapeHtml(s.email.split('@')[0]) + '</span>' : ''}
+            </td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+function renderOverview() {
+  const max = Math.max(...OVERVIEW_TS.map(t => t.visitors));
+  $('#overviewChart').innerHTML = OVERVIEW_TS.map(t => {
+    const h = (t.visitors / max) * 100;
+    return `<div style="flex:1;height:${h}%;background:linear-gradient(180deg,var(--accent-2),var(--accent));border-radius:3px 3px 2px 2px;position:relative;min-height:3px" title="${t.visitors}">
+      <div style="position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:9.5px;color:var(--faint);white-space:nowrap">${t.day}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderLive() {
+  const icons = { pageview: '👁', click: '👆', form_submit: '✓', form_start: '✎', outbound: '↗', scroll: '↓', custom: '★' };
+  const events = [
+    { ts: 8000, type: 'pageview', title: '/products/retail', meta: 'Chennai, IN · mobile' },
+    { ts: 12000, type: 'click', title: 'cta:book-demo', meta: 'Hero section' },
+    { ts: 18000, type: 'pageview', title: '/contact', meta: 'Bangalore, IN · desktop' },
+    { ts: 24000, type: 'form_start', title: 'contact', meta: 'Started typing' },
+    { ts: 34000, type: 'form_submit', title: 'contact', meta: 'Submitted in 24s' },
+    { ts: 45000, type: 'outbound', title: 'linkedin.com', meta: 'From footer' },
+    { ts: 58000, type: 'scroll', title: 'scroll_75', meta: '/articles/railways-unauthorized' },
+    { ts: 88000, type: 'custom', title: 'video_play', meta: 'Tutorial: HashVeno Retail' },
+    { ts: 108000, type: 'click', title: 'cta:request-pilot', meta: 'Rail product page' }
+  ];
+  $('#liveFeed').innerHTML = events.map(e => `
+    <div style="display:flex;align-items:flex-start;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font-size:13px">
+      <div style="width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font-size:11px;flex-shrink:0;background:var(--surface-2);color:var(--muted)">${icons[e.type] || '•'}</div>
+      <div style="flex:1">
+        <div style="font-weight:500">${escapeHtml(e.title)}</div>
+        <div style="font-size:11px;color:var(--faint);font-family:var(--mono);margin-top:3px">${escapeHtml(e.meta)}</div>
+      </div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--faint)">${timeAgo(Date.now() - e.ts)}</div>
+    </div>
+  `).join('');
+}
+
+/* ============================================================
+   ROUTER
+   ============================================================ */
+
+const VIEW_TITLES = {
+  overview: ['Dashboard', 'traffic overview'],
+  live: ['Live', 'real-time activity'],
+  clicks: ['Button Clicks', 'every button & link tracked'],
+  scroll: ['Scroll Depth', 'how far visitors scroll'],
+  formfields: ['Form Fields', 'field-level form analytics'],
+  custom: ['Custom Events', 'explicit tracking calls'],
+  pages: ['Pages', 'page performance'],
+  funnels: ['Funnels', 'conversion paths'],
+  outbound: ['Outbound Links', 'external destinations'],
+  sessions: ['Sessions', 'visitor journeys']
+};
+
+let state = { view: 'clicks', range: '7d' };
+
+function render() {
+  const [title, sub] = VIEW_TITLES[state.view];
+  $('#viewTitle').textContent = title;
+  $('#viewSub').textContent = `hashveno.com · ${sub} · last ${state.range}`;
+
+  $$('.view').forEach(v => v.classList.remove('active'));
+  const el = document.getElementById('view-' + state.view);
+  if (el) el.classList.add('active');
+
+  switch (state.view) {
+    case 'overview': return renderOverview();
+    case 'live': return renderLive();
+    case 'clicks': return renderClicks();
+    case 'scroll': return renderScroll();
+    case 'formfields': return renderFormFields();
+    case 'custom': return renderCustom();
+    case 'pages': return renderPages();
+    case 'funnels': return renderFunnel();
+    case 'outbound': return renderOutbound();
+    case 'sessions': return renderSessions();
+  }
+}
+
+$$('.nav-item').forEach(item => {
+  if (!item.dataset.view) return;
+  item.addEventListener('click', () => {
+    $$('.nav-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+    state.view = item.dataset.view;
+    render();
+  });
+});
+
+$$('#rangePicker button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    $$('#rangePicker button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.range = btn.dataset.range;
+    render();
+  });
+});
+
+render();
+</script>
+
+</body>
+</html>

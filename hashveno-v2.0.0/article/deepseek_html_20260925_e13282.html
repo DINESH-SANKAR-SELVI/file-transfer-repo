@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Is Your Shop Management Holding You Back? — HashVeno</title>
+<meta name="description" content="Legacy tools slowly drain your store's efficiency. Here's how modern shop management moves beyond inventory tracking into real-time analytics and margin you can actually see." />
+<meta name="theme-color" content="#0A0A12" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F7FB;--surface:#FFFFFF;--surface-2:#F1F1F7;--surface-3:#E8E8F0;
+  --ink:#0A0A12;--ink-2:#252532;--muted:#63637A;--faint:#9B9BAA;
+  --line:#E8E8F0;--line-2:#DCDCE5;
+  --brand:#5B4BE8;--brand-2:#8B7BFF;--brand-soft:#EFECFF;--brand-ink:#3D2FC9;
+  --retail:#F97316;--retail-2:#FB923C;--retail-soft:#FFEDD5;--retail-ink:#9A3412;
+  --accent:#00C48C;--amber:#D98A0B;--rose:#E0526B;
+  --radius:14px;--radius-lg:20px;
+  --shadow-sm:0 1px 2px rgba(15,15,30,.04);
+  --shadow-md:0 8px 24px -8px rgba(20,20,40,.08),0 2px 6px rgba(20,20,40,.03);
+  --shadow-lg:0 24px 60px -20px rgba(20,20,50,.18),0 8px 20px rgba(20,20,40,.06);
+  --shadow-brand:0 12px 32px -8px rgba(91,75,232,.35);
+  --shadow-retail:0 12px 32px -8px rgba(249,115,22,.35);
+  --font-sans:'Inter','Noto Sans Tamil',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --font-serif:'Lora','Noto Sans Tamil',Georgia,serif;
+  --font-mono:'JetBrains Mono',ui-monospace,monospace;
+  --container:1200px;
+  --article-width:720px;
+}
+[data-theme="dark"]{
+  --bg:#07080F;--surface:#0F1119;--surface-2:#161824;--surface-3:#1D1F2E;
+  --ink:#F4F5FA;--ink-2:#D8DAE6;--muted:#8B8BA3;--faint:#5A5A78;
+  --line:rgba(255,255,255,.06);--line-2:rgba(255,255,255,.12);
+  --brand:#6366F1;--brand-2:#818CF8;--brand-soft:rgba(99,102,241,.15);--brand-ink:#A5B4FC;
+  --retail:#FB923C;--retail-2:#FDBA74;--retail-soft:rgba(251,146,60,.15);--retail-ink:#FDBA74;
+  --shadow-md:0 8px 24px -8px rgba(0,0,0,.4),0 2px 6px rgba(0,0,0,.2);
+  --shadow-lg:0 24px 60px -20px rgba(0,0,0,.5),0 8px 20px rgba(0,0,0,.3);
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden;transition:background .3s ease, color .3s ease}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input{font:inherit;border:none;outline:none;background:none;color:inherit}
+::selection{background:var(--retail);color:#fff}
+[data-lang="ta"] body{font-family:'Noto Sans Tamil','Inter',sans-serif;line-height:1.7}
+[data-lang="ta"] h1,[data-lang="ta"] h2,[data-lang="ta"] h3{letter-spacing:-.01em;line-height:1.4}
+.container{width:100%;max-width:var(--container);margin:0 auto;padding:0 24px}
+
+/* READING PROGRESS */
+.progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:200;background:transparent;pointer-events:none}
+.progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--retail),var(--retail-2));box-shadow:0 0 12px rgba(249,115,22,.5);transition:width .1s linear}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 0;transition:background .25s ease, backdrop-filter .25s ease, border-color .25s ease, padding .25s ease;border-bottom:1px solid transparent}
+.nav.scrolled{background:color-mix(in srgb, var(--bg) 85%, transparent);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom-color:var(--line);padding:10px 0}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.02em}
+.brand-mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--brand-2));display:grid;place-items:center;color:#fff;box-shadow:0 6px 16px -4px rgba(91,75,232,.45);position:relative}
+.brand-mark::after{content:"";position:absolute;inset:0;border-radius:10px;background:linear-gradient(135deg,rgba(255,255,255,.35),transparent 55%);pointer-events:none}
+.brand-name{font-size:17px}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-link{font-size:14px;font-weight:500;color:var(--muted);padding:8px 14px;border-radius:9px;transition:.15s}
+.nav-link:hover{color:var(--ink);background:var(--surface-2)}
+.nav-link.active{color:var(--retail-ink);background:var(--retail-soft)}
+.nav-cta{display:flex;align-items:center;gap:8px}
+.nav-controls{display:flex;align-items:center;gap:6px}
+.control-btn{width:36px;height:36px;border-radius:9px;display:grid;place-items:center;color:var(--muted);background:var(--surface);border:1px solid var(--line);transition:.15s}
+.control-btn:hover{color:var(--ink);border-color:var(--line-2)}
+.control-btn svg{width:16px;height:16px}
+.lang-btn{width:auto;padding:0 11px;font-size:12px;font-weight:700;letter-spacing:.02em;gap:5px}
+.lang-btn .lang-active{color:var(--ink)}
+.lang-btn .lang-inactive{color:var(--faint)}
+[data-theme="light"] .icon-moon{display:block}
+[data-theme="light"] .icon-sun{display:none}
+[data-theme="dark"] .icon-moon{display:none}
+[data-theme="dark"] .icon-sun{display:block}
+.nav-toggle{display:none;width:40px;height:40px;border-radius:10px;align-items:center;justify-content:center;border:1px solid var(--line);background:var(--surface);color:var(--muted)}
+@media(max-width:900px){.nav-links{display:none}.nav-toggle{display:flex}.nav-cta .btn{display:none}}
+.mobile-menu{position:fixed;inset:56px 0 auto 0;z-index:99;background:var(--surface);border-bottom:1px solid var(--line);padding:12px 24px 20px;transform:translateY(-8px);opacity:0;pointer-events:none;transition:.22s ease;box-shadow:var(--shadow-lg)}
+.mobile-menu.open{transform:none;opacity:1;pointer-events:auto}
+.mobile-menu a{display:block;padding:13px 4px;font-size:15px;font-weight:500;border-bottom:1px solid var(--line)}
+.mobile-menu a:last-child{border:none}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:14.5px;font-weight:600;letter-spacing:-.005em;padding:12px 22px;border-radius:12px;transition:transform .15s ease, box-shadow .18s ease, background .15s ease;white-space:nowrap;cursor:pointer}
+.btn-primary{background:var(--brand);color:#fff;box-shadow:var(--shadow-brand)}
+.btn-primary:hover{background:#4E3FD4;transform:translateY(-1px);box-shadow:0 16px 36px -10px rgba(91,75,232,.5)}
+.btn-retail{background:var(--retail);color:#fff;box-shadow:var(--shadow-retail)}
+.btn-retail:hover{background:#EA580C;transform:translateY(-1px);box-shadow:0 16px 36px -10px rgba(249,115,22,.5)}
+.btn-secondary{background:var(--surface);color:var(--ink);border:1px solid var(--line)}
+.btn-secondary:hover{background:var(--surface);border-color:var(--line-2);transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.btn svg{transition:transform .18s}
+.btn:hover svg{transform:translateX(2px)}
+.btn-lg{font-size:15.5px;padding:14px 26px;border-radius:13px}
+
+/* BREADCRUMB */
+.breadcrumb{max-width:var(--container);margin:0 auto;padding:112px 24px 0;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--faint);flex-wrap:wrap}
+.breadcrumb a{transition:.15s}
+.breadcrumb a:hover{color:var(--retail-ink)}
+.breadcrumb .sep{opacity:.5}
+.breadcrumb .current{color:var(--ink-2);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:280px}
+
+/* ARTICLE HEADER */
+.article-header{max-width:820px;margin:0 auto;padding:32px 24px 0}
+.cat-chip{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--retail-ink);background:var(--retail-soft);padding:6px 12px;border-radius:99px;margin-bottom:22px}
+.cat-chip .dot{width:6px;height:6px;border-radius:50%;background:var(--retail)}
+.article-header h1{font-family:var(--font-serif);font-size:clamp(32px,5vw,52px);font-weight:600;letter-spacing:-.028em;line-height:1.1;color:var(--ink);margin-bottom:20px}
+.article-header .lede{font-family:var(--font-serif);font-size:clamp(17px,1.6vw,20px);line-height:1.55;color:var(--muted);font-style:italic;margin-bottom:32px}
+.article-meta{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:22px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:32px}
+.author-mini{display:flex;align-items:center;gap:11px}
+.author-mini .av{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;color:#fff;font-size:13px;font-weight:700;background:linear-gradient(135deg,var(--retail),var(--retail-2));flex-shrink:0}
+.author-mini .name{font-size:13px;font-weight:600;color:var(--ink);line-height:1.2}
+.author-mini .role{font-size:11.5px;color:var(--faint);margin-top:2px}
+.meta-dot{width:4px;height:4px;border-radius:50%;background:var(--faint)}
+.meta-info{display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--faint);font-family:var(--font-mono);letter-spacing:.01em}
+.meta-info span{display:flex;align-items:center;gap:6px}
+
+/* HERO VISUAL */
+.hero-visual{max-width:960px;margin:0 auto 56px;padding:0 24px}
+.hv-frame{background:linear-gradient(135deg,#FFEDD5,#FEF3C7 40%,#E0F2FE);border-radius:22px;padding:36px;position:relative;overflow:hidden;border:1px solid rgba(249,115,22,.15)}
+[data-theme="dark"] .hv-frame{background:linear-gradient(135deg,#4A2511,#3F220E 40%,#082F49)}
+.hv-frame::before{content:"";position:absolute;inset:0;background-image:linear-gradient(to right, rgba(255,255,255,.5) 1px, transparent 1px),linear-gradient(to bottom, rgba(255,255,255,.5) 1px, transparent 1px);background-size:32px 32px;mask-image:radial-gradient(circle at 50% 50%,#000,transparent 80%);-webkit-mask-image:radial-gradient(circle at 50% 50%,#000,transparent 80%);opacity:.5;pointer-events:none}
+[data-theme="dark"] .hv-frame::before{background-image:linear-gradient(to right, rgba(255,255,255,.06) 1px, transparent 1px),linear-gradient(to bottom, rgba(255,255,255,.06) 1px, transparent 1px)}
+.hv-dashboard{position:relative;background:var(--surface);border-radius:14px;box-shadow:0 30px 60px -20px rgba(20,20,50,.25),0 10px 24px -10px rgba(20,20,40,.12);overflow:hidden;border:1px solid var(--line)}
+.hv-chrome{padding:11px 14px;display:flex;align-items:center;gap:7px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+.hv-chrome .dot{width:9px;height:9px;border-radius:50%}
+.hv-chrome .title{font-size:11px;font-weight:600;color:var(--faint);margin-left:6px;letter-spacing:.02em;font-family:var(--font-mono)}
+.hv-body{display:grid;grid-template-columns:1fr 1fr;padding:20px;gap:16px}
+.hv-panel{background:var(--surface-2);border:1px solid var(--line);border-radius:11px;padding:14px}
+.hv-panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.hv-panel-title{font-size:11.5px;font-weight:650;color:var(--ink)}
+.hv-panel-tag{font-size:9.5px;font-weight:700;letter-spacing:.04em;padding:3px 7px;border-radius:5px}
+.hv-panel-tag.amber{background:var(--retail-soft);color:var(--retail-ink)}
+.hv-panel-tag.green{background:rgba(0,196,140,.12);color:var(--accent)}
+.hv-panel-tag.blue{background:rgba(14,165,233,.12);color:#075985}
+.hv-metric{display:flex;align-items:baseline;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--line);font-size:11.5px}
+.hv-metric:last-child{border-bottom:none}
+.hv-metric .lbl{color:var(--muted)}
+.hv-metric .val{font-weight:650;color:var(--ink);font-feature-settings:"tnum";font-family:var(--font-mono);font-size:12px}
+.hv-metric .val.up{color:var(--accent)}
+.hv-metric .val.down{color:var(--rose)}
+.hv-bars{display:flex;gap:4px;height:52px;align-items:flex-end;margin-top:10px}
+.hv-bars span{flex:1;background:linear-gradient(180deg,var(--retail),var(--retail-2));border-radius:3px 3px 1px 1px;min-height:4px;opacity:.7}
+.hv-bars span:nth-child(1){height:40%}
+.hv-bars span:nth-child(2){height:62%}
+.hv-bars span:nth-child(3){height:48%}
+.hv-bars span:nth-child(4){height:78%}
+.hv-bars span:nth-child(5){height:92%}
+.hv-bars span:nth-child(6){height:70%}
+.hv-bars span:nth-child(7){height:85%}
+.hv-bars span:nth-child(8){height:56%}
+@media(max-width:640px){.hv-frame{padding:22px}.hv-body{grid-template-columns:1fr;padding:14px;gap:10px}}
+
+/* ARTICLE BODY */
+.article-body{max-width:var(--article-width);margin:0 auto;padding:0 24px 96px;font-size:17.5px;line-height:1.72;color:var(--ink-2)}
+.article-body > * + *{margin-top:22px}
+.article-body p.lede-para{font-size:19.5px;color:var(--ink);line-height:1.65;font-weight:400}
+.article-body strong{color:var(--ink);font-weight:650}
+.article-body em{font-style:italic;color:var(--ink-2)}
+.article-body a{color:var(--retail-ink);font-weight:500;text-decoration:underline;text-decoration-color:rgba(249,115,22,.3);text-underline-offset:3px;transition:.15s}
+.article-body a:hover{text-decoration-color:var(--retail)}
+.article-body h2{font-family:var(--font-serif);font-size:30px;font-weight:600;letter-spacing:-.02em;line-height:1.22;color:var(--ink);margin-top:56px;margin-bottom:6px;padding-top:20px;border-top:1px solid var(--line);scroll-margin-top:100px}
+.article-body h2:first-child{margin-top:0;padding-top:0;border-top:none}
+.article-body h3{font-family:var(--font-sans);font-size:19px;font-weight:650;letter-spacing:-.012em;line-height:1.35;color:var(--ink);margin-top:36px;margin-bottom:2px}
+.article-body ul,
+.article-body ol{padding-left:0;list-style:none}
+.article-body ul li,
+.article-body ol li{position:relative;padding-left:26px;margin-bottom:12px;color:var(--ink-2)}
+.article-body ul li::before{content:"";position:absolute;left:6px;top:12px;width:7px;height:7px;border-radius:50%;background:var(--retail);opacity:.5}
+.article-body ol{counter-reset:item}
+.article-body ol li{counter-increment:item}
+.article-body ol li::before{content:counter(item);position:absolute;left:0;top:2px;width:20px;height:20px;border-radius:6px;background:var(--retail-soft);color:var(--retail-ink);font-size:11px;font-weight:700;display:grid;place-items:center;font-family:var(--font-mono)}
+.article-body blockquote{border-left:3px solid var(--retail);padding:4px 0 4px 22px;margin:32px 0;font-family:var(--font-serif);font-style:italic;font-size:20px;line-height:1.55;color:var(--ink-2)}
+
+/* Pull quote */
+.pullquote{margin:44px 0;padding:32px 36px;background:linear-gradient(135deg,var(--retail-soft) 0%,#FEF7F0 100%);border-radius:var(--radius-lg);border:1px solid rgba(249,115,22,.12);position:relative}
+[data-theme="dark"] .pullquote{background:linear-gradient(135deg,rgba(251,146,60,.1),var(--surface))}
+.pullquote::before{content:"“";position:absolute;top:-14px;left:24px;font-family:var(--font-serif);font-size:88px;line-height:1;color:var(--retail);opacity:.25}
+.pullquote p{font-family:var(--font-serif);font-size:23px;font-weight:500;line-height:1.42;letter-spacing:-.012em;color:var(--ink);margin:0 !important}
+
+/* Callouts */
+.callout{margin:32px 0;padding:20px 22px 20px 24px;border-radius:14px;border-left:3px solid;font-size:15.5px;line-height:1.65}
+.callout .co-label{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+.callout p{margin:0}
+.callout p + p{margin-top:10px}
+.callout.info{background:#FFF7ED;border-color:var(--retail)}
+[data-theme="dark"] .callout.info{background:rgba(251,146,60,.08)}
+.callout.info .co-label{color:var(--retail-ink)}
+.callout.warn{background:#FFF8EA;border-color:var(--amber)}
+[data-theme="dark"] .callout.warn{background:rgba(217,138,11,.08)}
+.callout.warn .co-label{color:#8B5A00}
+.callout.success{background:#F0FDF9;border-color:var(--accent)}
+[data-theme="dark"] .callout.success{background:rgba(0,196,140,.08)}
+.callout.success .co-label{color:#047857}
+
+/* Data table */
+.data-table{margin:32px 0;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;font-size:14.5px}
+.data-table .dt-head{padding:14px 20px;background:var(--surface-2);border-bottom:1px solid var(--line);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.data-table table{width:100%;border-collapse:collapse}
+.data-table th,
+.data-table td{padding:14px 20px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+.data-table tr:last-child td{border-bottom:none}
+.data-table th{font-weight:600;font-size:12px;color:var(--faint);letter-spacing:.04em;text-transform:uppercase;background:var(--surface-2)}
+.data-table td:last-child,
+.data-table th:last-child{text-align:right;font-family:var(--font-mono);font-weight:600}
+.data-table tr.total td{background:var(--surface-2);font-weight:700;color:var(--ink);border-top:1.5px solid var(--line)}
+.data-table tr.total td:last-child{color:var(--retail)}
+
+/* Author card */
+.author-card{max-width:var(--article-width);margin:56px auto 32px;padding:28px;background:linear-gradient(135deg,var(--surface-2),var(--surface));border:1px solid var(--line);border-radius:var(--radius-lg);display:flex;gap:18px;align-items:flex-start}
+.author-card .ac-av{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;color:#fff;font-size:18px;font-weight:700;background:linear-gradient(135deg,var(--retail),var(--retail-2));flex-shrink:0;box-shadow:0 8px 20px -6px rgba(249,115,22,.4)}
+.author-card .ac-body{flex:1;min-width:0}
+.author-card .ac-name{font-size:15px;font-weight:650;letter-spacing:-.01em;margin-bottom:2px}
+.author-card .ac-role{font-size:12.5px;color:var(--muted);margin-bottom:10px}
+.author-card .ac-bio{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:12px}
+.author-card .ac-links{display:flex;gap:8px;flex-wrap:wrap}
+.ac-link{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--retail-ink);padding:6px 11px;border-radius:8px;background:var(--retail-soft);transition:.15s}
+.ac-link:hover{background:var(--retail);color:#fff}
+@media(max-width:520px){.author-card{flex-direction:column;gap:14px;padding:22px}}
+
+/* Share footer */
+.share-footer{max-width:var(--article-width);margin:0 auto 64px;padding:24px 24px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.share-footer .sf-label{font-size:13px;font-weight:600;color:var(--muted)}
+.share-footer .sf-row{display:flex;gap:8px}
+.share-btn{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;background:var(--surface);border:1px solid var(--line);color:var(--muted);transition:.18s;cursor:pointer}
+.share-btn:hover{color:#fff;background:var(--retail);border-color:var(--retail);transform:translateY(-2px);box-shadow:0 8px 20px -6px rgba(249,115,22,.5)}
+.share-btn.copied{background:var(--accent);border-color:var(--accent);color:#fff}
+
+/* Related */
+.related-section{max-width:var(--container);margin:0 auto;padding:0 24px 80px}
+.related-head{margin-bottom:32px}
+.related-head .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:12px}
+.related-head .eyebrow::before{content:"";width:20px;height:1px;background:var(--faint)}
+.related-head h2{font-family:var(--font-serif);font-size:clamp(24px,3vw,32px);font-weight:600;letter-spacing:-.022em;line-height:1.2}
+.related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:820px){.related-grid{grid-template-columns:1fr;gap:12px}}
+.rel-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:24px 22px 20px;display:flex;flex-direction:column;transition:transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s, border-color .25s;text-align:left}
+.rel-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:var(--line-2)}
+.rel-cat{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:6px;margin-bottom:14px}
+.rel-cat.retail{color:#9A3412;background:#FFEDD5}
+.rel-cat.cloud{color:#075985;background:#E0F2FE}
+.rel-cat.transport{color:#047857;background:#D1FAE5}
+.rel-card h3{font-family:var(--font-serif);font-size:16px;font-weight:600;letter-spacing:-.015em;line-height:1.35;margin-bottom:8px;color:var(--ink)}
+.rel-card p{font-size:13.5px;color:var(--muted);line-height:1.55;flex:1;margin-bottom:16px}
+.rel-meta{display:flex;align-items:center;justify-content:space-between;font-size:11.5px;color:var(--faint);padding-top:14px;border-top:1px solid var(--line);font-family:var(--font-mono)}
+.rel-meta .read{display:flex;align-items:center;gap:5px}
+
+/* Newsletter */
+.newsletter-wrap{max-width:var(--container);margin:0 auto 80px;padding:0 24px}
+.newsletter{background:linear-gradient(135deg,#0F0F1E 0%,#1A1A33 60%,#252550 100%);border-radius:24px;padding:48px 44px;color:#fff;position:relative;overflow:hidden;display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center}
+.newsletter::before{content:"";position:absolute;inset:0;background:radial-gradient(600px 300px at 90% 20%, rgba(139,123,255,.35), transparent 60%),radial-gradient(400px 300px at 10% 90%, rgba(0,196,140,.15), transparent 60%);pointer-events:none}
+.newsletter::after{content:"";position:absolute;inset:0;background-image:linear-gradient(to right, rgba(255,255,255,.04) 1px, transparent 1px),linear-gradient(to bottom, rgba(255,255,255,.04) 1px, transparent 1px);background-size:44px 44px;mask-image:radial-gradient(ellipse at 30% 50%,#000,transparent 75%);-webkit-mask-image:radial-gradient(ellipse at 30% 50%,#000,transparent 75%);pointer-events:none}
+.newsletter > *{position:relative;z-index:1}
+.newsletter h3{font-family:var(--font-serif);font-size:clamp(22px,2.6vw,28px);font-weight:600;letter-spacing:-.02em;line-height:1.2;margin-bottom:12px}
+.newsletter h3 em{font-style:normal;background:linear-gradient(100deg,#C7B6FF,#8B7BFF 60%,#00C48C);-webkit-background-clip:text;background-clip:text;color:transparent}
+.newsletter p{font-size:14.5px;line-height:1.6;color:rgba(255,255,255,.65)}
+.newsletter-form{display:flex;flex-direction:column;gap:10px}
+.newsletter-row{display:flex;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:5px 5px 5px 14px;transition:.2s}
+.newsletter-row:focus-within{background:rgba(255,255,255,.09);border-color:rgba(199,182,255,.4);box-shadow:0 0 0 4px rgba(139,123,255,.15)}
+.newsletter-row input{flex:1;font-size:14px;color:#fff;min-width:0}
+.newsletter-row input::placeholder{color:rgba(255,255,255,.4)}
+.newsletter-row button{background:#fff;color:#0F0F1E;font-size:13px;font-weight:600;padding:10px 18px;border-radius:9px;transition:.15s;white-space:nowrap}
+.newsletter-row button:hover{background:#F2F2F8;transform:translateY(-1px)}
+.newsletter-note{font-size:11.5px;color:rgba(255,255,255,.45);display:flex;align-items:center;gap:6px}
+@media(max-width:820px){.newsletter{grid-template-columns:1fr;gap:24px;padding:36px 24px;border-radius:20px}.newsletter-row{flex-direction:column;padding:10px;gap:8px}.newsletter-row input{padding:6px 8px;font-size:15px}.newsletter-row button{padding:12px;font-size:14px}}
+
+/* FOOTER */
+.footer{background:#0B0B16;color:rgba(255,255,255,.7);padding:64px 0 28px;margin-top:40px}
+.footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.08)}
+.footer-brand{display:flex;align-items:center;gap:10px;color:#fff;margin-bottom:14px}
+.footer-brand .brand-mark{box-shadow:none}
+.footer-brand .brand-name{font-size:16px}
+.footer-about{font-size:13.5px;line-height:1.65;max-width:320px;color:rgba(255,255,255,.55)}
+.footer-social{display:flex;gap:10px;margin-top:18px}
+.social-btn{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.75);transition:.2s}
+.social-btn:hover{background:var(--retail);color:#fff;transform:translateY(-2px);border-color:var(--retail)}
+.footer h5{font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:16px}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13.5px;color:rgba(255,255,255,.7);transition:.15s;display:inline-block}
+.footer-links a:hover{color:#fff;transform:translateX(3px)}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:26px;gap:16px;flex-wrap:wrap;font-size:12.5px;color:rgba(255,255,255,.4)}
+.footer-bottom .made{display:flex;align-items:center;gap:8px}
+@media(max-width:820px){.footer-grid{grid-template-columns:1fr 1fr;gap:32px}.footer-grid > div:first-child{grid-column:1/-1}.footer-bottom{flex-direction:column;text-align:center}}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.8,.2,1), transform .7s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* MOBILE */
+@media(max-width:720px){
+  .container{padding:0 18px}
+  .breadcrumb{padding:96px 18px 0;font-size:12px}
+  .breadcrumb .current{max-width:180px}
+  .article-header{padding:22px 18px 0}
+  .article-header h1{font-size:clamp(28px,8vw,38px);line-height:1.15}
+  .article-header .lede{font-size:16px;line-height:1.55;margin-bottom:24px}
+  .article-meta{gap:12px;padding-top:18px;margin-bottom:32px}
+  .meta-info{font-size:11.5px;gap:12px}
+  .hero-visual{padding:0 18px;margin-bottom:40px}
+  .article-body{padding:0 18px 48px;font-size:16.5px;line-height:1.7}
+  .article-body p.lede-para{font-size:18px}
+  .article-body h2{font-size:24px;margin-top:44px}
+  .article-body h3{font-size:18px;margin-top:28px}
+  .pullquote{padding:24px 22px 22px;margin:32px 0;border-radius:16px}
+  .pullquote::before{font-size:64px;top:-10px;left:18px}
+  .pullquote p{font-size:19px}
+  .callout{padding:16px 18px;font-size:14.5px;margin:24px 0}
+  .data-table{font-size:13px}
+  .data-table th,.data-table td{padding:11px 14px}
+  .data-table th{font-size:10.5px}
+  .author-card{margin:44px auto 24px;padding:20px}
+  .share-footer{padding:18px;margin:0 auto 48px}
+  .related-section{padding:0 18px 56px}
+  .related-head h2{font-size:22px}
+  .rel-card{padding:20px 18px 16px}
+  .newsletter-wrap{padding:0 18px;margin:0 auto 56px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important}
+  .reveal{opacity:1;transform:none}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="#" class="brand">
+      <span class="brand-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="3" fill="#fff" stroke="none"/>
+        </svg>
+      </span>
+      <span class="brand-name">HashVeno</span>
+    </a>
+
+    <div class="nav-links">
+      <a class="nav-link" href="#" data-i18n="nav.services">Services</a>
+      <a class="nav-link" href="#" data-i18n="nav.products">Products</a>
+      <a class="nav-link active" href="#" data-i18n="nav.articles">Articles</a>
+      <a class="nav-link" href="#" data-i18n="nav.careers">Careers</a>
+      <a class="nav-link" href="#contact" data-i18n="nav.contact">Contact</a>
+    </div>
+
+    <div class="nav-cta">
+      <div class="nav-controls">
+        <button class="control-btn lang-btn" id="langToggle" aria-label="Language">
+          <span class="lang-active" id="langActive">EN</span>
+          <span class="lang-inactive">/</span>
+          <span class="lang-inactive" id="langInactive">த</span>
+        </button>
+        <button class="control-btn" id="themeToggle" aria-label="Theme">
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+          </svg>
+        </button>
+      </div>
+
+      <a href="#contact" class="btn btn-retail">
+        <span data-i18n="nav.getInTouch">Get in touch</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+      </a>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M4 7h16M4 12h16M4 17h16"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#" data-i18n="nav.services">Services</a>
+  <a href="#" data-i18n="nav.products">Products</a>
+  <a href="#" data-i18n="nav.articles">Articles</a>
+  <a href="#" data-i18n="nav.careers">Careers</a>
+  <a href="#contact" data-i18n="nav.contact">Contact</a>
+</div>
+
+<div class="breadcrumb">
+  <a href="#" data-i18n="nav.articles">Articles</a>
+  <span class="sep">/</span>
+  <span class="current" data-i18n="a1.breadcrumb">Is Your Shop Management Holding You Back?</span>
+</div>
+
+<header class="article-header">
+  <span class="cat-chip"><span class="dot"></span> <span data-i18n="a1.cat">Retail</span></span>
+
+  <h1 data-i18n="a1.h1">Is Your Shop Management Holding You Back?</h1>
+
+  <p class="lede" data-i18n="a1.lede">
+    Legacy tools slowly drain your store's efficiency. Here's how modern shop
+    management moves beyond inventory tracking into real-time analytics,
+    customer intelligence, and margin you can actually see.
+  </p>
+
+  <div class="article-meta">
+    <div class="author-mini">
+      <div class="av">RK</div>
+      <div>
+        <div class="name">Ramesh Kumar</div>
+        <div class="role" data-i18n="a1.authorRole">Head of Retail Practice</div>
+      </div>
+    </div>
+    <span class="meta-dot"></span>
+    <div class="meta-info">
+      <span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+        <span data-i18n="a1.date">Feb 12, 2026</span>
+      </span>
+      <span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <span data-i18n="a1.readTime">8 min read</span>
+      </span>
+    </div>
+  </div>
+</header>
+
+<div class="hero-visual">
+  <div class="hv-frame">
+    <div class="hv-dashboard">
+      <div class="hv-chrome">
+        <span class="dot" style="background:#FF5F57"></span>
+        <span class="dot" style="background:#FEBC2E"></span>
+        <span class="dot" style="background:#28C840"></span>
+        <span class="title">retail.hashveno.com / dashboard</span>
+      </div>
+
+      <div class="hv-body">
+        <div class="hv-panel">
+          <div class="hv-panel-head">
+            <span class="hv-panel-title" data-i18n="a1.hv.title1">Live inventory</span>
+            <span class="hv-panel-tag blue" data-i18n="a1.hv.tag1">Real-time</span>
+          </div>
+          <div class="hv-metric"><span class="lbl" data-i18n="a1.hv.skus">Total SKUs</span><span class="val">1,842</span></div>
+          <div class="hv-metric"><span class="lbl" data-i18n="a1.hv.inStock">In stock</span><span class="val up">1,834</span></div>
+          <div class="hv-metric"><span class="lbl" data-i18n="a1.hv.low">Low stock</span><span class="val down">6</span></div>
+          <div class="hv-metric"><span class="lbl" data-i18n="a1.hv.out">Out of stock</span><span class="val down">2</span></div>
+        </div>
+
+        <div class="hv-panel">
+          <div class="hv-panel-head">
+            <span class="hv-panel-title" data-i18n="a1.hv.title2">Today's sales</span>
+            <span class="hv-panel-tag green">+18.4%</span>
+          </div>
+          <div class="hv-metric"><span class="lbl" data-i18n="a1.hv.revenue">Revenue</span><span class="val">$3,482</span></div>
+          <div class="hv-metric"><span class="lbl" data-i18n="a1.hv.orders">Orders</span><span class="val">214</span></div>
+          <div class="hv-metric"><span class="lbl" data-i18n="a1.hv.basket">Avg. basket</span><span class="val">$16.27</span></div>
+          <div class="hv-bars">
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<article class="article-body" id="articleBody">
+
+  <h2 data-i18n="a1.s1.h2">The invisible cost of "it works fine"</h2>
+
+  <p class="lede-para" data-i18n="a1.s1.p1">
+    Every shop owner I've spoken to in the last three years has said some
+    version of the same thing: "The system works. It's not the problem."
+  </p>
+
+  <p data-i18n="a1.s1.p2">And every single time, when we dug deeper, we found hours of manual work hiding behind that sentence.</p>
+
+  <ul>
+    <li data-i18n="a1.s1.l1">The accountant exporting from Tally every evening to build a report in Excel</li>
+    <li data-i18n="a1.s1.l2">The manager checking three different screens to figure out what actually sold today</li>
+    <li data-i18n="a1.s1.l3">The owner finding out about a stockout three days after it happened, when a customer complained</li>
+  </ul>
+
+  <p data-i18n="a1.s1.p3">
+    None of this shows up on a P&amp;L. But it's real money leaking out of the
+    business every single day — in hours, in lost sales, in decisions made
+    with data that's already a day old.
+  </p>
+
+  <div class="pullquote">
+    <p data-i18n="a1.s1.pq">The question isn't whether your current system "works." The question is what it's quietly costing you every month.</p>
+  </div>
+
+  <h2 data-i18n="a1.s2.h2">The five signs your shop management is costing you money</h2>
+
+  <p data-i18n="a1.s2.p1">Let me be specific. Here's what "it works fine" usually looks like from the inside.</p>
+
+  <h3 data-i18n="a1.s2.h3a">1. Month-end takes more than a day</h3>
+  <p data-i18n="a1.s2.p2">
+    If closing the books takes three days, the system isn't closing the books —
+    a person is. A modern stack produces most reports automatically. You
+    verify, you don't compile.
+  </p>
+
+  <h3 data-i18n="a1.s2.h3b">2. You can't answer "what's profitable?" without exporting</h3>
+  <p data-i18n="a1.s2.p3">
+    If the question "which product made us the most money last week?" requires
+    exporting, re-formatting, and pivoting in Excel, you're flying blind. By
+    the time the answer arrives, the opportunity is gone.
+  </p>
+
+  <h3 data-i18n="a1.s2.h3c">3. Inventory is a monthly event, not a live number</h3>
+  <p data-i18n="a1.s2.p4">
+    Physical counts should be verification, not the primary source of truth.
+    If you don't know your stock position right now, you're ordering blind and
+    writing off dead inventory you can't see.
+  </p>
+
+  <h3 data-i18n="a1.s2.h3d">4. Customer history lives in someone's head</h3>
+  <p data-i18n="a1.s2.p5">
+    "Ask Suresh, he knows the regulars" is not a customer database. Every time
+    that person takes a day off, the business loses a little of its memory.
+  </p>
+
+  <h3 data-i18n="a1.s2.h3e">5. You find out about problems from customers</h3>
+  <p data-i18n="a1.s2.p6">
+    Stockouts, pricing errors, slow checkouts — if the first alert is a
+    customer complaint, you're always reacting. Modern systems surface issues
+    before customers experience them.
+  </p>
+
+  <div class="callout info">
+    <div class="co-label">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><path d="M12 8v.01M12 12v4"/></svg>
+      <span data-i18n="a1.callout1.label">Worth noting</span>
+    </div>
+    <p data-i18n="a1.callout1.text">
+      None of these signs are about technology. They're about visibility.
+      Legacy systems don't fail loudly — they fail by hiding information you
+      should have had an hour ago.
+    </p>
+  </div>
+
+  <h2 data-i18n="a1.s3.h2">What "modern" actually means</h2>
+
+  <p data-i18n="a1.s3.p1">Here's where a lot of shop owners get misled. "Modern" doesn't mean:</p>
+
+  <ul>
+    <li data-i18n="a1.s3.l1"><strong>Cloud-based</strong> — that's just hosting. A 20-year-old tool on AWS is still a 20-year-old tool.</li>
+    <li data-i18n="a1.s3.l2"><strong>Has a mobile app</strong> — that's just a UI layer. It doesn't change what's underneath.</li>
+    <li data-i18n="a1.s3.l3"><strong>Uses AI</strong> — usually a marketing word. Ask what it actually predicts, and how.</li>
+  </ul>
+
+  <p data-i18n="a1.s3.p2">
+    Modern means the system produces business intelligence as a by-product of
+    normal operation. You run the shop, the system does the analysis. You
+    don't run the shop and also run the analysis.
+  </p>
+
+  <p data-i18n="a1.s3.p3">That's the whole difference. Everything else is a feature list.</p>
+
+  <h2 data-i18n="a1.s4.h2">The three layers of a modern retail stack</h2>
+
+  <p data-i18n="a1.s4.p1">Every modern shop management system has three layers. Most legacy tools only have the first.</p>
+
+  <h3 data-i18n="a1.s4.h3a">Layer 1: Transaction (POS)</h3>
+  <p data-i18n="a1.s4.p2">
+    The base layer. Scan, bill, print, done. This is what legacy tools do well
+    — fast checkout, barcode support, split payments, offline mode. This layer
+    hasn't fundamentally changed in 20 years, and it doesn't need to.
+  </p>
+
+  <h3 data-i18n="a1.s4.h3b">Layer 2: Operations (Inventory, Customers, Staff)</h3>
+  <p data-i18n="a1.s4.p3">
+    The middle layer. Live inventory, customer profiles, staff roles, store
+    transfers. This layer is where most legacy tools fall apart — they track
+    transactions but not the state around them. Modern tools treat this layer
+    as first-class. Every sale updates inventory. Every customer is a record.
+    Every staff action is logged.
+  </p>
+
+  <h3 data-i18n="a1.s4.h3c">Layer 3: Intelligence (Analytics, Reports, Predictions)</h3>
+  <p data-i18n="a1.s4.p4">
+    The top layer. Profit per SKU, hourly trends, reorder suggestions, churn
+    risk. This layer doesn't exist in legacy systems — or exists only as
+    static, delayed reports. Modern tools build this layer live. The reports
+    aren't "end of day" — they're "right now."
+  </p>
+
+  <div class="callout warn">
+    <div class="co-label">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 14H4l8-14z"/><path d="M12 10v4M12 17v.01"/></svg>
+      <span data-i18n="a1.callout2.label">Common mistake</span>
+    </div>
+    <p data-i18n="a1.callout2.text">
+      Most shops try to fix Layer 3 problems with Layer 1 tools. Adding a
+      "reports module" to a POS is not the same as having a real intelligence
+      layer. If the data underneath is delayed or fragmented, the reports will
+      be too.
+    </p>
+  </div>
+
+  <h2 data-i18n="a1.s5.h2">The real cost of manual work</h2>
+
+  <p data-i18n="a1.s5.p1">
+    Let me put numbers on this. Here's what a typical single-location shop
+    with two staff members spends on manual work that a modern system would
+    eliminate or automate:
+  </p>
+
+  <div class="data-table">
+    <div class="dt-head" data-i18n="a1.table.head">Weekly time sinks · single-location shop</div>
+    <table>
+      <thead>
+        <tr>
+          <th data-i18n="a1.table.col1">Task</th>
+          <th data-i18n="a1.table.col2">Weekly hours</th>
+          <th data-i18n="a1.table.col3">Annual cost*</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-i18n="a1.table.r1">Month-end reconciliation</td>
+          <td>4 hrs</td>
+          <td>₹96,000</td>
+        </tr>
+        <tr>
+          <td data-i18n="a1.table.r2">Manual inventory counts</td>
+          <td>3 hrs</td>
+          <td>₹72,000</td>
+        </tr>
+        <tr>
+          <td data-i18n="a1.table.r3">Report compilation</td>
+          <td>2 hrs</td>
+          <td>₹48,000</td>
+        </tr>
+        <tr>
+          <td data-i18n="a1.table.r4">Customer lookup / history</td>
+          <td>1 hr</td>
+          <td>₹24,000</td>
+        </tr>
+        <tr class="total">
+          <td data-i18n="a1.table.total">Total</td>
+          <td>10 hrs / week</td>
+          <td>₹2,40,000</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p style="font-size:13.5px;color:var(--faint);font-style:italic;margin-top:-8px" data-i18n="a1.s5.note">
+    *At ₹500/hour fully loaded cost. ₹2,40,000 per year is more than most
+    shops pay for a modern system.
+  </p>
+
+  <h2 data-i18n="a1.s6.h2">What to look for when you switch</h2>
+
+  <p data-i18n="a1.s6.p1">If you're evaluating a switch, here's the checklist I'd use.</p>
+
+  <h3 data-i18n="a1.s6.h3a">Non-negotiables</h3>
+  <ul>
+    <li data-i18n="a1.s6.l1">Live inventory that updates on every sale across every store</li>
+    <li data-i18n="a1.s6.l2">Profit analytics, not just revenue analytics</li>
+    <li data-i18n="a1.s6.l3">Offline billing that syncs cleanly when back online</li>
+    <li data-i18n="a1.s6.l4">Role-based access with audit trails</li>
+    <li data-i18n="a1.s6.l5">Data you can export, any time, in any format</li>
+  </ul>
+
+  <h3 data-i18n="a1.s6.h3b">Strong signals</h3>
+  <ul>
+    <li data-i18n="a1.s6.l6">Multi-store support out of the box</li>
+    <li data-i18n="a1.s6.l7">Customer history at the point of sale</li>
+    <li data-i18n="a1.s6.l8">Configurable alerting (low stock, unusual activity)</li>
+    <li data-i18n="a1.s6.l9">Public API for integrations with your other tools</li>
+    <li data-i18n="a1.s6.l10">India-based data residency option</li>
+  </ul>
+
+  <h3 data-i18n="a1.s6.h3c">Red flags</h3>
+  <ul>
+    <li data-i18n="a1.s6.l11">"Reports available on request"</li>
+    <li data-i18n="a1.s6.l12">No offline mode</li>
+    <li data-i18n="a1.s6.l13">Pricing that scales per transaction (punishes success)</li>
+    <li data-i18n="a1.s6.l14">Data export that requires their support team</li>
+    <li data-i18n="a1.s6.l15">No public API</li>
+  </ul>
+
+  <h2 data-i18n="a1.s7.h2">The bottom line</h2>
+
+  <p data-i18n="a1.s7.p1">
+    Your shop management system should be a multiplier, not a bottleneck. If
+    it's costing you a day a month in manual work, that's 12 days a year —
+    more than two working weeks.
+  </p>
+
+  <p data-i18n="a1.s7.p2">If it's costing you visibility into which products actually make money, that's a much bigger number.</p>
+
+  <p data-i18n="a1.s7.p3">
+    The question isn't "does my current system work?" The question is: what is
+    it quietly costing me?
+  </p>
+
+  <p data-i18n="a1.s7.p4">Answer that honestly, and the decision usually makes itself.</p>
+
+</article>
+
+<div class="author-card">
+  <div class="ac-av">RK</div>
+  <div class="ac-body">
+    <div class="ac-name">Ramesh Kumar</div>
+    <div class="ac-role" data-i18n="a1.authorCard.role">Head of Retail Practice · HashVeno</div>
+    <p class="ac-bio" data-i18n="a1.authorCard.bio">
+      Ramesh leads HashVeno's retail engineering team and has spent the last 8
+      years building point-of-sale and inventory systems for shops across
+      Tamil Nadu. He writes about the practical side of running modern retail
+      operations.
+    </p>
+    <div class="ac-links">
+      <a href="#" class="ac-link">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.2 2H21l-6.6 7.5L22 22h-6.8l-5.3-7-6.1 7H1l7-8L2 2h6.9l4.8 6.4L18.2 2zm-2.4 18h1.6L7.8 3.9H6l9.8 16.1z"/></svg>
+        <span data-i18n="a1.authorCard.follow">Follow on X</span>
+      </a>
+      <a href="#" class="ac-link">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4"/></svg>
+        <span data-i18n="a1.authorCard.connect">Connect on LinkedIn</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="share-footer">
+  <span class="sf-label" data-i18n="a1.share">Share this article</span>
+  <div class="sf-row">
+    <button class="share-btn" data-share="twitter" aria-label="Share on X">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.2 2H21l-6.6 7.5L22 22h-6.8l-5.3-7-6.1 7H1l7-8L2 2h6.9l4.8 6.4L18.2 2zm-2.4 18h1.6L7.8 3.9H6l9.8 16.1z"/></svg>
+    </button>
+    <button class="share-btn" data-share="linkedin" aria-label="Share on LinkedIn">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4"/></svg>
+    </button>
+    <button class="share-btn" data-share="copy" aria-label="Copy link">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+    </button>
+  </div>
+</div>
+
+<section class="related-section">
+  <div class="related-head">
+    <div class="eyebrow" data-i18n="a1.related">Continue reading</div>
+    <h2 data-i18n="a1.relatedTitle">Related articles</h2>
+  </div>
+
+  <div class="related-grid">
+    <a href="#" class="rel-card">
+      <span class="rel-cat cloud" data-i18n="nav.cloud">Cloud</span>
+      <h3 data-i18n="a2.title">Future-Proof Retail with Cloud and Automation</h3>
+      <p data-i18n="a2.excerpt">Small changes today lead to big competitive advantages tomorrow. Integrating cloud POS, automated billing, and smart dashboards can elevate your entire retail game.</p>
+      <div class="rel-meta">
+        <span>Mar 2026</span>
+        <span class="read">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          9 min
+        </span>
+      </div>
+    </a>
+
+    <a href="#" class="rel-card">
+      <span class="rel-cat transport" data-i18n="nav.transport">Transport</span>
+      <h3 data-i18n="a3.title">Rising Unauthorized Travel in Indian Railways</h3>
+      <p data-i18n="a3.excerpt">Indian Railways faces increasing numbers of passengers traveling without valid tickets — causing revenue loss and overcrowding. Real-time monitoring can help detect it early.</p>
+      <div class="rel-meta">
+        <span>Mar 2026</span>
+        <span class="read">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          8 min
+        </span>
+      </div>
+    </a>
+
+    <a href="#" class="rel-card">
+      <span class="rel-cat transport" data-i18n="nav.transport">Transport</span>
+      <h3 data-i18n="a4.title">Overcrowding &amp; Fare Evasion in MTC Buses</h3>
+      <p data-i18n="a4.excerpt">MTC buses struggle with unauthorized passengers and overcrowding — leading to revenue loss and delays. Smart fleet tracking enables better passenger management.</p>
+      <div class="rel-meta">
+        <span>Mar 2026</span>
+        <span class="read">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          5 min
+        </span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<section class="newsletter-wrap" id="contact">
+  <div class="newsletter">
+    <div>
+      <h3><span data-i18n="nl.h3a">Engineering notes,</span> <em data-i18n="nl.h3b">monthly.</em></h3>
+      <p data-i18n="nl.lead">Short essays on building software for Indian businesses — retail, transit, and enterprise. No fluff, no marketing. Just what we've learned.</p>
+    </div>
+
+    <form class="newsletter-form" onsubmit="event.preventDefault(); this.reset(); alert('Thanks — check your inbox to confirm.');">
+      <div class="newsletter-row">
+        <input type="email" placeholder="you@company.com" required />
+        <button type="submit" data-i18n="nl.subscribe">Subscribe</button>
+      </div>
+      <div class="newsletter-note">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+        <span data-i18n="nl.note">One email per month. Unsubscribe any time.</span>
+      </div>
+    </form>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <span class="brand-mark">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="3" fill="#fff" stroke="none"/>
+            </svg>
+          </span>
+          <span class="brand-name">HashVeno</span>
+        </div>
+        <p class="footer-about" data-i18n="footer.about">
+          IT product &amp; service provider helping businesses grow through
+          smart technology solutions. Built and operated from Chennai, India.
+        </p>
+        <div class="footer-social">
+          <a href="#" class="social-btn" aria-label="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="LinkedIn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="Twitter">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.2 2H21l-6.6 7.5L22 22h-6.8l-5.3-7-6.1 7H1l7-8L2 2h6.9l4.8 6.4L18.2 2zm-2.4 18h1.6L7.8 3.9H6l9.8 16.1z"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="YouTube">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="6" width="18" height="12" rx="3"/><path d="M11 10l4 2-4 2v-4z" fill="currentColor"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h5 data-i18n="footer.services">Services</h5>
+        <div class="footer-links">
+          <a href="#" data-i18n="services.s1.title">Custom Software</a>
+          <a href="#" data-i18n="services.s2.title">Cloud Applications</a>
+          <a href="#" data-i18n="services.s3.title">Support &amp; Maintenance</a>
+          <a href="#" data-i18n="services.s4.title">Integrations</a>
+        </div>
+      </div>
+
+      <div>
+        <h5 data-i18n="footer.products">Products</h5>
+        <div class="footer-links">
+          <a href="#">HashVeno Retail</a>
+          <a href="#">HashRail</a>
+          <a href="#">HashRoute</a>
+          <a href="#" data-i18n="nav.tutorials">Tutorials</a>
+        </div>
+      </div>
+
+      <div>
+        <h5 data-i18n="footer.company">Company</h5>
+        <div class="footer-links">
+          <a href="#" data-i18n="nav.articles">Articles</a>
+          <a href="#" data-i18n="nav.careers">Careers</a>
+          <a href="#" data-i18n="nav.terms">Terms</a>
+          <a href="#" data-i18n="nav.privacy">Privacy</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2026 HashVeno. <span data-i18n="footer.rights">All rights reserved.</span></div>
+      <div class="made">
+        <span>🇮🇳</span>
+        <span data-i18n="footer.made">made in India · Chennai</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const translations = {
+  en: {
+    'nav.home': 'Home','nav.services': 'Services','nav.products': 'Products',
+    'nav.articles': 'Articles','nav.tutorials': 'Tutorials','nav.careers': 'Careers',
+    'nav.terms': 'Terms','nav.privacy': 'Privacy','nav.contact': 'Contact',
+    'nav.getInTouch': 'Get in touch','nav.cloud': 'Cloud','nav.transport': 'Transport',
+
+    'a1.breadcrumb': 'Is Your Shop Management Holding You Back?',
+    'a1.cat': 'Retail',
+    'a1.h1': 'Is Your Shop Management Holding You Back?',
+    'a1.lede': "Legacy tools slowly drain your store's efficiency. Here's how modern shop management moves beyond inventory tracking into real-time analytics, customer intelligence, and margin you can actually see.",
+    'a1.authorRole': 'Head of Retail Practice',
+    'a1.date': 'Feb 12, 2026','a1.readTime': '8 min read',
+    'a1.hv.title1': 'Live inventory','a1.hv.tag1': 'Real-time',
+    'a1.hv.skus': 'Total SKUs','a1.hv.inStock': 'In stock','a1.hv.low': 'Low stock','a1.hv.out': 'Out of stock',
+    'a1.hv.title2': "Today's sales",'a1.hv.revenue': 'Revenue','a1.hv.orders': 'Orders','a1.hv.basket': 'Avg. basket',
+
+    'a1.s1.h2': 'The invisible cost of "it works fine"',
+    'a1.s1.p1': 'Every shop owner I\'ve spoken to in the last three years has said some version of the same thing: "The system works. It\'s not the problem."',
+    'a1.s1.p2': 'And every single time, when we dug deeper, we found hours of manual work hiding behind that sentence.',
+    'a1.s1.l1': 'The accountant exporting from Tally every evening to build a report in Excel',
+    'a1.s1.l2': 'The manager checking three different screens to figure out what actually sold today',
+    'a1.s1.l3': 'The owner finding out about a stockout three days after it happened, when a customer complained',
+    'a1.s1.p3': "None of this shows up on a P&L. But it's real money leaking out of the business every single day — in hours, in lost sales, in decisions made with data that's already a day old.",
+    'a1.s1.pq': 'The question isn\'t whether your current system "works." The question is what it\'s quietly costing you every month.',
+
+    'a1.s2.h2': 'The five signs your shop management is costing you money',
+    'a1.s2.p1': 'Let me be specific. Here\'s what "it works fine" usually looks like from the inside.',
+    'a1.s2.h3a': '1. Month-end takes more than a day',
+    'a1.s2.p2': "If closing the books takes three days, the system isn't closing the books — a person is. A modern stack produces most reports automatically. You verify, you don't compile.",
+    'a1.s2.h3b': '2. You can\'t answer "what\'s profitable?" without exporting',
+    'a1.s2.p3': 'If the question "which product made us the most money last week?" requires exporting, re-formatting, and pivoting in Excel, you\'re flying blind. By the time the answer arrives, the opportunity is gone.',
+    'a1.s2.h3c': '3. Inventory is a monthly event, not a live number',
+    'a1.s2.p4': "Physical counts should be verification, not the primary source of truth. If you don't know your stock position right now, you're ordering blind and writing off dead inventory you can't see.",
+    'a1.s2.h3d': "4. Customer history lives in someone's head",
+    'a1.s2.p5': '"Ask Suresh, he knows the regulars" is not a customer database. Every time that person takes a day off, the business loses a little of its memory.',
+    'a1.s2.h3e': '5. You find out about problems from customers',
+    'a1.s2.p6': "Stockouts, pricing errors, slow checkouts — if the first alert is a customer complaint, you're always reacting. Modern systems surface issues before customers experience them.",
+
+    'a1.callout1.label': 'Worth noting',
+    'a1.callout1.text': "None of these signs are about technology. They're about visibility. Legacy systems don't fail loudly — they fail by hiding information you should have had an hour ago.",
+
+    'a1.s3.h2': 'What "modern" actually means',
+    'a1.s3.p1': 'Here\'s where a lot of shop owners get misled. "Modern" doesn\'t mean:',
+    'a1.s3.l1': 'Cloud-based — that\'s just hosting. A 20-year-old tool on AWS is still a 20-year-old tool.',
+    'a1.s3.l2': "Has a mobile app — that's just a UI layer. It doesn't change what's underneath.",
+    'a1.s3.l3': "Uses AI — usually a marketing word. Ask what it actually predicts, and how.",
+    'a1.s3.p2': "Modern means the system produces business intelligence as a by-product of normal operation. You run the shop, the system does the analysis. You don't run the shop and also run the analysis.",
+    'a1.s3.p3': "That's the whole difference. Everything else is a feature list.",
+
+    'a1.s4.h2': 'The three layers of a modern retail stack',
+    'a1.s4.p1': 'Every modern shop management system has three layers. Most legacy tools only have the first.',
+    'a1.s4.h3a': 'Layer 1: Transaction (POS)',
+    'a1.s4.p2': "The base layer. Scan, bill, print, done. This is what legacy tools do well — fast checkout, barcode support, split payments, offline mode. This layer hasn't fundamentally changed in 20 years, and it doesn't need to.",
+    'a1.s4.h3b': 'Layer 2: Operations (Inventory, Customers, Staff)',
+    'a1.s4.p3': 'The middle layer. Live inventory, customer profiles, staff roles, store transfers. This layer is where most legacy tools fall apart — they track transactions but not the state around them. Modern tools treat this layer as first-class. Every sale updates inventory. Every customer is a record. Every staff action is logged.',
+    'a1.s4.h3c': 'Layer 3: Intelligence (Analytics, Reports, Predictions)',
+    'a1.s4.p4': 'The top layer. Profit per SKU, hourly trends, reorder suggestions, churn risk. This layer doesn\'t exist in legacy systems — or exists only as static, delayed reports. Modern tools build this layer live. The reports aren\'t "end of day" — they\'re "right now."',
+
+    'a1.callout2.label': 'Common mistake',
+    'a1.callout2.text': 'Most shops try to fix Layer 3 problems with Layer 1 tools. Adding a "reports module" to a POS is not the same as having a real intelligence layer. If the data underneath is delayed or fragmented, the reports will be too.',
+
+    'a1.s5.h2': 'The real cost of manual work',
+    'a1.s5.p1': "Let me put numbers on this. Here's what a typical single-location shop with two staff members spends on manual work that a modern system would eliminate or automate:",
+    'a1.table.head': 'Weekly time sinks · single-location shop',
+    'a1.table.col1': 'Task','a1.table.col2': 'Weekly hours','a1.table.col3': 'Annual cost*',
+    'a1.table.r1': 'Month-end reconciliation','a1.table.r2': 'Manual inventory counts',
+    'a1.table.r3': 'Report compilation','a1.table.r4': 'Customer lookup / history',
+    'a1.table.total': 'Total',
+    'a1.s5.note': '*At ₹500/hour fully loaded cost. ₹2,40,000 per year is more than most shops pay for a modern system.',
+
+    'a1.s6.h2': 'What to look for when you switch',
+    'a1.s6.p1': "If you're evaluating a switch, here's the checklist I'd use.",
+    'a1.s6.h3a': 'Non-negotiables',
+    'a1.s6.l1': 'Live inventory that updates on every sale across every store',
+    'a1.s6.l2': 'Profit analytics, not just revenue analytics',
+    'a1.s6.l3': 'Offline billing that syncs cleanly when back online',
+    'a1.s6.l4': 'Role-based access with audit trails',
+    'a1.s6.l5': 'Data you can export, any time, in any format',
+    'a1.s6.h3b': 'Strong signals',
+    'a1.s6.l6': 'Multi-store support out of the box',
+    'a1.s6.l7': 'Customer history at the point of sale',
+    'a1.s6.l8': 'Configurable alerting (low stock, unusual activity)',
+    'a1.s6.l9': 'Public API for integrations with your other tools',
+    'a1.s6.l10': 'India-based data residency option',
+    'a1.s6.h3c': 'Red flags',
+    'a1.s6.l11': '"Reports available on request"',
+    'a1.s6.l12': 'No offline mode',
+    'a1.s6.l13': 'Pricing that scales per transaction (punishes success)',
+    'a1.s6.l14': 'Data export that requires their support team',
+    'a1.s6.l15': 'No public API',
+
+    'a1.s7.h2': 'The bottom line',
+    'a1.s7.p1': "Your shop management system should be a multiplier, not a bottleneck. If it's costing you a day a month in manual work, that's 12 days a year — more than two working weeks.",
+    'a1.s7.p2': "If it's costing you visibility into which products actually make money, that's a much bigger number.",
+    'a1.s7.p3': 'The question isn\'t "does my current system work?" The question is: what is it quietly costing me?',
+    'a1.s7.p4': 'Answer that honestly, and the decision usually makes itself.',
+
+    'a1.authorCard.role': 'Head of Retail Practice · HashVeno',
+    'a1.authorCard.bio': "Ramesh leads HashVeno's retail engineering team and has spent the last 8 years building point-of-sale and inventory systems for shops across Tamil Nadu. He writes about the practical side of running modern retail operations.",
+    'a1.authorCard.follow': 'Follow on X',
+    'a1.authorCard.connect': 'Connect on LinkedIn',
+    'a1.share': 'Share this article',
+    'a1.related': 'Continue reading',
+    'a1.relatedTitle': 'Related articles',
+
+    'a2.title': 'Future-Proof Retail with Cloud and Automation',
+    'a2.excerpt': 'Small changes today lead to big competitive advantages tomorrow. Integrating cloud POS, automated billing, and smart dashboards can elevate your entire retail game.',
+    'a3.title': 'Rising Unauthorized Travel in Indian Railways',
+    'a3.excerpt': 'Indian Railways faces increasing numbers of passengers traveling without valid tickets — causing revenue loss and overcrowding. Real-time monitoring can help detect it early.',
+    'a4.title': 'Overcrowding & Fare Evasion in MTC Buses',
+    'a4.excerpt': 'MTC buses struggle with unauthorized passengers and overcrowding — leading to revenue loss and delays. Smart fleet tracking enables better passenger management.',
+
+    'nl.h3a': 'Engineering notes,','nl.h3b': 'monthly.',
+    'nl.lead': "Short essays on building software for Indian businesses — retail, transit, and enterprise. No fluff, no marketing. Just what we've learned.",
+    'nl.subscribe': 'Subscribe',
+    'nl.note': 'One email per month. Unsubscribe any time.',
+
+    'services.s1.title': 'Custom Software','services.s2.title': 'Cloud Applications',
+    'services.s3.title': 'Support & Maintenance','services.s4.title': 'Integrations',
+
+    'footer.about': 'IT product & service provider helping businesses grow through smart technology solutions. Built and operated from Chennai, India.',
+    'footer.services': 'Services','footer.products': 'Products','footer.company': 'Company',
+    'footer.rights': 'All rights reserved.','footer.made': 'made in India · Chennai'
+  },
+
+  ta: {
+    'nav.home': 'முகப்பு','nav.services': 'சேவைகள்','nav.products': 'தயாரிப்புகள்',
+    'nav.articles': 'கட்டுரைகள்','nav.tutorials': 'பயிற்சிகள்','nav.careers': 'வேலை வாய்ப்புகள்',
+    'nav.terms': 'விதிமுறைகள்','nav.privacy': 'தனியுரிமை','nav.contact': 'தொடர்பு',
+    'nav.getInTouch': 'தொடர்பு கொள்ளுங்கள்','nav.cloud': 'கிளவுட்','nav.transport': 'போக்குவரத்து',
+
+    'a1.breadcrumb': 'உங்கள் கடை மேலாண்மை உங்களை பின்னுக்கு இழுக்கிறதா?',
+    'a1.cat': 'சில்லறை',
+    'a1.h1': 'உங்கள் கடை மேலாண்மை உங்களை பின்னுக்கு இழுக்கிறதா?',
+    'a1.lede': 'பழைய கருவிகள் உங்கள் கடையின் செயல்திறனை மெதுவாக வடிகட்டுகின்றன. நவீன கடை மேலாண்மை எவ்வாறு சரக்கு கண்காணிப்புக்கு அப்பால் நிகழ்நேர பகுப்பாய்வு, வாடிக்கையாளர் நுண்ணறிவு மற்றும் நீங்கள் உண்மையில் பார்க்கக்கூடிய வரம்புக்கு செல்கிறது என்பது இங்கே.',
+    'a1.authorRole': 'சில்லறை நடைமுறை தலைவர்',
+    'a1.date': 'பிப்ரவரி 12, 2026','a1.readTime': '8 நிமிட வாசிப்பு',
+    'a1.hv.title1': 'நேரடி சரக்கு','a1.hv.tag1': 'நிகழ்நேரம்',
+    'a1.hv.skus': 'மொத்த SKU-கள்','a1.hv.inStock': 'இருப்பில்','a1.hv.low': 'குறைந்த சரக்கு','a1.hv.out': 'சரக்கு இல்லை',
+    'a1.hv.title2': 'இன்றைய விற்பனை','a1.hv.revenue': 'வருவாய்','a1.hv.orders': 'ஆர்டர்கள்','a1.hv.basket': 'சராசரி கூடை',
+
+    'a1.s1.h2': '"வேலை செய்கிறது" என்பதன் கண்ணுக்குத் தெரியாத செலவு',
+    'a1.s1.p1': 'கடந்த மூன்று ஆண்டுகளில் நான் பேசிய ஒவ்வொரு கடை உரிமையாளரும் ஒரே விஷயத்தின் ஏதோ ஒரு பதிப்பைச் சொன்னார்கள்: "அமைப்பு வேலை செய்கிறது. அது பிரச்சனை அல்ல."',
+    'a1.s1.p2': 'ஒவ்வொரு முறையும், நாங்கள் ஆழமாகத் தோண்டியபோது, அந்த வாக்கியத்தின் பின்னால் மணிநேர கைமுறை வேலை மறைந்திருப்பதைக் கண்டோம்.',
+    'a1.s1.l1': 'ஒவ்வொரு மாலையும் Tally-இலிருந்து ஏற்றுமதி செய்து Excel-இல் அறிக்கையை உருவாக்கும் கணக்காளர்',
+    'a1.s1.l2': 'இன்று உண்மையில் என்ன விற்றது என்பதைக் கண்டறிய மூன்று வெவ்வேறு திரைகளைப் பார்க்கும் மேலாளர்',
+    'a1.s1.l3': 'ஒரு வாடிக்கையாளர் புகார் அளித்தபோது, ஒரு சரக்கு பற்றாக்குறை நடந்த மூன்று நாட்களுக்குப் பிறகு அதை அறிந்த உரிமையாளர்',
+    'a1.s1.p3': 'இதில் எதுவும் P&L-இல் தெரியாது. ஆனால் இது ஒவ்வொரு நாளும் வணிகத்திலிருந்து கசியும் உண்மையான பணம் — மணிநேரங்களில், இழந்த விற்பனையில், ஏற்கனவே ஒரு நாள் பழைய தரவுடன் எடுக்கப்பட்ட முடிவுகளில்.',
+    'a1.s1.pq': 'உங்கள் தற்போதைய அமைப்பு "வேலை செய்கிறதா" என்பது கேள்வி அல்ல. ஒவ்வொரு மாதமும் அது அமைதியாக உங்களுக்கு எவ்வளவு செலவாகிறது என்பதுதான் கேள்வி.',
+
+    'a1.s2.h2': 'உங்கள் கடை மேலாண்மை உங்களுக்கு பணம் செலவாக்கும் ஐந்து அறிகுறிகள்',
+    'a1.s2.p1': 'நான் குறிப்பாகச் சொல்கிறேன். "வேலை செய்கிறது" என்பது உள்ளிருந்து எப்படி இருக்கும் என்பது இங்கே.',
+    'a1.s2.h3a': '1. மாத இறுதி ஒரு நாளுக்கு மேல் எடுக்கும்',
+    'a1.s2.p2': 'புத்தகங்களை மூட மூன்று நாட்கள் ஆகும் என்றால், அமைப்பு புத்தகங்களை மூடவில்லை — ஒரு நபர் மூடுகிறார். நவீன ஸ்டாக் பெரும்பாலான அறிக்கைகளை தானாக உருவாக்குகிறது. நீங்கள் சரிபார்க்கிறீர்கள், தொகுக்கவில்லை.',
+    'a1.s2.h3b': '2. ஏற்றுமதி செய்யாமல் "எது லாபகரமானது?" என்று பதிலளிக்க முடியாது',
+    'a1.s2.p3': '"கடந்த வாரம் எந்த தயாரிப்பு எங்களுக்கு அதிக பணம் ஈட்டியது?" என்ற கேள்விக்கு ஏற்றுமதி, மறுவடிவமைப்பு மற்றும் Excel-இல் பிவோட் தேவைப்பட்டால், நீங்கள் கண்மூடித்தனமாக பறக்கிறீர்கள். பதில் வரும்போது, வாய்ப்பு போய்விட்டது.',
+    'a1.s2.h3c': '3. சரக்கு ஒரு மாதாந்திர நிகழ்வு, நேரடி எண் அல்ல',
+    'a1.s2.p4': 'உடல் எண்ணிக்கைகள் சரிபார்ப்பாக இருக்க வேண்டும், முதன்மை உண்மை ஆதாரமாக அல்ல. இப்போது உங்கள் சரக்கு நிலையை அறியவில்லை என்றால், நீங்கள் கண்மூடித்தனமாக ஆர்டர் செய்கிறீர்கள்.',
+    'a1.s2.h3d': '4. வாடிக்கையாளர் வரலாறு ஒருவரின் தலையில் வாழ்கிறது',
+    'a1.s2.p5': '"சுரேஷிடம் கேளுங்கள், அவர் வழக்கமானவர்களை அறிவார்" என்பது ஒரு வாடிக்கையாளர் தரவுத்தளம் அல்ல. அந்த நபர் ஒரு நாள் விடுமுறை எடுக்கும் ஒவ்வொரு முறையும், வணிகம் அதன் நினைவகத்தில் சிறிது இழக்கிறது.',
+    'a1.s2.h3e': '5. வாடிக்கையாளர்களிடமிருந்து பிரச்சினைகளைப் பற்றி அறிகிறீர்கள்',
+    'a1.s2.p6': 'சரக்கு பற்றாக்குறைகள், விலை பிழைகள், மெதுவான செக்அவுட்கள் — முதல் எச்சரிக்கை ஒரு வாடிக்கையாளர் புகார் என்றால், நீங்கள் எப்போதும் எதிர்வினையாற்றுகிறீர்கள். நவீன அமைப்புகள் வாடிக்கையாளர்கள் அனுபவிப்பதற்கு முன் பிரச்சினைகளை வெளிப்படுத்துகின்றன.',
+
+    'a1.callout1.label': 'கவனிக்கத்தக்கது',
+    'a1.callout1.text': 'இந்த அறிகுறிகளில் எதுவும் தொழில்நுட்பம் பற்றியது அல்ல. அவை தெரிவுநிலை பற்றியவை. பழைய அமைப்புகள் சத்தமாக தோல்வியடையாது — ஒரு மணி நேரத்திற்கு முன்பே உங்களிடம் இருக்க வேண்டிய தகவலை மறைப்பதன் மூலம் தோல்வியடைகின்றன.',
+
+    'a1.s3.h2': '"நவீன" என்பது உண்மையில் என்ன அர்த்தம்',
+    'a1.s3.p1': 'பல கடை உரிமையாளர்கள் தவறாக வழிநடத்தப்படுவது இங்கே. "நவீன" என்றால்:',
+    'a1.s3.l1': 'கிளவுட் அடிப்படையிலானது — அது வெறும் ஹோஸ்டிங். AWS-இல் உள்ள 20 வயது கருவி இன்னும் 20 வயது கருவிதான்.',
+    'a1.s3.l2': 'மொபைல் ஆப் உள்ளது — அது வெறும் UI அடுக்கு. அது கீழே உள்ளதை மாற்றாது.',
+    'a1.s3.l3': 'AI-ஐப் பயன்படுத்துகிறது — பொதுவாக ஒரு சந்தைப்படுத்தல் சொல். அது உண்மையில் என்ன கணிக்கிறது, எப்படி என்று கேளுங்கள்.',
+    'a1.s3.p2': 'நவீன என்பது சாதாரண செயல்பாட்டின் துணை-தயாரிப்பாக அமைப்பு வணிக நுண்ணறிவை உருவாக்குகிறது. நீங்கள் கடையை இயக்குகிறீர்கள், அமைப்பு பகுப்பாய்வைச் செய்கிறது. நீங்கள் கடையை இயக்கி பகுப்பாய்வையும் இயக்க வேண்டாம்.',
+    'a1.s3.p3': 'அதுதான் முழு வித்தியாசம். மற்ற அனைத்தும் ஒரு அம்ச பட்டியல்.',
+
+    'a1.s4.h2': 'நவீன சில்லறை ஸ்டாக்கின் மூன்று அடுக்குகள்',
+    'a1.s4.p1': 'ஒவ்வொரு நவீன கடை மேலாண்மை அமைப்பிலும் மூன்று அடுக்குகள் உள்ளன. பெரும்பாலான பழைய கருவிகள் முதல் அடுக்கை மட்டுமே கொண்டுள்ளன.',
+    'a1.s4.h3a': 'அடுக்கு 1: பரிவர்த்தனை (POS)',
+    'a1.s4.p2': 'அடிப்படை அடுக்கு. ஸ்கேன், பில், அச்சிடு, முடிந்தது. பழைய கருவிகள் இதை நன்றாகச் செய்கின்றன — வேகமான செக்அவுட், பார்கோடு ஆதரவு, பிளவு பணம், ஆஃப்லைன் பயன்முறை. இந்த அடுக்கு 20 ஆண்டுகளில் அடிப்படையில் மாறவில்லை, மாற வேண்டியதில்லை.',
+    'a1.s4.h3b': 'அடுக்கு 2: செயல்பாடுகள் (சரக்கு, வாடிக்கையாளர்கள், ஊழியர்கள்)',
+    'a1.s4.p3': 'நடுத்தர அடுக்கு. நேரடி சரக்கு, வாடிக்கையாளர் சுயவிவரங்கள், ஊழியர் பங்குகள், கடை மாற்றங்கள். இந்த அடுக்கில்தான் பெரும்பாலான பழைய கருவிகள் உடைகின்றன — அவை பரிவர்த்தனைகளைக் கண்காணிக்கின்றன, ஆனால் அவற்றைச் சுற்றியுள்ள நிலையை அல்ல. நவீன கருவிகள் இந்த அடுக்கை முதல்-வகுப்பாக நடத்துகின்றன.',
+    'a1.s4.h3c': 'அடுக்கு 3: நுண்ணறிவு (பகுப்பாய்வு, அறிக்கைகள், கணிப்புகள்)',
+    'a1.s4.p4': 'மேல் அடுக்கு. ஒவ்வொரு SKU-க்கும் லாபம், மணிநேர போக்குகள், மறுஆர்டர் பரிந்துரைகள், வாடிக்கையாளர் இழப்பு ஆபத்து. இந்த அடுக்கு பழைய அமைப்புகளில் இல்லை — அல்லது நிலையான, தாமதமான அறிக்கைகளாக மட்டுமே உள்ளது. நவீன கருவிகள் இந்த அடுக்கை நேரடியாக உருவாக்குகின்றன.',
+
+    'a1.callout2.label': 'பொதுவான தவறு',
+    'a1.callout2.text': 'பெரும்பாலான கடைகள் அடுக்கு 3 பிரச்சினைகளை அடுக்கு 1 கருவிகளால் சரிசெய்ய முயற்சிக்கின்றன. POS-இல் "அறிக்கைகள் தொகுதி" சேர்ப்பது ஒரு உண்மையான நுண்ணறிவு அடுக்கு வைத்திருப்பதற்கு சமமானதல்ல. கீழே உள்ள தரவு தாமதமாகவோ துண்டாகவோ இருந்தால், அறிக்கைகளும் அப்படியே இருக்கும்.',
+
+    'a1.s5.h2': 'கைமுறை வேலையின் உண்மையான செலவு',
+    'a1.s5.p1': 'இதில் எண்களை வைக்கிறேன். இரண்டு ஊழியர்களைக் கொண்ட ஒரு பொதுவான ஒற்றை-இட கடை, ஒரு நவீன அமைப்பு நீக்கும் அல்லது தானியங்கும் கைமுறை வேலையில் செலவிடுவது இங்கே:',
+    'a1.table.head': 'வாராந்திர நேர செலவுகள் · ஒற்றை-இட கடை',
+    'a1.table.col1': 'பணி','a1.table.col2': 'வாராந்திர மணிநேரம்','a1.table.col3': 'ஆண்டு செலவு*',
+    'a1.table.r1': 'மாத இறுதி சமரசம்','a1.table.r2': 'கைமுறை சரக்கு எண்ணிக்கைகள்',
+    'a1.table.r3': 'அறிக்கை தொகுப்பு','a1.table.r4': 'வாடிக்கையாளர் தேடல் / வரலாறு',
+    'a1.table.total': 'மொத்தம்',
+    'a1.s5.note': '*மணிக்கு ₹500 முழு ஏற்றப்பட்ட செலவில். ஆண்டுக்கு ₹2,40,000 ஒரு நவீன அமைப்புக்கு பெரும்பாலான கடைகள் செலுத்துவதை விட அதிகம்.',
+
+    'a1.s6.h2': 'மாறும்போது என்ன பார்க்க வேண்டும்',
+    'a1.s6.p1': 'நீங்கள் ஒரு மாற்றத்தை மதிப்பிடுகிறீர்கள் என்றால், நான் பயன்படுத்தும் சரிபார்ப்பு பட்டியல் இங்கே.',
+    'a1.s6.h3a': 'பேச்சுவார்த்தைக்கு உட்படாதவை',
+    'a1.s6.l1': 'ஒவ்வொரு விற்பனையிலும் ஒவ்வொரு கடையிலும் புதுப்பிக்கும் நேரடி சரக்கு',
+    'a1.s6.l2': 'லாப பகுப்பாய்வு, வருவாய் பகுப்பாய்வு மட்டுமல்ல',
+    'a1.s6.l3': 'ஆன்லைனில் திரும்பும்போது சுத்தமாக ஒத்திசைக்கும் ஆஃப்லைன் பில்லிங்',
+    'a1.s6.l4': 'ஆடிட் தடயங்களுடன் பங்கு அடிப்படையிலான அணுகல்',
+    'a1.s6.l5': 'எப்போது வேண்டுமானாலும், எந்த வடிவத்திலும் ஏற்றுமதி செய்யக்கூடிய தரவு',
+    'a1.s6.h3b': 'வலுவான சமிக்ஞைகள்',
+    'a1.s6.l6': 'வெளியில் பல-கடை ஆதரவு',
+    'a1.s6.l7': 'விற்பனை இடத்தில் வாடிக்கையாளர் வரலாறு',
+    'a1.s6.l8': 'கட்டமைக்கக்கூடிய எச்சரிக்கை (குறைந்த சரக்கு, அசாதாரண செயல்பாடு)',
+    'a1.s6.l9': 'உங்கள் மற்ற கருவிகளுடன் ஒருங்கிணைப்புகளுக்கான பொது API',
+    'a1.s6.l10': 'இந்தியாவில் தரவு குடியிருப்பு விருப்பம்',
+    'a1.s6.h3c': 'சிவப்புக் கொடிகள்',
+    'a1.s6.l11': '"கோரிக்கையின் பேரில் அறிக்கைகள் கிடைக்கும்"',
+    'a1.s6.l12': 'ஆஃப்லைன் பயன்முறை இல்லை',
+    'a1.s6.l13': 'ஒவ்வொரு பரிவர்த்தனைக்கும் அளவிடும் விலை நிர்ணயம் (வெற்றியை தண்டிக்கிறது)',
+    'a1.s6.l14': 'அவர்களின் ஆதரவு குழு தேவைப்படும் தரவு ஏற்றுமதி',
+    'a1.s6.l15': 'பொது API இல்லை',
+
+    'a1.s7.h2': 'கடைசி வரி',
+    'a1.s7.p1': 'உங்கள் கடை மேலாண்மை அமைப்பு ஒரு பெருக்கி, ஒரு தடையாக இருக்கக்கூடாது. கைமுறை வேலையில் ஒரு மாதத்திற்கு ஒரு நாள் செலவாகிறது என்றால், அது ஒரு வருடத்திற்கு 12 நாட்கள் — இரண்டு வேலை வாரங்களுக்கு மேல்.',
+    'a1.s7.p2': 'எந்த தயாரிப்புகள் உண்மையில் பணம் ஈட்டுகின்றன என்பதைப் பற்றிய தெரிவுநிலை உங்களுக்கு செலவாகிறது என்றால், அது மிகப் பெரிய எண்.',
+    'a1.s7.p3': 'கேள்வி "எனது தற்போதைய அமைப்பு வேலை செய்கிறதா?" அல்ல. கேள்வி: அது எனக்கு அமைதியாக எவ்வளவு செலவாகிறது?',
+    'a1.s7.p4': 'அதற்கு நேர்மையாக பதிலளியுங்கள், முடிவு பொதுவாக தானாகவே எடுக்கப்படும்.',
+
+    'a1.authorCard.role': 'சில்லறை நடைமுறை தலைவர் · HashVeno',
+    'a1.authorCard.bio': 'ரமேஷ் HashVeno-இன் சில்லறை பொறியியல் குழுவை வழிநடத்துகிறார், கடந்த 8 ஆண்டுகளாக தமிழ்நாடு முழுவதும் உள்ள கடைகளுக்கான POS மற்றும் சரக்கு அமைப்புகளை உருவாக்கி வருகிறார். நவீன சில்லறை செயல்பாடுகளை இயக்குவதன் நடைமுறை பக்கத்தைப் பற்றி எழுதுகிறார்.',
+    'a1.authorCard.follow': 'X-இல் பின்தொடரவும்',
+    'a1.authorCard.connect': 'LinkedIn-இல் இணையுங்கள்',
+    'a1.share': 'இந்த கட்டுரையைப் பகிரவும்',
+    'a1.related': 'தொடர்ந்து படிக்கவும்',
+    'a1.relatedTitle': 'தொடர்புடைய கட்டுரைகள்',
+
+    'a2.title': 'கிளவுட் மற்றும் தானியங்கியுடன் எதிர்கால-ஆய்வு சில்லறை',
+    'a2.excerpt': 'இன்று சிறிய மாற்றங்கள் நாளை பெரிய போட்டி நன்மைகளுக்கு வழிவகுக்கும். கிளவுட் POS, தானியங்கி பில்லிங் மற்றும் ஸ்மார்ட் டாஷ்போர்டுகளை ஒருங்கிணைப்பது உங்கள் முழு சில்லறை விளையாட்டையும் உயர்த்தும்.',
+    'a3.title': 'இந்திய ரயில்வேயில் அங்கீகரிக்கப்படாத பயணம் அதிகரிக்கிறது',
+    'a3.excerpt': 'இந்திய ரயில்வே சரியான டிக்கெட்டுகள் இல்லாமல் பயணிக்கும் பயணிகளின் எண்ணிக்கை அதிகரித்து வருகிறது — வருவாய் இழப்பு மற்றும் கூட்டத்தை ஏற்படுத்துகிறது. நிகழ்நேர கண்காணிப்பு அதை ஆரம்பத்திலேயே கண்டறிய உதவும்.',
+    'a4.title': 'MTC பேருந்துகளில் கூட்டம் & கட்டண ஏமாற்று',
+    'a4.excerpt': 'MTC பேருந்துகள் அங்கீகரிக்கப்படாத பயணிகள் மற்றும் கூட்டத்துடன் போராடுகின்றன — வருவாய் இழப்பு மற்றும் தாமதங்களுக்கு வழிவகுக்கிறது. ஸ்மார்ட் வாகன கண்காணிப்பு சிறந்த பயணிகள் மேலாண்மையை இயக்குகிறது.',
+
+    'nl.h3a': 'பொறியியல் குறிப்புகள்,','nl.h3b': 'மாதந்தோறும்.',
+    'nl.lead': 'இந்திய வணிகங்களுக்கான மென்பொருள் கட்டுவது பற்றிய சிறு கட்டுரைகள் — சில்லறை, போக்குவரத்து மற்றும் நிறுவனம். ஸ்பேம் இல்லை, சந்தைப்படுத்தல் இல்லை. நாங்கள் கற்றுக்கொண்டவை மட்டுமே.',
+    'nl.subscribe': 'குழுசேர்',
+    'nl.note': 'மாதத்திற்கு ஒரு மின்னஞ்சல். எப்போது வேண்டுமானாலும் குழுவிலகுங்கள்.',
+
+    'services.s1.title': 'விருப்ப மென்பொருள்','services.s2.title': 'கிளவுட் பயன்பாடுகள்',
+    'services.s3.title': 'ஆதரவு & பராமரிப்பு','services.s4.title': 'ஒருங்கிணைப்புகள்',
+
+    'footer.about': 'வணிகங்கள் ஸ்மார்ட் தொழில்நுட்ப தீர்வுகள் மூலம் வளர உதவும் IT தயாரிப்பு & சேவை வழங்குநர். சென்னை, இந்தியாவில் கட்டப்பட்டு இயக்கப்படுகிறது.',
+    'footer.services': 'சேவைகள்','footer.products': 'தயாரிப்புகள்','footer.company': 'நிறுவனம்',
+    'footer.rights': 'அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை.','footer.made': 'இந்தியாவில் தயாரிக்கப்பட்டது · சென்னை'
+  }
+};
+
+/* THEME */
+const themeToggle = document.getElementById('themeToggle');
+const root = document.documentElement;
+const savedTheme = localStorage.getItem('hv-theme');
+if (savedTheme) root.setAttribute('data-theme', savedTheme);
+themeToggle.addEventListener('click', () => {
+  const current = root.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  root.setAttribute('data-theme', next);
+  localStorage.setItem('hv-theme', next);
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', next === 'dark' ? '#07080F' : '#F7F7FB');
+});
+
+/* LANGUAGE */
+const langToggle = document.getElementById('langToggle');
+const langActive = document.getElementById('langActive');
+const langInactive = document.getElementById('langInactive');
+let currentLang = localStorage.getItem('hv-lang') || 'en';
+
+function applyLanguage(lang){
+  const dict = translations[lang] || translations.en;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (dict[key] !== undefined) {
+      // Preserve inner HTML for list items with strong tags
+      if (el.innerHTML.indexOf('<strong>') !== -1 && el.tagName === 'LI') {
+        return;
+      }
+      el.textContent = dict[key];
+    }
+  });
+  document.documentElement.lang = lang;
+  document.documentElement.setAttribute('data-lang', lang);
+  if (lang === 'ta') {
+    langActive.textContent = 'த';
+    langInactive.textContent = 'EN';
+  } else {
+    langActive.textContent = 'EN';
+    langInactive.textContent = 'த';
+  }
+  localStorage.setItem('hv-lang', lang);
+  currentLang = lang;
+}
+langToggle.addEventListener('click', () => {
+  applyLanguage(currentLang === 'en' ? 'ta' : 'en');
+});
+applyLanguage(currentLang);
+
+/* NAV */
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 12);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+const navToggle = document.getElementById('navToggle');
+const mobileMenu = document.getElementById('mobileMenu');
+navToggle.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+mobileMenu.querySelectorAll('a').forEach(a =>
+  a.addEventListener('click', () => mobileMenu.classList.remove('open'))
+);
+
+/* REVEAL */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('in');
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* READING PROGRESS */
+const progressBar = document.getElementById('progressBar');
+const articleBody = document.getElementById('articleBody');
+function updateProgress(){
+  const rect = articleBody.getBoundingClientRect();
+  const total = articleBody.offsetHeight - window.innerHeight + 200;
+  const scrolled = Math.min(Math.max(-rect.top + 100, 0), total);
+  const pct = Math.min((scrolled / total) * 100, 100);
+  progressBar.style.width = pct + '%';
+}
+window.addEventListener('scroll', updateProgress, { passive: true });
+window.addEventListener('resize', updateProgress);
+updateProgress();
+
+/* SHARE */
+const pageUrl = window.location.href;
+const pageTitle = document.title;
+document.querySelectorAll('[data-share]').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const type = btn.dataset.share;
+    if (type === 'twitter'){
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(pageTitle)}&url=${encodeURIComponent(pageUrl)}`, '_blank', 'noopener');
+    }
+    if (type === 'linkedin'){
+      window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`, '_blank', 'noopener');
+    }
+    if (type === 'copy'){
+      try{
+        await navigator.clipboard.writeText(pageUrl);
+        btn.classList.add('copied');
+        const original = btn.innerHTML;
+        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
+        setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = original; }, 1800);
+      } catch(e){}
+    }
+  });
+});
+</script>
+</body>
+</html>

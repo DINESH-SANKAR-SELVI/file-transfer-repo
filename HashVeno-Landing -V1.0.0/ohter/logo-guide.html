@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>HashVeno — Logo Directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07080F;
+  --bg-2:#0C0E1A;
+  --surface:#11131F;
+  --surface-2:#171A29;
+  --line:rgba(255,255,255,.07);
+  --line-2:rgba(255,255,255,.12);
+  --ink:#F4F5FA;
+  --ink-2:#A9AEC3;
+  --ink-3:#6E7490;
+  --ink-4:#484E66;
+  --cyan:#22D3EE;
+  --cyan-2:#06B6D4;
+  --indigo:#6366F1;
+  --indigo-2:#818CF8;
+  --violet:#8B5CF6;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+}
+html,body{height:100%}
+body{
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--ink);
+  font-size:14px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  min-height:100%;
+  overflow-x:hidden;
+}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+
+.wrap{max-width:1200px;margin:0 auto;padding:56px 24px 96px}
+
+/* PAGE HEAD */
+.page-head{margin-bottom:56px;max-width:640px}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--cyan);
+  padding:6px 12px;border-radius:99px;
+  background:rgba(34,211,238,.08);
+  border:1px solid rgba(34,211,238,.18);
+  margin-bottom:20px;
+}
+.eyebrow .dot{width:5px;height:5px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+.page-head h1{
+  font-size:clamp(28px,4vw,40px);font-weight:800;letter-spacing:-.03em;
+  line-height:1.1;margin-bottom:14px;
+}
+.page-head p{font-size:15.5px;color:var(--ink-2);line-height:1.6}
+
+/* FAVICON TEST */
+.favicon-test{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:24px 28px;
+  margin-bottom:56px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:32px;
+  flex-wrap:wrap;
+}
+.ft-label{
+  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-3);
+  flex-shrink:0;
+}
+.ft-row{
+  display:flex;align-items:center;gap:36px;
+  flex:1;justify-content:flex-end;
+  flex-wrap:wrap;
+}
+.ft-item{
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+}
+.ft-item .size{
+  font-family:var(--mono);font-size:10px;color:var(--ink-4);
+  letter-spacing:.04em;
+}
+.ft-item svg{color:var(--ink);display:block}
+
+/* CONCEPT SECTION */
+.concept{
+  margin-bottom:64px;
+  border-top:1px solid var(--line);
+  padding-top:56px;
+}
+.concept:first-of-type{border-top:none;padding-top:0}
+
+.concept-head{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:24px;margin-bottom:32px;flex-wrap:wrap;
+}
+.concept-title{
+  display:flex;align-items:center;gap:14px;
+}
+.concept-num{
+  width:36px;height:36px;border-radius:11px;
+  display:grid;place-items:center;
+  font-weight:700;font-size:14px;letter-spacing:-.02em;
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--line);
+  color:var(--ink-2);
+  flex-shrink:0;
+}
+.concept-title h2{
+  font-size:24px;font-weight:700;letter-spacing:-.025em;
+  line-height:1.15;
+}
+.concept-title p{
+  font-size:13.5px;color:var(--ink-3);margin-top:4px;
+}
+.concept-note{
+  font-size:12.5px;color:var(--ink-3);
+  max-width:340px;line-height:1.55;
+  padding:12px 16px;
+  border-left:2px solid var(--line-2);
+}
+
+/* LOCKUP GRID */
+.lockups{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:16px;
+}
+
+.mockup{
+  border-radius:18px;
+  padding:40px 32px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:220px;
+  position:relative;
+  overflow:hidden;
+}
+.mockup.dark{
+  background:
+    radial-gradient(400px 200px at 50% 0%, rgba(99,102,241,.06), transparent 70%),
+    var(--surface);
+  border:1px solid var(--line);
+}
+.mockup.light{
+  background:#FFFFFF;
+  border:1px solid #E4E6EE;
+}
+.mockup .tag{
+  position:absolute;
+  top:14px;left:16px;
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--ink-4);
+}
+.mockup.light .tag{color:#A3A8BB}
+
+/* LOGO LOCKUP (icon + wordmark) */
+.lock{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.lock .mark{
+  width:44px;height:44px;flex-shrink:0;
+  display:grid;place-items:center;
+}
+.lock .word{
+  font-size:22px;
+  font-weight:700;
+  letter-spacing:-.02em;
+  line-height:1;
+  color:var(--ink);
+}
+.mockup.light .lock .word{color:#0B0D1A}
+
+/* big variant */
+.lock.big .mark{width:64px;height:64px}
+.lock.big .word{font-size:30px}
+.lock.big{gap:18px}
+
+/* stacked tagline version */
+.lock-stack{
+  display:flex;flex-direction:column;align-items:flex-start;gap:14px;
+}
+.lock-stack .tagline{
+  font-size:9.5px;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  font-weight:600;
+  color:var(--ink-4);
+  margin-left:78px;
+}
+.mockup.light .lock-stack .tagline{color:#A3A8BB}
+
+/* WORDMARK ONLY */
+.wordonly{
+  display:flex;flex-direction:column;gap:8px;
+  align-items:flex-start;
+}
+.wordonly .mark-row{
+  display:flex;align-items:center;gap:10px;
+}
+.wordonly .word{
+  font-size:26px;font-weight:700;letter-spacing:-.025em;line-height:1;
+  color:var(--ink);
+}
+.mockup.light .wordonly .word{color:#0B0D1A}
+.wordonly .tagline{
+  font-size:10px;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  font-weight:500;
+  color:var(--ink-4);
+}
+.mockup.light .wordonly .tagline{color:#A3A8BB}
+
+/* small row inside mockup */
+.sizes{
+  display:flex;align-items:flex-end;gap:24px;
+}
+.sizes .s{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+}
+.sizes .s .n{
+  font-family:var(--mono);font-size:9.5px;color:var(--ink-4);
+}
+.mockup.light .sizes .s .n{color:#A3A8BB}
+
+/* mono test */
+.mono{color:#FFFFFF}
+.mockup.light .mono{color:#0B0D1A}
+
+/* RECOMMENDATION */
+.rec{
+  background:
+    radial-gradient(600px 300px at 50% 0%, rgba(34,211,238,.08), transparent 60%),
+    var(--surface);
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:40px 40px 36px;
+  position:relative;
+  overflow:hidden;
+}
+.rec::before{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.02),transparent 40%);
+  pointer-events:none;
+}
+.rec > *{position:relative}
+.rec .badge{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--cyan);
+  padding:5px 11px;border-radius:99px;
+  background:rgba(34,211,238,.08);
+  border:1px solid rgba(34,211,238,.2);
+  margin-bottom:18px;
+}
+.rec h3{
+  font-size:22px;font-weight:700;letter-spacing:-.02em;
+  line-height:1.25;margin-bottom:14px;
+}
+.rec p{
+  font-size:14.5px;color:var(--ink-2);line-height:1.65;
+  margin-bottom:12px;max-width:640px;
+}
+.rec p:last-of-type{margin-bottom:0}
+.rec ul{
+  margin-top:18px;
+  padding-left:0;
+  list-style:none;
+  display:flex;flex-direction:column;gap:9px;
+}
+.rec li{
+  display:flex;align-items:flex-start;gap:11px;
+  font-size:13.5px;color:var(--ink-2);line-height:1.55;
+}
+.rec li::before{
+  content:"";
+  width:5px;height:5px;border-radius:50%;
+  background:var(--cyan);
+  margin-top:8px;flex-shrink:0;
+  box-shadow:0 0 8px var(--cyan);
+}
+.rec li b{color:var(--ink);font-weight:600}
+
+@media (max-width:640px){
+  .wrap{padding:32px 16px 64px}
+  .mockup{padding:28px 20px;min-height:180px}
+  .lock.big .mark{width:52px;height:52px}
+  .lock.big .word{font-size:24px}
+  .lock-stack .tagline{margin-left:60px}
+  .concept-head{margin-bottom:24px}
+  .concept-note{display:none}
+  .favicon-test{padding:20px}
+  .ft-row{gap:24px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- PAGE HEAD -->
+  <div class="page-head">
+    <div class="eyebrow"><span class="dot"></span> Brand Review</div>
+    <h1>Three logo directions for HashVeno</h1>
+    <p>Same brand name, same blue family — but built to survive at 16 pixels, work on any background, and read instantly as modern SaaS.</p>
+  </div>
+
+  <!-- FAVICON TEST -->
+  <div class="favicon-test">
+    <div class="ft-label">Favicon test<br><span style="font-weight:500;letter-spacing:.04em;font-size:10px;opacity:.6">Logo must survive here</span></div>
+    <div class="ft-row">
+
+      <div class="ft-item">
+        <svg width="64" height="64" viewBox="0 0 120 120" fill="none">
+          <g stroke="currentColor" stroke-width="12" stroke-linecap="round">
+            <line x1="42" y1="18" x2="34" y2="102"/>
+            <line x1="86" y1="18" x2="78" y2="102"/>
+            <line x1="16" y1="44" x2="104" y2="40"/>
+            <line x1="14" y1="78" x2="102" y2="74"/>
+          </g>
+          <circle cx="83" cy="42" r="11" fill="#22D3EE"/>
+        </svg>
+        <span class="size">64px</span>
+      </div>
+
+      <div class="ft-item">
+        <svg width="32" height="32" viewBox="0 0 120 120" fill="none">
+          <g stroke="currentColor" stroke-width="12" stroke-linecap="round">
+            <line x1="42" y1="18" x2="34" y2="102"/>
+            <line x1="86" y1="18" x2="78" y2="102"/>
+            <line x1="16" y1="44" x2="104" y2="40"/>
+            <line x1="14" y1="78" x2="102" y2="74"/>
+          </g>
+          <circle cx="83" cy="42" r="13" fill="#22D3EE"/>
+        </svg>
+        <span class="size">32px</span>
+      </div>
+
+      <div class="ft-item">
+        <svg width="24" height="24" viewBox="0 0 120 120" fill="none">
+          <g stroke="currentColor" stroke-width="14" stroke-linecap="round">
+            <line x1="42" y1="18" x2="34" y2="102"/>
+            <line x1="86" y1="18" x2="78" y2="102"/>
+            <line x1="16" y1="44" x2="104" y2="40"/>
+            <line x1="14" y1="78" x2="102" y2="74"/>
+          </g>
+          <circle cx="83" cy="42" r="14" fill="#22D3EE"/>
+        </svg>
+        <span class="size">24px</span>
+      </div>
+
+      <div class="ft-item">
+        <svg width="16" height="16" viewBox="0 0 120 120" fill="none">
+          <g stroke="currentColor" stroke-width="16" stroke-linecap="round">
+            <line x1="42" y1="18" x2="34" y2="102"/>
+            <line x1="86" y1="18" x2="78" y2="102"/>
+            <line x1="16" y1="44" x2="104" y2="40"/>
+            <line x1="14" y1="78" x2="102" y2="74"/>
+          </g>
+          <circle cx="83" cy="42" r="16" fill="#22D3EE"/>
+        </svg>
+        <span class="size">16px</span>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       CONCEPT A — HASHTAG NODE
+  ============================================================ -->
+  <section class="concept">
+    <div class="concept-head">
+      <div class="concept-title">
+        <div class="concept-num">A</div>
+        <div>
+          <h2>Hashtag Node</h2>
+          <p>Literal, ownable, scales perfectly</p>
+        </div>
+      </div>
+      <div class="concept-note">
+        Uses the # from the brand name. One intersection becomes a network node. Instantly recognizable, works at 16px, monochrome-safe.
+      </div>
+    </div>
+
+    <div class="lockups">
+
+      <!-- BIG LOCKUP -->
+      <div class="mockup dark">
+        <span class="tag">Primary · Dark</span>
+        <div class="lock big">
+          <div class="mark">
+            <svg width="64" height="64" viewBox="0 0 120 120" fill="none">
+              <g stroke="#F4F5FA" stroke-width="12" stroke-linecap="round">
+                <line x1="42" y1="18" x2="34" y2="102"/>
+                <line x1="86" y1="18" x2="78" y2="102"/>
+                <line x1="16" y1="44" x2="104" y2="40"/>
+                <line x1="14" y1="78" x2="102" y2="74"/>
+              </g>
+              <circle cx="83" cy="42" r="11" fill="#22D3EE"/>
+            </svg>
+          </div>
+          <div class="word">HASHVENO</div>
+        </div>
+      </div>
+
+      <div class="mockup light">
+        <span class="tag">Primary · Light</span>
+        <div class="lock big">
+          <div class="mark">
+            <svg width="64" height="64" viewBox="0 0 120 120" fill="none">
+              <g stroke="#0B0D1A" stroke-width="12" stroke-linecap="round">
+                <line x1="42" y1="18" x2="34" y2="102"/>
+                <line x1="86" y1="18" x2="78" y2="102"/>
+                <line x1="16" y1="44" x2="104" y2="40"/>
+                <line x1="14" y1="78" x2="102" y2="74"/>
+              </g>
+              <circle cx="83" cy="42" r="11" fill="#06B6D4"/>
+            </svg>
+          </div>
+          <div class="word">HASHVENO</div>
+        </div>
+      </div>
+
+      <!-- STACKED WITH TAGLINE -->
+      <div class="mockup dark">
+        <span class="tag">With tagline</span>
+        <div class="lock-stack">
+          <div class="lock big">
+            <div class="mark">
+              <svg width="64" height="64" viewBox="0 0 120 120" fill="none">
+                <g stroke="#F4F5FA" stroke-width="12" stroke-linecap="round">
+                  <line x1="42" y1="18" x2="34" y2="102"/>
+                  <line x1="86" y1="18" x2="78" y2="102"/>
+                  <line x1="16" y1="44" x2="104" y2="40"/>
+                  <line x1="14" y1="78" x2="102" y2="74"/>
+                </g>
+                <circle cx="83" cy="42" r="11" fill="#22D3EE"/>
+              </svg>
+            </div>
+            <div class="word">HASHVENO</div>
+          </div>
+          <div class="tagline">Smart Network · Smart Business</div>
+        </div>
+      </div>
+
+      <!-- ICON SIZES -->
+      <div class="mockup dark">
+        <span class="tag">Icon sizes</span>
+        <div class="sizes">
+          <div class="s">
+            <svg width="40" height="40" viewBox="0 0 120 120" fill="none">
+              <g stroke="#F4F5FA" stroke-width="12" stroke-linecap="round">
+                <line x1="42" y1="18" x2="34" y2="102"/>
+                <line x1="86" y1="18" x2="78" y2="102"/>
+                <line x1="16" y1="44" x2="104" y2="40"/>
+                <line x1="14" y1="78" x2="102" y2="74"/>
+              </g>
+              <circle cx="83" cy="42" r="13" fill="#22D3EE"/>
+            </svg>
+            <span class="n">40</span>
+          </div>
+          <div class="s">
+            <svg width="28" height="28" viewBox="0 0 120 120" fill="none">
+              <g stroke="#F4F5FA" stroke-width="12" stroke-linecap="round">
+                <line x1="42" y1="18" x2="34" y2="102"/>
+                <line x1="86" y1="18" x2="78" y2="102"/>
+                <line x1="16" y1="44" x2="104" y2="40"/>
+                <line x1="14" y1="78" x2="102" y2="74"/>
+              </g>
+              <circle cx="83" cy="42" r="14" fill="#22D3EE"/>
+            </svg>
+            <span class="n">28</span>
+          </div>
+          <div class="s">
+            <svg width="20" height="20" viewBox="0 0 120 120" fill="none">
+              <g stroke="#F4F5FA" stroke-width="14" stroke-linecap="round">
+                <line x1="42" y1="18" x2="34" y2="102"/>
+                <line x1="86" y1="18" x2="78" y2="102"/>
+                <line x1="16" y1="44" x2="104" y2="40"/>
+                <line x1="14" y1="78" x2="102" y2="74"/>
+              </g>
+              <circle cx="83" cy="42" r="15" fill="#22D3EE"/>
+            </svg>
+            <span class="n">20</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- MONO TEST -->
+      <div class="mockup light">
+        <span class="tag">Monochrome</span>
+        <div class="sizes mono">
+          <div class="s">
+            <svg width="56" height="56" viewBox="0 0 120 120" fill="none">
+              <g stroke="currentColor" stroke-width="12" stroke-linecap="round">
+                <line x1="42" y1="18" x2="34" y2="102"/>
+                <line x1="86" y1="18" x2="78" y2="102"/>
+                <line x1="16" y1="44" x2="104" y2="40"/>
+                <line x1="14" y1="78" x2="102" y2="74"/>
+              </g>
+              <circle cx="83" cy="42" r="11" fill="currentColor"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- WORDMARK ONLY -->
+      <div class="mockup dark">
+        <span class="tag">Wordmark</span>
+        <div class="wordonly">
+          <div class="word">HASHVENO</div>
+          <div class="tagline">Smart Network · Smart Business</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       CONCEPT B — NETWORK CLUSTER
+  ============================================================ -->
+  <section class="concept">
+    <div class="concept-head">
+      <div class="concept-title">
+        <div class="concept-num">B</div>
+        <div>
+          <h2>Network Cluster</h2>
+          <p>Abstract, enterprise, category-appropriate</p>
+        </div>
+      </div>
+      <div class="concept-note">
+        Four dots connected by straight lines. Reads as "network" without being literal. This is the direction most enterprise SaaS companies use.
+      </div>
+    </div>
+
+    <div class="lockups">
+
+      <div class="mockup dark">
+        <span class="tag">Primary · Dark</span>
+        <div class="lock big">
+          <div class="mark">
+            <svg width="64" height="64" viewBox="0 0 120 120" fill="none">
+              <g stroke="#F4F5FA" stroke-width="5" stroke-linecap="round">
+                <line x1="62" y1="98" x2="30" y2="48"/>
+                <line x1="62" y1="98" x2="94" y2="48"/>
+                <line x1="30" y1="48" x2="94" y2="48"/>
+                <line x1="62" y1="24" x2="30" y2="48"/>
+                <line x1="62" y1="24" x2="94" y2="48"/>
+              </g>
+              <circle cx="62" cy="98" r="11" fill="#22D3EE"/>
+              <circle cx="30" cy="48" r="9" fill="#F4F5FA"/>
+              <circle cx="94" cy="48" r="9" fill="#F4F5FA"/>
+              <circle cx="62" cy="24" r="8" fill="#F4F5FA"/>
+            </svg>
+          </div>
+          <div class="word">HASHVENO</div>
+        </div>
+      </div>
+
+      <div class="mockup light">
+        <span class="tag">Primary · Light</span>
+        <div class="lock big">
+          <div class="mark">
+            <svg width="64" height="64" viewBox="0 0 120 120" fill="none">
+              <g stroke="#0B0D1A" stroke-width="5" stroke-linecap="round">
+                <line x1="62" y1="98" x2="30" y2="48"/>
+                <line x1="62" y1="98" x2="94" y2="48"/>
+                <line x1="30" y1="48" x2="94" y2="48"/>
+                <line x1="62" y1="24" x2="30" y2="48"/>
+                <line x1="62" y1="24" x2="94" y2="48"/>
+              </g>
+              <circle cx="62" cy="98" r="11" fill="#06B6D4"/>
+              <circle cx="30" cy="48" r="9" fill="#0B0D1A"/>
+              <circle cx="94" cy="48" r="9" fill="#0B0D1A"/>
+              <circle cx="62" cy="24" r="8" fill="#0B0D1A"/>
+            </svg>
+          </div>
+          <div class="word">HASHVENO</div>
+        </div>
+      </div>
+
+      <div class="mockup dark">
+        <span class="tag">With tagline</span>
+        <div class="lock-stack">
+          <div class="lock big">
+            <div class="mark">
+              <svg width="64" height="64" viewBox="0 0 120 120" fill="none">
+                <g stroke="#F4F5FA" stroke-width="5" stroke-linecap="round">
+                  <line x1="62" y1="98" x2="30" y2="48"/>
+                  <line x1="62" y1="98" x2="94" y2="48"/>
+                  <line x1="30" y1="48" x2="94" y2="48"/>
+                  <line x1="62" y1="24" x2="30" y2="48"/>
+                  <line x1="62" y1="24" x2="94" y2="48"/>
+                </g>
+                <circle cx="62" cy="98" r="11" fill="#22D3EE"/>
+                <circle cx="30" cy="48" r="9" fill="#F4F5FA"/>
+                <circle cx="94" cy="48" r="9" fill="#F4F5FA"/>
+                <circle cx="62" cy="24" r="8" fill="#F4F5FA"/>
+              </svg>
+            </div>
+            <div class="word">HASHVENO</div>
+          </div>
+          <div class="tagline">Smart Network · Smart Business</div>
+        </div>
+      </div>
+
+      <div class="mockup dark">
+        <span class="tag">Icon sizes</span>
+        <div class="sizes">
+          <div class="s">
+            <svg width="40" height="40" viewBox="0 0 120 120" fill="none">
+              <g stroke="#F4F5FA" stroke-width="6" stroke-linecap="round">
+                <line x1="62" y1="98" x2="30" y2="48"/>
+                <line x1="62" y1="98" x2="94" y2="48"/>
+                <line x1="30" y1="48" x2="94" y2="48"/>
+                <line x1="62" y1="24" x2="30" y2="48"/>
+                <line x1="62" y1="24" x2="94" y2="48"/>
+              </g>
+              <circle cx="62" cy="98" r="12" fill="#22D3EE"/>
+              <circle cx="30" cy="48" r="10" fill="#F4F5FA"/>
+              <circle cx="94" cy="48" r="10" fill="#F4F5FA"/>
+              <circle cx="62" cy="24" r="9" fill="#F4F5FA"/>
+            </svg>
+            <span class="n">40</span>
+          </div>
+          <div class="s">
+            <svg width="28" height="28" viewBox="0 0 120 120" fill="none">
+              <g stroke="#F4F5FA" stroke-width="8" stroke-linecap="round">
+                <line x1="62" y1="98" x2="30" y2="48"/>
+                <line x1="62" y1="98" x2="94" y2="48"/>
+                <line x1="30" y1="48" x2="94" y2="48"/>
+                <line x1="62" y1="24" x2="30" y2="48"/>
+                <line x1="62" y1="24" x2="94" y2="48"/>
+              </g>
+              <circle cx="62" cy="98" r="14" fill="#22D3EE"/>
+              <circle cx="30" cy="48" r="12" fill="#F4F5FA"/>
+              <circle cx="94" cy="48" r="12" fill="#F4F5FA"/>
+              <circle cx="62" cy="24" r="11" fill="#F4F5FA"/>
+            </svg>
+            <span class="n">28</span>
+          </div>
+          <div class="s">
+            <svg width="20" height="20" viewBox="0 0 120 120" fill="none">
+              <g stroke="#F4F5FA" stroke-width="11" stroke-linecap="round">
+                <line x1="62" y1="98" x2="30" y2="48"/>
+                <line x1="62" y1="98" x2="94" y2="48"/>
+                <line x1="30" y1="48" x2="94" y2="48"/>
+              </g>
+              <circle cx="62" cy="98" r="16" fill="#22D3EE"/>
+              <circle cx="30" cy="48" r="14" fill="#F4F5FA"/>
+              <circle cx="94" cy="48" r="14" fill="#F4F5FA"/>
+            </svg>
+            <span class="n">20</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mockup light">
+        <span class="tag">Monochrome</span>
+        <div class="sizes mono">
+          <div class="s">
+            <svg width="56" height="56" viewBox="0 0 120 120" fill="none">
+              <g stroke="currentColor" stroke-width="5" stroke-linecap="round">
+                <line x1="62" y1="98" x2="30" y2="48"/>
+                <line x1="62" y1="98" x2="94" y2="48"/>
+                <line x1="30" y1="48" x2="94" y2="48"/>
+                <line x1="62" y1="24" x2="30" y2="48"/>
+                <line x1="62" y1="24" x2="94" y2="48"/>
+              </g>
+              <circle cx="62" cy="98" r="11" fill="currentColor"/>
+              <circle cx="30" cy="48" r="9" fill="currentColor"/>
+              <circle cx="94" cy="48" r="9" fill="currentColor"/>
+              <circle cx="62" cy="24" r="8" fill="currentColor"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="mockup dark">
+        <span class="tag">Wordmark</span>
+        <div class="wordonly">
+          <div class="word">HASHVENO</div>
+          <div class="tagline">Smart Network · Smart Business</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       CONCEPT C — HV MONOGRAM (FLAT)
+  ============================================================ -->
+  <section class="concept">
+    <div class="concept-head">
+      <div class="concept-title">
+        <div class="concept-num">C</div>
+        <div>
+          <h2>HV Monogram — Flat</h2>
+          <p>Keeps your existing concept, stripped to essentials</p>
+        </div>
+      </div>
+      <div class="concept-note">
+        Same HV idea from your current logo, but flat, single-direction, and clean. The H and V share a visual rhythm; no gradients, no gloss, no orbit.
+      </div>
+    </div>
+
+    <div class="lockups">
+
+      <div class="mockup dark">
+        <span class="tag">Primary · Dark</span>
+        <div class="lock big">
+          <div class="mark">
+            <svg width="64" height="64" viewBox="0 0 120 120" fill="none">
+              <!-- H -->
+              <path d="M20 22 L20 98 M50 22 L50 98 M20 60 L50 60" stroke="#F4F5FA" stroke-width="13" stroke-linecap="square"/>
+              <!-- V -->
+              <path d="M70 22 L86 98 L102 22" stroke="#22D3EE" stroke-width="13" stroke-linecap="square" stroke-linejoin="miter" fill="none"/>
+            </svg>
+          </div>
+          <div class="word">HASHVENO</div>
+        </div>
+      </div>
+
+      <div class="mockup light">
+        <span class="tag">Primary · Light</span>
+        <div class="lock big">
+          <div class="mark">
+            <svg width="64" height="64" viewBox="0 0 120 120" fill="none">
+              <path d="M20 22 L20 98 M50 22 L50 98 M20 60 L50 60" stroke="#0B0D1A" stroke-width="13" stroke-linecap="square"/>
+              <path d="M70 22 L86 98 L102 22" stroke="#06B6D4" stroke-width="13" stroke-linecap="square" stroke-linejoin="miter" fill="none"/>
+            </svg>
+          </div>
+          <div class="word">HASHVENO</div>
+        </div>
+      </div>
+
+      <div class="mockup dark">
+        <span class="tag">With tagline</span>
+        <div class="lock-stack">
+          <div class="lock big">
+            <div class="mark">
+              <svg width="64" height="64" viewBox="0 0 120 120" fill="none">
+                <path d="M20 22 L20 98 M50 22 L50 98 M20 60 L50 60" stroke="#F4F5FA" stroke-width="13" stroke-linecap="square"/>
+                <path d="M70 22 L86 98 L102 22" stroke="#22D3EE" stroke-width="13" stroke-linecap="square" stroke-linejoin="miter" fill="none"/>
+              </svg>
+            </div>
+            <div class="word">HASHVENO</div>
+          </div>
+          <div class="tagline">Smart Network · Smart Business</div>
+        </div>
+      </div>
+
+      <div class="mockup dark">
+        <span class="tag">Icon sizes</span>
+        <div class="sizes">
+          <div class="s">
+            <svg width="40" height="40" viewBox="0 0 120 120" fill="none">
+              <path d="M20 22 L20 98 M50 22 L50 98 M20 60 L50 60" stroke="#F4F5FA" stroke-width="15" stroke-linecap="square"/>
+              <path d="M70 22 L86 98 L102 22" stroke="#22D3EE" stroke-width="15" stroke-linecap="square" stroke-linejoin="miter" fill="none"/>
+            </svg>
+            <span class="n">40</span>
+          </div>
+          <div class="s">
+            <svg width="28" height="28" viewBox="0 0 120 120" fill="none">
+              <path d="M20 22 L20 98 M50 22 L50 98 M20 60 L50 60" stroke="#F4F5FA" stroke-width="18" stroke-linecap="square"/>
+              <path d="M70 22 L86 98 L102 22" stroke="#22D3EE" stroke-width="18" stroke-linecap="square" stroke-linejoin="miter" fill="none"/>
+            </svg>
+            <span class="n">28</span>
+          </div>
+          <div class="s">
+            <svg width="20" height="20" viewBox="0 0 120 120" fill="none">
+              <path d="M20 22 L20 98 M50 22 L50 98 M20 60 L50 60" stroke="#F4F5FA" stroke-width="20" stroke-linecap="square"/>
+              <path d="M70 22 L86 98 L102 22" stroke="#22D3EE" stroke-width="20" stroke-linecap="square" stroke-linejoin="miter" fill="none"/>
+            </svg>
+            <span class="n">20</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mockup light">
+        <span class="tag">Monochrome</span>
+        <div class="sizes mono">
+          <div class="s">
+            <svg width="56" height="56" viewBox="0 0 120 120" fill="none">
+              <path d="M20 22 L20 98 M50 22 L50 98 M20 60 L50 60" stroke="currentColor" stroke-width="13" stroke-linecap="square"/>
+              <path d="M70 22 L86 98 L102 22" stroke="currentColor" stroke-width="13" stroke-linecap="square" stroke-linejoin="miter" fill="none"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="mockup dark">
+        <span class="tag">Wordmark</span>
+        <div class="wordonly">
+          <div class="word">HASHVENO</div>
+          <div class="tagline">Smart Network · Smart Business</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- RECOMMENDATION -->
+  <div class="rec">
+    <div class="badge"><span class="dot" style="width:5px;height:5px;border-radius:50%;background:currentColor"></span> Recommendation</div>
+    <h3>Go with A — Hashtag Node</h3>
+    <p>It's the strongest of the three because it does the most work with the least ink. The <b>#</b> is literally in your brand name — owning it means competitors can't use it. One intersection becomes a network node, which carries the "Smart Network" tagline without needing a separate molecule illustration.</p>
+    <p>It passes every test that matters:</p>
+    <ul>
+      <li><b>Favicon test</b> — reads at 16px</li>
+      <li><b>Monochrome test</b> — works in one color (invoices, stamps, embroidery)</li>
+      <li><b>Background test</b> — works on dark and light</li>
+      <li><b>Scalability</b> — no gradients, no gloss, no raster assets</li>
+      <li><b>Distinctiveness</b> — no other Indian SaaS company owns the hashtag mark</li>
+    </ul>
+    <p style="margin-top:20px"><b style="color:var(--ink)">If you want to keep the HV instead</b>, concept C is your safest bet — same idea as your current logo, but flat and clean. It's less distinctive but more familiar to your existing customers.</p>
+  </div>
+
+</div>
+</body>
+</html>

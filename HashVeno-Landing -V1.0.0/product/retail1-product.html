@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>HashVeno Retail — Run your shop. Not your back office.</title>
+<meta name="description" content="A complete retail management system — POS, live inventory, customer intelligence, profit analytics, and no-click automation. Built for shops that want to grow without growing their back office." />
+<meta name="theme-color" content="#0A0A12" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F7FB;
+  --surface:#FFFFFF;
+  --ink:#0A0A12;
+  --ink-2:#252532;
+  --muted:#63637A;
+  --faint:#9B9BAA;
+  --line:#E8E8F0;
+  --line-soft:#F1F1F7;
+
+  --brand:#5B4BE8;
+  --brand-2:#8B7BFF;
+  --brand-soft:#EFECFF;
+  --brand-ink:#3D2FC9;
+
+  --retail:#F97316;
+  --retail-2:#FB923C;
+  --retail-soft:#FFEDD5;
+  --retail-ink:#9A3412;
+
+  --accent:#00C48C;
+  --amber:#D98A0B;
+  --rose:#E0526B;
+
+  --radius:14px;
+  --radius-lg:20px;
+  --shadow-sm:0 1px 2px rgba(15,15,30,.04);
+  --shadow-md:0 8px 24px -8px rgba(20,20,40,.08),0 2px 6px rgba(20,20,40,.03);
+  --shadow-lg:0 24px 60px -20px rgba(20,20,50,.18),0 8px 20px rgba(20,20,40,.06);
+  --shadow-brand:0 12px 32px -8px rgba(91,75,232,.35);
+  --font-sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --font-serif:'Lora',Georgia,serif;
+  --font-mono:'JetBrains Mono',ui-monospace,monospace;
+  --container:1200px;
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input{font:inherit;border:none;outline:none;background:none;color:inherit}
+::selection{background:var(--brand);color:#fff}
+
+.container{width:100%;max-width:var(--container);margin:0 auto;padding:0 24px}
+.section{padding:96px 0;position:relative}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--brand-ink);background:var(--brand-soft);padding:6px 12px;border-radius:99px;margin-bottom:18px}
+.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--brand);box-shadow:0 0 0 3px rgba(91,75,232,.18)}
+.eyebrow.retail{color:var(--retail-ink);background:var(--retail-soft)}
+.eyebrow.retail .dot{background:var(--retail);box-shadow:0 0 0 3px rgba(249,115,22,.18)}
+.section-head{max-width:680px;margin-bottom:52px}
+.section-head.center{margin-left:auto;margin-right:auto;text-align:center}
+.section-head h2{font-family:var(--font-serif);font-size:clamp(28px,4vw,44px);font-weight:600;letter-spacing:-.03em;line-height:1.12;margin-bottom:14px}
+.section-head h2 em{font-style:normal;background:linear-gradient(100deg,var(--brand),var(--brand-2) 60%,#C7B6FF);-webkit-background-clip:text;background-clip:text;color:transparent}
+.section-head h2 em.retail{background:linear-gradient(100deg,var(--retail),var(--retail-2) 55%,#FCD34D);-webkit-background-clip:text;background-clip:text;color:transparent}
+.section-head p{font-size:16.5px;color:var(--muted);line-height:1.65}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:14.5px;font-weight:600;letter-spacing:-.005em;padding:12px 22px;border-radius:12px;transition:transform .15s ease, box-shadow .18s ease, background .15s ease;white-space:nowrap;cursor:pointer}
+.btn-primary{background:var(--brand);color:#fff;box-shadow:var(--shadow-brand)}
+.btn-primary:hover{background:#4E3FD4;transform:translateY(-1px);box-shadow:0 16px 36px -10px rgba(91,75,232,.5)}
+.btn-retail{background:var(--retail);color:#fff;box-shadow:0 12px 32px -8px rgba(249,115,22,.4)}
+.btn-retail:hover{background:#EA580C;transform:translateY(-1px);box-shadow:0 16px 36px -10px rgba(249,115,22,.5)}
+.btn-secondary{background:var(--surface);color:var(--ink);border:1px solid var(--line)}
+.btn-secondary:hover{background:#fff;border-color:#D6D6E2;transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.btn svg{transition:transform .18s}
+.btn:hover svg{transform:translateX(2px)}
+.btn-lg{font-size:15.5px;padding:14px 26px;border-radius:13px}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 0;transition:background .25s, backdrop-filter .25s, border-color .25s, padding .25s;border-bottom:1px solid transparent}
+.nav.scrolled{background:rgba(247,247,251,.85);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom-color:var(--line);padding:10px 0}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.02em}
+.brand-mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--brand-2));display:grid;place-items:center;color:#fff;box-shadow:0 6px 16px -4px rgba(91,75,232,.45);position:relative}
+.brand-mark::after{content:"";position:absolute;inset:0;border-radius:10px;background:linear-gradient(135deg,rgba(255,255,255,.35),transparent 55%);pointer-events:none}
+.brand-name{font-size:17px}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-link{font-size:14px;font-weight:500;color:var(--muted);padding:8px 14px;border-radius:9px;transition:.15s}
+.nav-link:hover{color:var(--ink);background:rgba(255,255,255,.7)}
+.nav-link.active{color:var(--brand-ink);background:var(--brand-soft)}
+.nav-cta{display:flex;align-items:center;gap:8px}
+.nav-toggle{display:none;width:40px;height:40px;border-radius:10px;align-items:center;justify-content:center;border:1px solid var(--line);background:var(--surface)}
+@media(max-width:900px){.nav-links{display:none}.nav-toggle{display:flex}.nav-cta .btn{display:none}}
+.mobile-menu{position:fixed;inset:56px 0 auto 0;z-index:99;background:var(--surface);border-bottom:1px solid var(--line);padding:12px 24px 20px;transform:translateY(-8px);opacity:0;pointer-events:none;transition:.22s;box-shadow:var(--shadow-lg)}
+.mobile-menu.open{transform:none;opacity:1;pointer-events:auto}
+.mobile-menu a{display:block;padding:13px 4px;font-size:15px;font-weight:500;border-bottom:1px solid var(--line-soft)}
+.mobile-menu a:last-child{border:none}
+
+/* BREADCRUMB */
+.breadcrumb{max-width:var(--container);margin:0 auto;padding:112px 24px 0;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--faint);flex-wrap:wrap}
+.breadcrumb a{transition:.15s}
+.breadcrumb a:hover{color:var(--retail-ink)}
+.breadcrumb .sep{opacity:.5}
+.breadcrumb .current{color:var(--ink-2);font-weight:500}
+
+/* HERO */
+.phero{position:relative;padding:40px 0 80px;overflow:hidden;isolation:isolate}
+.phero-bg{position:absolute;inset:0;z-index:-1;background:radial-gradient(1000px 480px at 20% 0%, rgba(91,75,232,.13), transparent 65%),radial-gradient(700px 400px at 90% 15%, rgba(249,115,22,.08), transparent 60%)}
+.phero-grid{position:absolute;inset:0;z-index:-1;opacity:.5;background-image:linear-gradient(to right, rgba(91,75,232,.05) 1px, transparent 1px),linear-gradient(to bottom, rgba(91,75,232,.05) 1px, transparent 1px);background-size:56px 56px;mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);-webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%)}
+.phero-inner{display:grid;grid-template-columns:1fr 1.15fr;gap:64px;align-items:center}
+.phero-copy{max-width:520px}
+.phero-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.ptag{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;letter-spacing:.02em;padding:5px 11px;border-radius:99px;background:var(--brand-soft);color:var(--brand-ink)}
+.ptag.retail{background:var(--retail-soft);color:var(--retail-ink)}
+.ptag.live{background:rgba(0,196,140,.1);color:#0B8A66}
+.ptag .sdot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.phero h1{font-family:var(--font-serif);font-size:clamp(36px,5.4vw,58px);font-weight:600;letter-spacing:-.035em;line-height:1.06;margin-bottom:20px}
+.phero h1 em{font-style:normal;background:linear-gradient(100deg,var(--brand),var(--brand-2) 55%,#C7B6FF);-webkit-background-clip:text;background-clip:text;color:transparent}
+.phero p.lead{font-size:17px;color:var(--muted);line-height:1.62;margin-bottom:32px}
+.phero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:26px}
+.phero-meta{display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--faint)}
+.phero-meta span{display:flex;align-items:center;gap:6px}
+.phero-meta svg{color:var(--brand)}
+
+/* POS MOCKUP */
+.phero-visual{position:relative;perspective:1600px}
+.pos-window{background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 40px 80px -30px rgba(20,20,50,.28),0 20px 40px -20px rgba(20,20,40,.15),0 1px 0 rgba(255,255,255,.9) inset;transform:rotateY(-3deg) rotateX(2deg);transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.pos-window:hover{transform:rotateY(0) rotateX(0)}
+.pos-chrome{display:flex;align-items:center;gap:8px;padding:11px 14px;background:#FAFAFD;border-bottom:1px solid var(--line)}
+.pos-dot{width:11px;height:11px;border-radius:50%}
+.pos-title{flex:1;margin:0 12px;color:var(--faint);font-size:11.5px;font-family:var(--font-mono);text-align:center;letter-spacing:.02em}
+.pos-body{display:grid;grid-template-columns:1fr 280px;min-height:440px;background:#FBFBFE}
+.pos-items{padding:18px}
+.pos-category{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.pos-cat{font-size:11px;font-weight:600;padding:5px 11px;border-radius:7px;background:#fff;border:1px solid var(--line);color:var(--muted)}
+.pos-cat.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+.pos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pos-tile{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 10px;text-align:center;cursor:pointer;transition:.15s}
+.pos-tile:hover{border-color:var(--brand);transform:translateY(-2px);box-shadow:0 8px 20px -6px rgba(91,75,232,.2)}
+.pos-tile .emoji{font-size:22px;margin-bottom:6px}
+.pos-tile .name{font-size:11.5px;font-weight:600;color:var(--ink);margin-bottom:3px}
+.pos-tile .price{font-size:11px;font-family:var(--font-mono);color:var(--brand);font-weight:600}
+
+.pos-cart{background:#fff;border-left:1px solid var(--line);padding:16px;display:flex;flex-direction:column}
+.pos-cart-title{font-size:12.5px;font-weight:650;color:var(--ink);margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--line-soft);display:flex;justify-content:space-between;align-items:center}
+.pos-cart-title .count{font-family:var(--font-mono);font-size:11px;background:var(--brand-soft);color:var(--brand-ink);padding:2px 7px;border-radius:5px}
+.pos-line{display:flex;justify-content:space-between;font-size:11.5px;padding:7px 0;border-bottom:1px solid var(--line-soft)}
+.pos-line:last-of-type{border-bottom:none}
+.pos-line .ln{color:var(--ink);font-weight:500}
+.pos-line .qty{font-family:var(--font-mono);color:var(--faint);font-size:10.5px}
+.pos-line .pr{font-family:var(--font-mono);font-weight:600;color:var(--ink)}
+.pos-total{margin-top:auto;padding-top:14px;border-top:2px solid var(--line);font-size:13px;font-weight:700;display:flex;justify-content:space-between}
+.pos-total .amt{font-family:var(--font-mono);font-size:17px;letter-spacing:-.02em}
+.pos-checkout{margin-top:14px;background:var(--brand);color:#fff;font-size:12.5px;font-weight:650;padding:12px;border-radius:10px;text-align:center;display:flex;align-items:center;justify-content:center;gap:6px}
+
+.float-badge{position:absolute;background:#fff;border:1px solid var(--line);border-radius:13px;padding:11px 13px;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:10px;font-size:12px;animation:float 6s ease-in-out infinite}
+.float-badge .fb-icon{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font-size:14px;flex-shrink:0}
+.float-badge .fb-title{font-weight:600;letter-spacing:-.01em}
+.float-badge .fb-sub{font-size:10.5px;color:var(--muted);margin-top:1px}
+.fb-1{top:14%;left:-6%;animation-delay:0s}
+.fb-2{bottom:12%;right:-5%;animation-delay:-3s}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@media(max-width:1050px){.float-badge{display:none}}
+@media(max-width:920px){
+  .phero-inner{grid-template-columns:1fr;gap:44px}
+  .phero-copy{max-width:100%}
+  .pos-body{grid-template-columns:1fr;min-height:auto}
+  .pos-cart{border-left:none;border-top:1px solid var(--line)}
+}
+
+/* TRUST STRIP */
+.trust-strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(255,255,255,.5);padding:28px 0}
+.trust-label{text-align:center;font-size:11.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);margin-bottom:22px}
+.trust-logos{display:flex;align-items:center;justify-content:center;gap:44px;flex-wrap:wrap}
+.trust-logo{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:var(--muted);opacity:.75;transition:.2s;filter:grayscale(1)}
+.trust-logo:hover{opacity:1;filter:grayscale(0);color:var(--ink-2)}
+.trust-logo .tl-mark{width:24px;height:24px;border-radius:7px;background:var(--line);display:grid;place-items:center;font-size:10px;font-weight:700;color:var(--ink-2)}
+
+/* PROBLEM/SOLUTION */
+.ps-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.ps-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:32px 30px;position:relative;overflow:hidden}
+.ps-card.problem{background:linear-gradient(180deg,#FFF8F5,#fff);border-color:#F8E0D6}
+.ps-card.solution{background:linear-gradient(180deg,#FFF7ED,#fff);border-color:#FED7AA}
+.ps-badge{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 11px;border-radius:99px;margin-bottom:18px}
+.ps-badge.problem{background:rgba(224,82,107,.1);color:var(--rose)}
+.ps-badge.solution{background:rgba(249,115,22,.1);color:var(--retail-ink)}
+.ps-card h3{font-family:var(--font-serif);font-size:22px;font-weight:600;letter-spacing:-.022em;line-height:1.3;margin-bottom:14px}
+.ps-card p{font-size:15px;color:var(--muted);line-height:1.65;margin-bottom:20px}
+.ps-list{display:flex;flex-direction:column;gap:11px}
+.ps-item{display:flex;align-items:flex-start;gap:11px;font-size:14px;color:var(--ink-2);line-height:1.5}
+.ps-item .bullet{width:20px;height:20px;border-radius:6px;flex-shrink:0;display:grid;place-items:center;font-size:11px;font-weight:700;margin-top:1px}
+.ps-item.problem .bullet{background:rgba(224,82,107,.12);color:var(--rose)}
+.ps-item.solution .bullet{background:rgba(249,115,22,.12);color:var(--retail-ink)}
+@media(max-width:820px){.ps-grid{grid-template-columns:1fr;gap:16px}}
+
+/* NO-CLICK PHILOSOPHY */
+.noclick-section{max-width:var(--container);margin:0 auto;padding:0 24px 96px}
+.noclick-wrapper{background:linear-gradient(135deg,#1A0F05 0%,#2D1708 60%,#4A2511 100%);border-radius:28px;padding:64px 56px;color:#fff;position:relative;overflow:hidden}
+.noclick-wrapper::before{content:"";position:absolute;inset:0;background:radial-gradient(700px 350px at 20% 20%, rgba(249,115,22,.4), transparent 60%),radial-gradient(600px 350px at 85% 80%, rgba(251,191,36,.2), transparent 60%);pointer-events:none}
+.noclick-wrapper::after{content:"";position:absolute;inset:0;background-image:linear-gradient(to right, rgba(255,255,255,.04) 1px, transparent 1px),linear-gradient(to bottom, rgba(255,255,255,.04) 1px, transparent 1px);background-size:44px 44px;mask-image:radial-gradient(ellipse at 50% 50%,#000,transparent 75%);-webkit-mask-image:radial-gradient(ellipse at 50% 50%,#000,transparent 75%);pointer-events:none}
+.noclick-wrapper > *{position:relative;z-index:1}
+.noclick-head{text-align:center;max-width:720px;margin:0 auto 48px}
+.noclick-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(253,186,116,.95);padding:6px 13px;border-radius:99px;background:rgba(249,115,22,.18);border:1px solid rgba(249,115,22,.3);margin-bottom:20px}
+.noclick-eyebrow .dot{width:5px;height:5px;border-radius:50%;background:rgba(253,186,116,.95)}
+.noclick-head h2{font-family:var(--font-serif);font-size:clamp(28px,3.6vw,42px);font-weight:600;letter-spacing:-.03em;line-height:1.14;margin-bottom:18px}
+.noclick-head h2 em{font-style:normal;background:linear-gradient(100deg,#FDBA74,#FB923C 60%,#FCD34D);-webkit-background-clip:text;background-clip:text;color:transparent}
+.noclick-head p{font-size:16.5px;line-height:1.7;color:rgba(255,255,255,.72)}
+.noclick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:820px){.noclick-grid{grid-template-columns:1fr}}
+.noclick-item{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:28px 24px;transition:.3s}
+.noclick-item:hover{background:rgba(255,255,255,.07);border-color:rgba(253,186,116,.3);transform:translateY(-4px)}
+.noclick-icon{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:19px;margin-bottom:16px;background:rgba(249,115,22,.15);color:#FDBA74}
+.noclick-item h3{font-family:var(--font-serif);font-size:19px;font-weight:600;letter-spacing:-.018em;line-height:1.3;margin-bottom:10px;color:#fff}
+.noclick-item p{font-size:14.5px;line-height:1.65;color:rgba(255,255,255,.68)}
+.noclick-item .before-after{margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.08);font-size:13px;font-family:var(--font-mono)}
+.noclick-item .before-after .b{color:rgba(255,255,255,.45);text-decoration:line-through}
+.noclick-item .before-after .a{color:#FDBA74;font-weight:600}
+.noclick-item .before-after .arrow{margin:0 8px;color:rgba(255,255,255,.3)}
+@media(max-width:640px){.noclick-wrapper{padding:40px 24px;border-radius:22px}}
+
+/* FEATURES */
+.features-section{max-width:var(--container);margin:0 auto;padding:0 24px 96px}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:900px){.features-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.features-grid{grid-template-columns:1fr}}
+.feat{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:26px 24px 24px;position:relative;overflow:hidden;transition:transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s, border-color .25s}
+.feat::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--brand),var(--brand-2));transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.feat:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:#DEDEEA}
+.feat:hover::before{transform:scaleX(1)}
+.feat-icon{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;font-size:20px;background:linear-gradient(135deg,var(--brand-soft),#fff);border:1px solid rgba(91,75,232,.14);margin-bottom:18px}
+.feat-tag{position:absolute;top:20px;right:20px;font-size:9.5px;font-weight:700;padding:3px 8px;border-radius:5px;letter-spacing:.04em;text-transform:uppercase;font-family:var(--font-mono)}
+.feat-tag.noclick{background:var(--retail-soft);color:var(--retail-ink)}
+.feat-tag.core{background:var(--brand-soft);color:var(--brand-ink)}
+.feat-tag.plus{background:rgba(0,196,140,.12);color:#0B8A66}
+.feat-title{font-size:16px;font-weight:650;letter-spacing:-.015em;margin-bottom:8px}
+.feat-desc{font-size:13.8px;color:var(--muted);line-height:1.62}
+
+/* DEEP DIVE */
+.deep-section{max-width:var(--container);margin:0 auto;padding:0 24px 96px}
+.deep{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:24px;transition:transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s}
+.deep:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+.deep.reverse{direction:rtl}
+.deep.reverse > *{direction:ltr}
+.deep-visual{position:relative;min-height:400px;display:grid;place-items:center;padding:36px;overflow:hidden;background:radial-gradient(400px 300px at 50% 50%, rgba(255,255,255,.9), transparent 70%),linear-gradient(135deg,var(--d-g1,#EFECFF),var(--d-g2,#DDD6FE))}
+.deep-visual::before{content:"";position:absolute;inset:0;background-image:linear-gradient(to right, rgba(255,255,255,.5) 1px, transparent 1px),linear-gradient(to bottom, rgba(255,255,255,.5) 1px, transparent 1px);background-size:32px 32px;mask-image:radial-gradient(circle at 50% 50%,#000,transparent 75%);-webkit-mask-image:radial-gradient(circle at 50% 50%,#000,transparent 75%);opacity:.55}
+.deep-mock{position:relative;z-index:1;width:100%;max-width:360px;background:#fff;border-radius:14px;box-shadow:0 30px 60px -20px rgba(20,20,50,.3), 0 10px 24px -10px rgba(20,20,40,.12);overflow:hidden}
+.dm-head{padding:11px 14px;display:flex;align-items:center;gap:7px;border-bottom:1px solid var(--line-soft);background:#FBFBFE}
+.dm-head .dot{width:9px;height:9px;border-radius:50%}
+.dm-head .dm-title{font-size:11px;font-weight:600;color:var(--faint);margin-left:6px;letter-spacing:.02em;font-family:var(--font-mono)}
+.dm-body{padding:16px}
+.dm-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;font-size:11.5px;border-bottom:1px solid var(--line-soft)}
+.dm-row:last-child{border-bottom:none}
+.dm-row .lbl{color:var(--muted)}
+.dm-row .val{font-weight:700;color:var(--ink);font-family:var(--font-mono);font-size:11.5px}
+.dm-row .val.up{color:var(--accent)}
+.dm-row .val.warn{color:var(--amber)}
+.dm-bars{display:flex;gap:3px;height:44px;align-items:flex-end;margin-top:12px}
+.dm-bars span{flex:1;background:linear-gradient(180deg,rgba(91,75,232,.55),rgba(91,75,232,.2));border-radius:3px 3px 1px 1px;min-height:3px}
+.dm-bars span:nth-child(1){height:45%}.dm-bars span:nth-child(2){height:65%}.dm-bars span:nth-child(3){height:52%}.dm-bars span:nth-child(4){height:78%}
+.dm-bars span:nth-child(5){height:88%}.dm-bars span:nth-child(6){height:62%}.dm-bars span:nth-child(7){height:90%}.dm-bars span:nth-child(8){height:70%}
+.deep-content{padding:48px;display:flex;flex-direction:column;justify-content:center}
+.deep-step{font-family:var(--font-mono);font-size:11.5px;font-weight:600;color:var(--retail);letter-spacing:.06em;margin-bottom:12px}
+.deep-content h3{font-family:var(--font-serif);font-size:clamp(22px,2.4vw,28px);font-weight:600;letter-spacing:-.025em;line-height:1.18;margin-bottom:14px}
+.deep-content p{font-size:15px;color:var(--muted);line-height:1.65;margin-bottom:20px}
+.deep-list{display:flex;flex-direction:column;gap:10px}
+.deep-item{display:flex;align-items:flex-start;gap:10px;font-size:13.8px;color:var(--ink-2);line-height:1.55}
+.deep-item svg{color:var(--brand);flex-shrink:0;margin-top:3px}
+@media(max-width:900px){.deep{grid-template-columns:1fr}.deep.reverse{direction:ltr}.deep-content{padding:32px 26px}.deep-visual{min-height:280px;padding:26px}}
+
+/* METRICS */
+.metrics-section{max-width:var(--container);margin:0 auto;padding:0 24px 96px}
+.metrics{background:linear-gradient(135deg,#1A0F05 0%,#2D1708 60%,#4A2511 100%);border-radius:28px;padding:56px 48px;color:#fff;position:relative;overflow:hidden}
+.metrics::before{content:"";position:absolute;inset:0;background:radial-gradient(600px 300px at 90% 20%, rgba(249,115,22,.4), transparent 60%),radial-gradient(400px 300px at 10% 90%, rgba(251,191,36,.2), transparent 60%);pointer-events:none}
+.metrics::after{content:"";position:absolute;inset:0;background-image:linear-gradient(to right, rgba(255,255,255,.04) 1px, transparent 1px),linear-gradient(to bottom, rgba(255,255,255,.04) 1px, transparent 1px);background-size:44px 44px;mask-image:radial-gradient(ellipse at 30% 50%,#000,transparent 75%);-webkit-mask-image:radial-gradient(ellipse at 30% 50%,#000,transparent 75%);pointer-events:none}
+.metrics-head{position:relative;z-index:1;text-align:center;max-width:640px;margin:0 auto 44px}
+.metrics-head h2{font-family:var(--font-serif);font-size:clamp(26px,3.4vw,38px);font-weight:600;letter-spacing:-.028em;line-height:1.18;margin-bottom:14px}
+.metrics-head h2 em{font-style:normal;background:linear-gradient(100deg,#FDBA74,#FB923C 60%,#FCD34D);-webkit-background-clip:text;background-clip:text;color:transparent}
+.metrics-head p{font-size:15px;line-height:1.6;color:rgba(255,255,255,.62);max-width:520px;margin:0 auto}
+.metrics-grid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:900px){.metrics-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.metrics{padding:40px 24px;border-radius:22px}}
+.metric{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:26px 22px;transition:.3s}
+.metric:hover{background:rgba(255,255,255,.06);border-color:rgba(253,186,116,.35);transform:translateY(-4px)}
+.metric .m-num{font-size:clamp(28px,3.4vw,40px);font-weight:700;letter-spacing:-.03em;font-feature-settings:"tnum";background:linear-gradient(180deg,#fff 30%,#FDBA74);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.05}
+.metric .m-num .unit{font-size:.5em;color:#FB923C;font-weight:700;margin-left:2px}
+.metric .m-lbl{font-size:12.5px;color:rgba(255,255,255,.62);margin-top:8px;line-height:1.45}
+
+/* PRICING */
+.pricing-section{max-width:var(--container);margin:0 auto;padding:0 24px 96px}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:stretch}
+@media(max-width:900px){.pricing-grid{grid-template-columns:1fr;gap:14px}}
+.plan{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:32px 28px 28px;display:flex;flex-direction:column;position:relative;transition:transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s, border-color .25s}
+.plan:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:#DEDEEA}
+.plan.featured{border-color:rgba(91,75,232,.4);box-shadow:0 20px 60px -20px rgba(91,75,232,.25), 0 6px 20px -6px rgba(91,75,232,.12);transform:translateY(-6px)}
+.plan.featured:hover{transform:translateY(-9px)}
+.plan-flag{position:absolute;top:-11px;left:50%;transform:translateX(-50%);font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--brand);padding:5px 12px;border-radius:99px;box-shadow:0 6px 14px -4px rgba(91,75,232,.5)}
+.plan-name{font-family:var(--font-serif);font-size:20px;font-weight:600;letter-spacing:-.02em;margin-bottom:6px}
+.plan-desc{font-size:13px;color:var(--muted);line-height:1.55;margin-bottom:20px;min-height:40px}
+.plan-price{display:flex;align-items:baseline;gap:4px;margin-bottom:6px}
+.plan-price .amt{font-family:var(--font-serif);font-size:38px;font-weight:600;letter-spacing:-.03em;line-height:1}
+.plan-price .per{font-size:13px;color:var(--muted);font-weight:500}
+.plan-sub{font-size:12px;color:var(--faint);margin-bottom:24px}
+.plan-divider{height:1px;background:var(--line);margin:0 0 22px}
+.plan-features{display:flex;flex-direction:column;gap:11px;margin-bottom:26px;flex:1}
+.plan-feat{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:var(--ink-2);line-height:1.5}
+.plan-feat svg{color:var(--brand);flex-shrink:0;margin-top:3px}
+.plan-feat.muted{color:var(--faint)}
+.plan-feat.muted svg{color:var(--faint)}
+.plan-cta{width:100%;justify-content:center}
+
+/* TESTIMONIALS */
+.testi-section{max-width:var(--container);margin:0 auto;padding:0 24px 96px}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:900px){.testi-grid{grid-template-columns:1fr}}
+.testi{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:28px 26px 26px;display:flex;flex-direction:column;position:relative;transition:transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s}
+.testi:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+.testi-quote{font-size:15px;line-height:1.68;color:var(--ink-2);margin-bottom:22px;flex:1;position:relative}
+.testi-quote::before{content:"“";position:absolute;top:-18px;left:-6px;font-size:52px;color:var(--brand);opacity:.14;font-weight:700;line-height:1}
+.testi-person{display:flex;align-items:center;gap:12px;padding-top:18px;border-top:1px solid var(--line-soft)}
+.testi-avatar{width:42px;height:42px;border-radius:12px;flex-shrink:0;display:grid;place-items:center;color:#fff;font-size:14px;font-weight:700}
+.testi-name{font-size:13.5px;font-weight:650;letter-spacing:-.01em}
+.testi-role{font-size:12px;color:var(--muted);margin-top:2px}
+
+/* FAQ */
+.faq-section{max-width:var(--container);margin:0 auto;padding:0 24px 96px}
+.faq-wrap{max-width:780px;margin:0 auto}
+.faq-item{background:var(--surface);border:1px solid var(--line);border-radius:14px;margin-bottom:10px;overflow:hidden;transition:.2s}
+.faq-item.open{border-color:rgba(91,75,232,.3);box-shadow:var(--shadow-sm)}
+.faq-q{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;padding:20px 22px;text-align:left;font-size:15px;font-weight:600;letter-spacing:-.012em;color:var(--ink);transition:.15s}
+.faq-q:hover{color:var(--brand)}
+.faq-icon{width:24px;height:24px;border-radius:7px;flex-shrink:0;display:grid;place-items:center;background:var(--brand-soft);color:var(--brand);transition:transform .3s cubic-bezier(.2,.8,.2,1), background .2s, color .2s}
+.faq-item.open .faq-icon{transform:rotate(45deg);background:var(--brand);color:#fff}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.2,.8,.2,1)}
+.faq-item.open .faq-a{max-height:480px}
+.faq-a-inner{padding:0 22px 22px;font-size:14.2px;color:var(--muted);line-height:1.7}
+.faq-a-inner p + p{margin-top:10px}
+.faq-a-inner strong{color:var(--ink);font-weight:600}
+
+/* FINAL CTA */
+.cta-section{max-width:var(--container);margin:0 auto;padding:0 24px 96px}
+.cta-final{background:linear-gradient(135deg,#1A0F05 0%,#2D1708 60%,#4A2511 100%);border-radius:28px;padding:72px 56px;color:#fff;position:relative;overflow:hidden;text-align:center}
+.cta-final::before{content:"";position:absolute;inset:0;background:radial-gradient(800px 400px at 50% 0%, rgba(249,115,22,.4), transparent 60%),radial-gradient(600px 400px at 90% 90%, rgba(251,191,36,.18), transparent 60%);pointer-events:none}
+.cta-final::after{content:"";position:absolute;inset:0;background-image:linear-gradient(to right, rgba(255,255,255,.04) 1px, transparent 1px),linear-gradient(to bottom, rgba(255,255,255,.04) 1px, transparent 1px);background-size:44px 44px;mask-image:radial-gradient(ellipse at 50% 50%,#000,transparent 75%);-webkit-mask-image:radial-gradient(ellipse at 50% 50%,#000,transparent 75%);pointer-events:none}
+.cta-final > *{position:relative;z-index:1}
+.cta-final h2{font-family:var(--font-serif);font-size:clamp(30px,4.4vw,48px);font-weight:600;letter-spacing:-.032em;line-height:1.1;margin-bottom:18px}
+.cta-final h2 em{font-style:normal;background:linear-gradient(100deg,#FDBA74,#FB923C 60%,#FCD34D);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cta-final p{font-size:16.5px;color:rgba(255,255,255,.72);line-height:1.65;max-width:600px;margin:0 auto 36px}
+.cta-final .actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.cta-final .btn-white{background:#fff;color:var(--retail-ink);box-shadow:0 12px 32px -10px rgba(255,255,255,.3)}
+.cta-final .btn-white:hover{background:#FFF7ED;transform:translateY(-2px)}
+.cta-final .btn-outline{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.15)}
+.cta-final .btn-outline:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25)}
+@media(max-width:620px){.cta-final{padding:52px 24px;border-radius:20px}.cta-final .actions{flex-direction:column}.cta-final .btn{width:100%;justify-content:center}}
+
+/* FOOTER */
+.footer{background:#0B0B16;color:rgba(255,255,255,.7);padding:64px 0 28px}
+.footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.08)}
+.footer-brand{display:flex;align-items:center;gap:10px;color:#fff;margin-bottom:14px}
+.footer-brand .brand-mark{box-shadow:none}
+.footer-brand .brand-name{font-size:16px}
+.footer-about{font-size:13.5px;line-height:1.65;max-width:320px;color:rgba(255,255,255,.55)}
+.footer-social{display:flex;gap:10px;margin-top:18px}
+.social-btn{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.75);transition:.2s}
+.social-btn:hover{background:var(--brand);color:#fff;transform:translateY(-2px);border-color:var(--brand)}
+.footer h5{font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:16px}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13.5px;color:rgba(255,255,255,.7);transition:.15s;display:inline-block}
+.footer-links a:hover{color:#fff;transform:translateX(3px)}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:26px;gap:16px;flex-wrap:wrap;font-size:12.5px;color:rgba(255,255,255,.4)}
+.footer-bottom .made{display:flex;align-items:center;gap:8px}
+.footer-bottom .made span.flag{font-size:15px}
+@media(max-width:820px){.footer-grid{grid-template-columns:1fr 1fr;gap:32px}.footer-grid > div:first-child{grid-column:1/-1}.footer-bottom{flex-direction:column;text-align:center}}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.8,.2,1), transform .7s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* MOBILE */
+@media(max-width:720px){
+  .section{padding:64px 0}
+  .container{padding:0 18px}
+  .breadcrumb{padding:96px 18px 0;font-size:12px}
+  .phero{padding:24px 0 48px}
+  .phero h1{font-size:clamp(30px,8vw,40px)}
+  .phero p.lead{font-size:15px}
+  .phero-cta .btn{width:100%}
+  .section-head{margin-bottom:36px}
+  .section-head h2{font-size:clamp(24px,7vw,32px)}
+  .section-head p{font-size:14.5px}
+  .ps-card{padding:24px 20px}
+  .feat{padding:22px 20px}
+  .plan{padding:24px 20px}
+  .testi{padding:24px 22px}
+  .faq-q{padding:16px 18px;font-size:14.5px}
+  .faq-a-inner{padding:0 18px 18px;font-size:13.5px}
+  .metrics{padding:40px 24px;border-radius:20px}
+  .noclick-wrapper{padding:40px 24px;border-radius:22px}
+  .container{padding:0 18px}
+  .footer{padding:48px 0 22px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important}
+  .reveal{opacity:1;transform:none}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="#" class="brand">
+      <span class="brand-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="3" fill="#fff" stroke="none"/>
+        </svg>
+      </span>
+      <span class="brand-name">HashVeno</span>
+    </a>
+
+    <div class="nav-links">
+      <a class="nav-link" href="#">Services</a>
+      <a class="nav-link active" href="#">Products</a>
+      <a class="nav-link" href="#">Pricing</a>
+      <a class="nav-link" href="#faq">FAQ</a>
+      <a class="nav-link" href="#contact">Contact</a>
+    </div>
+
+    <div class="nav-cta">
+      <a href="#pricing" class="btn btn-retail">
+        Start free trial
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M4 7h16M4 12h16M4 17h16"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#">Services</a>
+  <a href="#">Products</a>
+  <a href="#">Pricing</a>
+  <a href="#faq">FAQ</a>
+  <a href="#contact">Contact</a>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <a href="#">Products</a>
+  <span class="sep">/</span>
+  <span class="current">HashVeno Retail</span>
+</div>
+
+<!-- HERO -->
+<header class="phero">
+  <div class="phero-bg"></div>
+  <div class="phero-grid"></div>
+
+  <div class="container">
+    <div class="phero-inner">
+
+      <div class="phero-copy">
+        <div class="phero-tags">
+          <span class="ptag live"><span class="sdot"></span> Live in production</span>
+          <span class="ptag retail">V2.4 · Flagship product</span>
+        </div>
+
+        <h1>
+          Run your shop.<br>
+          <em>Not your back office.</em>
+        </h1>
+
+        <p class="lead">
+          The complete retail management system — POS, live inventory, customer
+          intelligence, profit analytics, and no-click automation. Built for shops
+          that want to grow without growing their back office.
+        </p>
+
+        <div class="phero-cta">
+          <a href="#pricing" class="btn btn-retail btn-lg">
+            Start 14-day free trial
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#contact" class="btn btn-secondary btn-lg">
+            Book a live demo
+          </a>
+        </div>
+
+        <div class="phero-meta">
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            No credit card required
+          </span>
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            Setup in under 30 minutes
+          </span>
+        </div>
+      </div>
+
+      <div class="phero-visual">
+        <div class="pos-window">
+          <div class="pos-chrome">
+            <span class="pos-dot" style="background:#FF5F57"></span>
+            <span class="pos-dot" style="background:#FEBC2E"></span>
+            <span class="pos-dot" style="background:#28C840"></span>
+            <div class="pos-title">retail.hashveno.com / pos</div>
+          </div>
+          <div class="pos-body">
+
+            <div class="pos-items">
+              <div class="pos-category">
+                <span class="pos-cat active">All</span>
+                <span class="pos-cat">Beverages</span>
+                <span class="pos-cat">Snacks</span>
+                <span class="pos-cat">Dairy</span>
+                <span class="pos-cat">Household</span>
+              </div>
+              <div class="pos-grid">
+                <div class="pos-tile"><div class="emoji">☕</div><div class="name">Filter Coffee</div><div class="price">₹45</div></div>
+                <div class="pos-tile"><div class="emoji">🥛</div><div class="name">Milk 500ml</div><div class="price">₹32</div></div>
+                <div class="pos-tile"><div class="emoji">🍞</div><div class="name">Bread Loaf</div><div class="price">₹48</div></div>
+                <div class="pos-tile"><div class="emoji">🍚</div><div class="name">Basmati 1kg</div><div class="price">₹180</div></div>
+                <div class="pos-tile"><div class="emoji">🫖</div><div class="name">Green Tea</div><div class="price">₹120</div></div>
+                <div class="pos-tile"><div class="emoji">🍫</div><div class="name">Chocolate</div><div class="price">₹85</div></div>
+                <div class="pos-tile"><div class="emoji">🧴</div><div class="name">Shampoo</div><div class="price">₹240</div></div>
+                <div class="pos-tile"><div class="emoji">🧼</div><div class="name">Soap</div><div class="price">₹45</div></div>
+                <div class="pos-tile"><div class="emoji">🥜</div><div class="name">Peanuts 250g</div><div class="price">₹65</div></div>
+              </div>
+            </div>
+
+            <div class="pos-cart">
+              <div class="pos-cart-title">
+                <span>Current cart</span>
+                <span class="count">8 items</span>
+              </div>
+              <div class="pos-line">
+                <div><div class="ln">Filter Coffee</div><div class="qty">Qty 2 · ₹45</div></div>
+                <div class="pr">₹90</div>
+              </div>
+              <div class="pos-line">
+                <div><div class="ln">Milk 500ml</div><div class="qty">Qty 3 · ₹32</div></div>
+                <div class="pr">₹96</div>
+              </div>
+              <div class="pos-line">
+                <div><div class="ln">Basmati 1kg</div><div class="qty">Qty 1 · ₹180</div></div>
+                <div class="pr">₹180</div>
+              </div>
+              <div class="pos-line">
+                <div><div class="ln">Chocolate</div><div class="qty">Qty 2 · ₹85</div></div>
+                <div class="pr">₹170</div>
+              </div>
+              <div class="pos-total">
+                <span>Total</span>
+                <span class="amt">₹536</span>
+              </div>
+              <div class="pos-checkout">
+                Checkout &amp; Print
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="float-badge fb-1">
+          <div class="fb-icon" style="background:var(--retail-soft)">⚡</div>
+          <div>
+            <div class="fb-title">Sale in 4.2 seconds</div>
+            <div class="fb-sub">Barcode scan → printed bill</div>
+          </div>
+        </div>
+
+        <div class="float-badge fb-2">
+          <div class="fb-icon" style="background:#DCFCE7">✓</div>
+          <div>
+            <div class="fb-title">Stock auto-updated</div>
+            <div class="fb-sub">8 SKUs · synced to cloud</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<!-- TRUST STRIP -->
+<section class="trust-strip">
+  <div class="container">
+    <div class="trust-label">Trusted by shops across Tamil Nadu</div>
+    <div class="trust-logos">
+      <div class="trust-logo"><span class="tl-mark">KS</span>Kumar Stores</div>
+      <div class="trust-logo"><span class="tl-mark">VM</span>Vasan Mart</div>
+      <div class="trust-logo"><span class="tl-mark">AC</span>Aroma Cafe</div>
+      <div class="trust-logo"><span class="tl-mark">MB</span>Metro Bazaar</div>
+      <div class="trust-logo"><span class="tl-mark">SM</span>Sri Murugan</div>
+      <div class="trust-logo"><span class="tl-mark">NG</span>New Grand</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM/SOLUTION -->
+<section class="section">
+  <div class="container">
+    <div class="section-head center reveal">
+      <div class="eyebrow retail"><span class="dot"></span> Why HashVeno Retail</div>
+      <h2>Most shops don't lose money. <em class="retail">They lose time.</em></h2>
+      <p>Hours spent on inventory counts, manual billing, and guesswork. HashVeno Retail hands those hours back.</p>
+    </div>
+
+    <div class="ps-grid">
+      <div class="ps-card problem reveal">
+        <span class="ps-badge problem">● The old way</span>
+        <h3>Spreadsheets, paper registers, and guessing</h3>
+        <p>Most shops still run on tools that weren't built for retail — and it shows in every month-end close, every stockout, and every quiet evening.</p>
+        <div class="ps-list">
+          <div class="ps-item problem"><span class="bullet">✕</span> Inventory counts that take two days and are still wrong</div>
+          <div class="ps-item problem"><span class="bullet">✕</span> Billing that slows down during peak hours</div>
+          <div class="ps-item problem"><span class="bullet">✕</span> No idea which products are actually profitable</div>
+          <div class="ps-item problem"><span class="bullet">✕</span> Customer history scattered across three notebooks</div>
+          <div class="ps-item problem"><span class="bullet">✕</span> You find out about stockouts from customers, not alerts</div>
+        </div>
+      </div>
+
+      <div class="ps-card solution reveal">
+        <span class="ps-badge solution">● With HashVeno Retail</span>
+        <h3>One system. Every counter. Live numbers.</h3>
+        <p>A single dashboard that turns every sale, every return, and every customer into real-time signal you can act on — before the day ends.</p>
+        <div class="ps-list">
+          <div class="ps-item solution"><span class="bullet">✓</span> Inventory auto-deducts on every sale, across every store</div>
+          <div class="ps-item solution"><span class="bullet">✓</span> Billing in under 8 seconds, even on slow connections</div>
+          <div class="ps-item solution"><span class="bullet">✓</span> Profit per SKU, per hour, per store — always current</div>
+          <div class="ps-item solution"><span class="bullet">✓</span> Every customer's purchase history, one tap away</div>
+          <div class="ps-item solution"><span class="bullet">✓</span> Alerts that fire before the stockout, not after</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NO-CLICK AUTOMATION -->
+<section class="noclick-section">
+  <div class="noclick-wrapper reveal">
+    <div class="noclick-head">
+      <div class="noclick-eyebrow"><span class="dot"></span> The HashVeno difference</div>
+      <h2>Software that does the work,<br><em>not the user.</em></h2>
+      <p>
+        Every feature in HashVeno Retail is judged by one question: does it save
+        someone from doing a thing they shouldn't have to do anymore? That's
+        no-click automation — a philosophy, not a marketing line.
+      </p>
+    </div>
+
+    <div class="noclick-grid">
+      <div class="noclick-item">
+        <div class="noclick-icon">📦</div>
+        <h3>Reorder without asking</h3>
+        <p>When stock crosses your threshold, a purchase order drafts itself. You approve it — you don't have to remember to write it.</p>
+        <div class="before-after">
+          <span class="b">Manual reorder</span>
+          <span class="arrow">→</span>
+          <span class="a">Auto-drafted PO</span>
+        </div>
+      </div>
+
+      <div class="noclick-item">
+        <div class="noclick-icon">📊</div>
+        <h3>Reports that write themselves</h3>
+        <p>Daily digest lands in your inbox every morning. Weekly and monthly rollups compile automatically. You read; you don't build.</p>
+        <div class="before-after">
+          <span class="b">Export & pivot</span>
+          <span class="arrow">→</span>
+          <span class="a">Auto-emailed report</span>
+        </div>
+      </div>
+
+      <div class="noclick-item">
+        <div class="noclick-icon">🧾</div>
+        <h3>Billing that just happens</h3>
+        <p>Scan the barcode. The rest is automatic: tax, discount, loyalty points, receipt, and inventory adjustment. In one motion.</p>
+        <div class="before-after">
+          <span class="b">Manual bill entry</span>
+          <span class="arrow">→</span>
+          <span class="a">4-second scan & bill</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section">
+  <div class="section-head reveal">
+    <div class="eyebrow retail"><span class="dot"></span> Features</div>
+    <h2>Everything you need. <em class="retail">Nothing you don't.</em></h2>
+    <p>Twelve features, built with shop owners not for them. Every one earns its place on the screen.</p>
+  </div>
+
+  <div class="features-grid">
+
+    <div class="feat reveal">
+      <span class="feat-tag core">Core</span>
+      <div class="feat-icon">🧾</div>
+      <div class="feat-title">Lightning-fast POS</div>
+      <div class="feat-desc">Barcode scan to printed bill in under 8 seconds. Works offline and syncs the moment you're back online.</div>
+    </div>
+
+    <div class="feat reveal">
+      <span class="feat-tag core">Core</span>
+      <div class="feat-icon">📦</div>
+      <div class="feat-title">Live inventory</div>
+      <div class="feat-desc">Every sale deducts stock in real time. Get alerts before you run out, not after.</div>
+    </div>
+
+    <div class="feat reveal">
+      <span class="feat-tag core">Core</span>
+      <div class="feat-icon">👥</div>
+      <div class="feat-title">Customer profiles</div>
+      <div class="feat-desc">Purchase history, preferences, and credit accounts — all in one tap at the counter.</div>
+    </div>
+
+    <div class="feat reveal">
+      <span class="feat-tag core">Core</span>
+      <div class="feat-icon">📊</div>
+      <div class="feat-title">Profit analytics</div>
+      <div class="feat-desc">See profit by SKU, category, hour, staff, and store. Spot your winners instantly.</div>
+    </div>
+
+    <div class="feat reveal">
+      <span class="feat-tag core">Core</span>
+      <div class="feat-icon">🏪</div>
+      <div class="feat-title">Multi-store ready</div>
+      <div class="feat-desc">Manage every branch from one dashboard. Stock transfers, central pricing, unified reports.</div>
+    </div>
+
+    <div class="feat reveal">
+      <span class="feat-tag core">Core</span>
+      <div class="feat-icon">🔐</div>
+      <div class="feat-title">Role-based access</div>
+      <div class="feat-desc">Cashier, manager, owner — every role sees only what it should. Full audit trail.</div>
+    </div>
+
+    <div class="feat reveal">
+      <span class="feat-tag noclick">No-click</span>
+      <div class="feat-icon">🔄</div>
+      <div class="feat-title">Auto-reorder drafts</div>
+      <div class="feat-desc">Reorder thresholds trigger purchase order drafts automatically. Approve exceptions, not every order.</div>
+    </div>
+
+    <div class="feat reveal">
+      <span class="feat-tag noclick">No-click</span>
+      <div class="feat-icon">📨</div>
+      <div class="feat-title">Auto-compiled reports</div>
+      <div class="feat-desc">Daily, weekly, and monthly reports built and emailed without anyone touching Excel.</div>
+    </div>
+
+    <div class="feat reveal">
+      <span class="feat-tag noclick">No-click</span>
+      <div class="feat-icon">🎁</div>
+      <div class="feat-title">Loyalty &amp; offers engine</div>
+      <div class="feat-desc">Points, discounts, and targeted offers applied automatically at checkout — no manual lookups.</div>
+    </div>
+
+    <div class="feat reveal">
+      <span class="feat-tag plus">Plus</span>
+      <div class="feat-icon">💳</div>
+      <div class="feat-title">Split &amp; credit payments</div>
+      <div class="feat-desc">Split across cash + card + UPI in one transaction. Customer credit balances tracked per shop.</div>
+    </div>
+
+    <div class="feat reveal">
+      <span class="feat-tag plus">Plus</span>
+      <div class="feat-icon">📱</div>
+      <div class="feat-title">Owner mobile app</div>
+      <div class="feat-desc">See today's sales, alerts, and reports from your phone. Approve purchase orders on the go.</div>
+    </div>
+
+    <div class="feat reveal">
+      <span class="feat-tag plus">Plus</span>
+      <div class="feat-icon">🔌</div>
+      <div class="feat-title">Open API &amp; integrations</div>
+      <div class="feat-desc">Connect your accounting, GST filing, and delivery partners. Documented REST API.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- DEEP DIVE -->
+<section class="deep-section">
+  <div class="section-head center reveal">
+    <div class="eyebrow retail"><span class="dot"></span> Inside the system</div>
+    <h2>Three views that <em class="retail">actually matter.</em></h2>
+    <p>POS at the counter. Inventory in the back. Analytics for the owner. All live, all the same system.</p>
+  </div>
+
+  <!-- POS -->
+  <div class="deep reveal">
+    <div class="deep-visual" style="--d-g1:#FFEDD5;--d-g2:#FED7AA">
+      <div class="deep-mock">
+        <div class="dm-head">
+          <span class="dot" style="background:#FF5F57"></span>
+          <span class="dot" style="background:#FEBC2E"></span>
+          <span class="dot" style="background:#28C840"></span>
+          <span class="dm-title">POS · live</span>
+        </div>
+        <div class="dm-body">
+          <div class="dm-row"><span class="lbl">Customer</span><span class="val">Walk-in</span></div>
+          <div class="dm-row"><span class="lbl">Items scanned</span><span class="val up">8</span></div>
+          <div class="dm-row"><span class="lbl">Subtotal</span><span class="val">₹142.80</span></div>
+          <div class="dm-row"><span class="lbl">Tax (GST 5%)</span><span class="val">₹11.42</span></div>
+          <div class="dm-row"><span class="lbl">Discount applied</span><span class="val up">−₹8.00</span></div>
+          <div class="dm-row"><span class="lbl">Total</span><span class="val">₹146.22</span></div>
+          <div class="dm-row"><span class="lbl">Time</span><span class="val up">4.2s</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="deep-content">
+      <div class="deep-step">STEP 01</div>
+      <h3>Bill in seconds. Even at peak rush.</h3>
+      <p>Barcode scan, quick-key shortcuts, and split payments — designed to move customers through checkout without slowing the line, even at 8 PM on a Saturday.</p>
+      <div class="deep-list">
+        <div class="deep-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          Works offline — syncs the moment you're back online
+        </div>
+        <div class="deep-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          Split payments (cash + card + UPI) in one transaction
+        </div>
+        <div class="deep-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          Customer credit accounts &amp; running balances
+        </div>
+        <div class="deep-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          Custom receipts with your shop's branding
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INVENTORY -->
+  <div class="deep reverse reveal">
+    <div class="deep-visual" style="--d-g1:#DCFCE7;--d-g2:#BBF7D0">
+      <div class="deep-mock">
+        <div class="dm-head">
+          <span class="dot" style="background:#FF5F57"></span>
+          <span class="dot" style="background:#FEBC2E"></span>
+          <span class="dot" style="background:#28C840"></span>
+          <span class="dm-title">Inventory · live stock</span>
+        </div>
+        <div class="dm-body">
+          <div class="dm-row"><span class="lbl">Total SKUs</span><span class="val">1,842</span></div>
+          <div class="dm-row"><span class="lbl">Stock health</span><span class="val up">92%</span></div>
+          <div class="dm-bars">
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+          </div>
+          <div class="dm-row" style="margin-top:12px"><span class="lbl">Low stock</span><span class="val warn">6 items</span></div>
+          <div class="dm-row"><span class="lbl">Out of stock</span><span class="val warn">2 items</span></div>
+          <div class="dm-row"><span class="lbl">Auto-reorder drafts</span><span class="val up">4 pending</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="deep-content">
+      <div class="deep-step">STEP 02</div>
+      <h3>Know your stock without counting it.</h3>
+      <p>Every sale auto-deducts. Every purchase auto-adds. Your inventory is always current — no monthly counts, no spreadsheet reconciliation, no lost evenings.</p>
+      <div class="deep-list">
+        <div class="deep-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          Low-stock alerts before you run out, not after
+        </div>
+        <div class="deep-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          Auto-drafted purchase orders to suppliers
+        </div>
+        <div class="deep-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          Batch and expiry tracking for perishables
+        </div>
+        <div class="deep-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          Stock transfers between stores, one tap
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANALYTICS -->
+  <div class="deep reveal">
+    <div class="deep-visual" style="--d-g1:#EFECFF;--d-g2:#DDD6FE">
+      <div class="deep-mock">
+        <div class="dm-head">
+          <span class="dot" style="background:#FF5F57"></span>
+          <span class="dot" style="background:#FEBC2E"></span>
+          <span class="dot" style="background:#28C840"></span>
+          <span class="dm-title">Reports · this month</span>
+        </div>
+        <div class="dm-body">
+          <div class="dm-row"><span class="lbl">Revenue</span><span class="val up">+18.4%</span></div>
+          <div class="dm-row"><span class="lbl">Gross profit</span><span class="val">₹28,140</span></div>
+          <div class="dm-row"><span class="lbl">Avg basket</span><span class="val">₹16.27</span></div>
+          <div class="dm-row"><span class="lbl">Top SKU</span><span class="val">Coca 500ml</span></div>
+          <div class="dm-row"><span class="lbl">Top hour</span><span class="val">6–7 PM</span></div>
+          <div class="dm-row"><span class="lbl">Top staff</span><span class="val">Ravi · ₹42,180</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="deep-content">
+      <div class="deep-step">STEP 03</div>
+      <h3>Close the day knowing exactly what happened.</h3>
+      <p>Real profit — not just revenue. See which products, hours, and staff actually move the needle, and where you're leaking margin. Report lands in your inbox before you lock up.</p>
+      <div class="deep-list">
+        <div class="deep-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          Profit per SKU, category, hour, and staff member
+        </div>
+        <div class="deep-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          Daily, weekly, and monthly reports — emailed automatically
+        </div>
+        <div class="deep-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          Export to Excel, PDF, or your accountant's inbox
+        </div>
+        <div class="deep-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          No-click automation: reports compile themselves
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- METRICS -->
+<section class="metrics-section">
+  <div class="metrics reveal">
+    <div class="metrics-head">
+      <h2>Numbers from shops <em>already running on it.</em></h2>
+      <p>Averages across our retail customers in the first 90 days after switching.</p>
+    </div>
+
+    <div class="metrics-grid">
+      <div class="metric">
+        <div class="m-num">42<span class="unit">%</span></div>
+        <div class="m-lbl">Faster checkout at peak hours</div>
+      </div>
+      <div class="metric">
+        <div class="m-num">3.2<span class="unit">h</span></div>
+        <div class="m-lbl">Saved per day on manual inventory work</div>
+      </div>
+      <div class="metric">
+        <div class="m-num">18<span class="unit">%</span></div>
+        <div class="m-lbl">Average revenue lift in 90 days</div>
+      </div>
+      <div class="metric">
+        <div class="m-num">99.9<span class="unit">%</span></div>
+        <div class="m-lbl">Platform uptime over the last year</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <div class="section-head center reveal">
+    <div class="eyebrow retail"><span class="dot"></span> Pricing</div>
+    <h2>Simple pricing. <em class="retail">No surprises.</em></h2>
+    <p>Start free. Upgrade when you grow. Cancel anytime.</p>
+  </div>
+
+  <div class="pricing-grid">
+
+    <div class="plan reveal">
+      <div class="plan-name">Starter</div>
+      <div class="plan-desc">For single-counter shops just getting started.</div>
+      <div class="plan-price">
+        <span class="amt">₹0</span>
+        <span class="per">/ month</span>
+      </div>
+      <div class="plan-sub">Free forever · 1 register</div>
+      <div class="plan-divider"></div>
+      <div class="plan-features">
+        <div class="plan-feat">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          POS + billing
+        </div>
+        <div class="plan-feat">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          Up to 500 SKUs
+        </div>
+        <div class="plan-feat">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          Basic daily reports
+        </div>
+        <div class="plan-feat">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          Offline billing mode
+        </div>
+        <div class="plan-feat muted">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          Multi-store
+        </div>
+        <div class="plan-feat muted">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          Priority support
+        </div>
+      </div>
+      <a href="#" class="btn btn-secondary plan-cta">Start free</a>
+    </div>
+
+    <div class="plan featured reveal">
+      <div class="plan-flag">Most popular</div>
+      <div class="plan-name">Growth</div>
+      <div class="plan-desc">For growing shops with 2+ counters and real reporting needs.</div>
+      <div class="plan-price">
+        <span class="amt">₹2,499</span>
+        <span class="per">/ month</span>
+      </div>
+      <div class="plan-sub">Per store · billed annually</div>
+      <div class="plan-divider"></div>
+      <div class="plan-features">
+        <div class="plan-feat">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          Everything in Starter
+        </div>
+        <div class="plan-feat">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          Unlimited SKUs &amp; registers
+        </div>
+        <div class="plan-feat">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          Full profit analytics
+        </div>
+        <div class="plan-feat">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          Auto-reorder drafts
+        </div>
+        <div class="plan-feat">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          Customer profiles &amp; credit
+        </div>
+        <div class="plan-feat">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          Priority email support
+        </div>
+      </div>
+      <a href="#" class="btn btn-retail plan-cta">Start 14-day trial</a>
+    </div>
+
+    <div class="plan reveal">
+      <div class="plan-name">Scale</div>
+      <div class="plan-desc">For multi-store operators and franchise chains.</div>
+      <div class="plan-price">
+        <span class="amt">₹6,999</span>
+        <span class="per">/ month</span>
+      </div>
+      <div class="plan-sub">Per store · billed annually</div>
+      <div class="plan-divider"></div>
+      <div class="plan-features">
+        <div class="plan-feat">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          Everything in Growth
+        </div>
+        <div class="plan-feat">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          Multi-store dashboard
+        </div>
+        <div class="plan-feat">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          Stock transfers between stores
+        </div>
+        <div class="plan-feat">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          API access &amp; integrations
+        </div>
+        <div class="plan-feat">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          Owner mobile app
+        </div>
+        <div class="plan-feat">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          Dedicated account manager
+        </div>
+      </div>
+      <a href="#contact" class="btn btn-secondary plan-cta">Contact sales</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testi-section">
+  <div class="section-head center reveal">
+    <div class="eyebrow retail"><span class="dot"></span> Testimonials</div>
+    <h2>What shop owners say <em class="retail">after switching.</em></h2>
+  </div>
+
+  <div class="testi-grid">
+
+    <div class="testi reveal">
+      <div class="testi-quote">
+        We used to close inventory counts on Sundays. Now it just happens. That's 4 hours back every week — I finally have my Sunday mornings again.
+      </div>
+      <div class="testi-person">
+        <div class="testi-avatar" style="background:linear-gradient(135deg,#F97316,#FB923C)">RK</div>
+        <div>
+          <div class="testi-name">Ramesh Kumar</div>
+          <div class="testi-role">Kumar Stores · Chennai</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi reveal">
+      <div class="testi-quote">
+        The profit reports showed us three products we were losing money on. Dropped them, margin jumped 12%. That report paid for three years of the subscription.
+      </div>
+      <div class="testi-person">
+        <div class="testi-avatar" style="background:linear-gradient(135deg,#5B4BE8,#8B7BFF)">AP</div>
+        <div>
+          <div class="testi-name">Anita Prabhu</div>
+          <div class="testi-role">Aroma Cafe · Bengaluru</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi reveal">
+      <div class="testi-quote">
+        We went from 1 store to 4 in a year. HashVeno Retail handled the scale without us adding a single admin. The auto-reorder drafts alone save my manager 2 hours a week.
+      </div>
+      <div class="testi-person">
+        <div class="testi-avatar" style="background:linear-gradient(135deg,#00C48C,#0FA47F)">VS</div>
+        <div>
+          <div class="testi-name">Vikram Srinivas</div>
+          <div class="testi-role">Vasan Mart · Coimbatore</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section" id="faq">
+  <div class="section-head center reveal">
+    <div class="eyebrow retail"><span class="dot"></span> FAQ</div>
+    <h2>Questions, <em class="retail">answered.</em></h2>
+    <p>Can't find what you need? <a href="#contact" style="color:var(--brand);font-weight:600">Talk to us</a>.</p>
+  </div>
+
+  <div class="faq-wrap reveal">
+
+    <div class="faq-item">
+      <button class="faq-q" data-faq>
+        Do I need new hardware to run HashVeno Retail?
+        <span class="faq-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+      </button>
+      <div class="faq-a">
+        <div class="faq-a-inner">
+          <p>
+            No. HashVeno Retail runs in any modern browser on any device — laptop, tablet, or desktop. It works with standard barcode scanners, thermal printers, and cash drawers. If you already have a POS setup, it almost certainly works.
+          </p>
+          <p>
+            If you're starting from scratch, a basic laptop + thermal printer + barcode scanner can be under ₹25,000 total.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" data-faq>
+        Does it work when the internet goes down?
+        <span class="faq-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+      </button>
+      <div class="faq-a">
+        <div class="faq-a-inner">
+          <p>
+            Yes. Billing continues fully offline. Sales, inventory deductions, and customer data are stored locally and sync the moment your connection returns — with zero duplicates and zero lost transactions.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" data-faq>
+        Can I import my existing inventory from Excel?
+        <span class="faq-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+      </button>
+      <div class="faq-a">
+        <div class="faq-a-inner">
+          <p>
+            Yes — upload an Excel or CSV file and our system maps the columns for you. For most shops, the full import takes under 15 minutes. Our team can also do it for you during onboarding at no extra cost.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" data-faq>
+        What is no-click automation, really?
+        <span class="faq-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+      </button>
+      <div class="faq-a">
+        <div class="faq-a-inner">
+          <p>
+            It's a design principle, not a feature. Every feature in HashVeno Retail is judged by one question: does it save someone from doing a thing they shouldn't have to do anymore?
+          </p>
+          <p>
+            Concretely: purchase orders draft themselves when stock is low. Daily reports compile and email without anyone opening Excel. Loyalty points apply at checkout without manual lookup. The system watches, learns, and acts — the human makes the calls that actually need a human.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" data-faq>
+        Is my data secure and where is it stored?
+        <span class="faq-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+      </button>
+      <div class="faq-a">
+        <div class="faq-a-inner">
+          <p>
+            All data is encrypted in transit (TLS 1.3) and at rest (AES-256). We store data in India-based data centers by default. You own your data — export it any time in Excel or CSV.
+          </p>
+          <p>
+            We're aligned with India's DPDP Act and follow standard data protection practices. Full details in our <a href="#">Privacy Policy</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" data-faq>
+        Can multiple staff use it at the same time?
+        <span class="faq-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+      </button>
+      <div class="faq-a">
+        <div class="faq-a-inner">
+          <p>
+            Yes. Add as many staff as you need. Each person gets their own login with role-based permissions — cashiers see POS only, managers see reports, owners see everything. Full audit trail of every action.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" data-faq>
+        What happens after the free trial ends?
+        <span class="faq-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+      </button>
+      <div class="faq-a">
+        <div class="faq-a-inner">
+          <p>
+            Nothing breaks. Your account automatically drops to the free Starter plan — you keep full access to your data and continue using POS on one register indefinitely. Upgrade whenever you're ready.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" data-faq>
+        Can I use HashVeno Retail for a non-retail business?
+        <span class="faq-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+      </button>
+      <div class="faq-a">
+        <div class="faq-a-inner">
+          <p>
+            Yes. Restaurants, cafes, service counters, pharmacies, and small distributors have all successfully used it. The core is a POS + inventory + customer system — the SKU categories and pricing model are fully customizable.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="cta-section" id="contact">
+  <div class="cta-final reveal">
+    <h2>Ready to run your shop<br><em>on autopilot?</em></h2>
+    <p>
+      Start your free trial today. No credit card, no setup fees, no long-term
+      commitment. Cancel any time. Full access for 14 days.
+    </p>
+    <div class="actions">
+      <a href="#" class="btn btn-white btn-lg">
+        Start 14-day free trial
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#" class="btn btn-outline btn-lg">Book a live demo</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <span class="brand-mark">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="3" fill="#fff" stroke="none"/>
+            </svg>
+          </span>
+          <span class="brand-name">HashVeno</span>
+        </div>
+        <p class="footer-about">
+          IT product &amp; service provider helping businesses grow through
+          smart technology solutions. Built and operated from Chennai, India.
+        </p>
+        <div class="footer-social">
+          <a href="#" class="social-btn" aria-label="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="LinkedIn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="Facebook">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M15 3h-3a4 4 0 0 0-4 4v3H5v4h3v7h4v-7h3l1-4h-4V7a1 1 0 0 1 1-1h3V3z"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="YouTube">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="6" width="18" height="12" rx="3"/><path d="M11 10l4 2-4 2v-4z" fill="currentColor"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h5>Product</h5>
+        <div class="footer-links">
+          <a href="#">Features</a>
+          <a href="#">Pricing</a>
+          <a href="#">Dashboard demo</a>
+          <a href="#">API docs</a>
+        </div>
+      </div>
+
+      <div>
+        <h5>Company</h5>
+        <div class="footer-links">
+          <a href="#">Services</a>
+          <a href="#">Products</a>
+          <a href="#">Articles</a>
+          <a href="#">Careers</a>
+        </div>
+      </div>
+
+      <div>
+        <h5>Support</h5>
+        <div class="footer-links">
+          <a href="#">Help center</a>
+          <a href="#">Tutorials</a>
+          <a href="#">Contact</a>
+          <a href="#">Terms &amp; Privacy</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2026 HashVeno. All rights reserved.</div>
+      <div class="made">
+        <span class="flag">🇮🇳</span>
+        made in India · Chennai
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 12);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+const navToggle = document.getElementById('navToggle');
+const mobileMenu = document.getElementById('mobileMenu');
+navToggle.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+mobileMenu.querySelectorAll('a').forEach(a =>
+  a.addEventListener('click', () => mobileMenu.classList.remove('open'))
+);
+
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+document.querySelectorAll('[data-faq]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.faq-item');
+    const open = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    if (!open) item.classList.add('open');
+  });
+});
+
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    const href = a.getAttribute('href');
+    if (href === '#') return;
+    const target = document.querySelector(href);
+    if (target){
+      e.preventDefault();
+      const top = target.getBoundingClientRect().top + window.pageYOffset - 90;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  });
+});
+</script>
+</body>
+</html>

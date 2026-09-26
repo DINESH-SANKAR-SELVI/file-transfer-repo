@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Overcrowding &amp; Fare Evasion in MTC Buses — HashVeno</title>
+<meta name="description" content="MTC buses struggle with unauthorized passengers and overcrowding — leading to revenue loss and delays. Smart fleet tracking enables better passenger management." />
+<meta name="theme-color" content="#0A0A12" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F7FB;--surface:#FFFFFF;--surface-2:#F1F1F7;--surface-3:#E8E8F0;
+  --ink:#0A0A12;--ink-2:#252532;--muted:#63637A;--faint:#9B9BAA;
+  --line:#E8E8F0;--line-2:#DCDCE5;
+  --brand:#5B4BE8;--brand-2:#8B7BFF;--brand-soft:#EFECFF;--brand-ink:#3D2FC9;
+  --route:#10B981;--route-2:#34D399;--route-soft:#D1FAE5;--route-ink:#047857;
+  --accent:#00C48C;--amber:#D98A0B;--rose:#E0526B;
+  --radius:14px;--radius-lg:20px;
+  --shadow-sm:0 1px 2px rgba(15,15,30,.04);
+  --shadow-md:0 8px 24px -8px rgba(20,20,40,.08),0 2px 6px rgba(20,20,40,.03);
+  --shadow-lg:0 24px 60px -20px rgba(20,20,50,.18),0 8px 20px rgba(20,20,40,.06);
+  --shadow-brand:0 12px 32px -8px rgba(91,75,232,.35);
+  --shadow-route:0 12px 32px -8px rgba(16,185,129,.35);
+  --font-sans:'Inter','Noto Sans Tamil',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --font-serif:'Lora','Noto Sans Tamil',Georgia,serif;
+  --font-mono:'JetBrains Mono',ui-monospace,monospace;
+  --container:1200px;
+  --article-width:720px;
+}
+[data-theme="dark"]{
+  --bg:#07080F;--surface:#0F1119;--surface-2:#161824;--surface-3:#1D1F2E;
+  --ink:#F4F5FA;--ink-2:#D8DAE6;--muted:#8B8BA3;--faint:#5A5A78;
+  --line:rgba(255,255,255,.06);--line-2:rgba(255,255,255,.12);
+  --brand:#6366F1;--brand-2:#818CF8;--brand-soft:rgba(99,102,241,.15);--brand-ink:#A5B4FC;
+  --route:#34D399;--route-2:#6EE7B7;--route-soft:rgba(52,211,153,.15);--route-ink:#6EE7B7;
+  --shadow-md:0 8px 24px -8px rgba(0,0,0,.4),0 2px 6px rgba(0,0,0,.2);
+  --shadow-lg:0 24px 60px -20px rgba(0,0,0,.5),0 8px 20px rgba(0,0,0,.3);
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden;transition:background .3s ease, color .3s ease}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input{font:inherit;border:none;outline:none;background:none;color:inherit}
+::selection{background:var(--route);color:#fff}
+[data-lang="ta"] body{font-family:'Noto Sans Tamil','Inter',sans-serif;line-height:1.7}
+[data-lang="ta"] h1,[data-lang="ta"] h2,[data-lang="ta"] h3{letter-spacing:-.01em;line-height:1.4}
+.container{width:100%;max-width:var(--container);margin:0 auto;padding:0 24px}
+
+.progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:200;background:transparent;pointer-events:none}
+.progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--route),var(--route-2));box-shadow:0 0 12px rgba(16,185,129,.5);transition:width .1s linear}
+
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 0;transition:background .25s ease, backdrop-filter .25s ease, border-color .25s ease, padding .25s ease;border-bottom:1px solid transparent}
+.nav.scrolled{background:color-mix(in srgb, var(--bg) 85%, transparent);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom-color:var(--line);padding:10px 0}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.02em}
+.brand-mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--brand-2));display:grid;place-items:center;color:#fff;box-shadow:0 6px 16px -4px rgba(91,75,232,.45);position:relative}
+.brand-mark::after{content:"";position:absolute;inset:0;border-radius:10px;background:linear-gradient(135deg,rgba(255,255,255,.35),transparent 55%);pointer-events:none}
+.brand-name{font-size:17px}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-link{font-size:14px;font-weight:500;color:var(--muted);padding:8px 14px;border-radius:9px;transition:.15s}
+.nav-link:hover{color:var(--ink);background:var(--surface-2)}
+.nav-link.active{color:var(--route-ink);background:var(--route-soft)}
+.nav-cta{display:flex;align-items:center;gap:8px}
+.nav-controls{display:flex;align-items:center;gap:6px}
+.control-btn{width:36px;height:36px;border-radius:9px;display:grid;place-items:center;color:var(--muted);background:var(--surface);border:1px solid var(--line);transition:.15s}
+.control-btn:hover{color:var(--ink);border-color:var(--line-2)}
+.control-btn svg{width:16px;height:16px}
+.lang-btn{width:auto;padding:0 11px;font-size:12px;font-weight:700;letter-spacing:.02em;gap:5px}
+.lang-btn .lang-active{color:var(--ink)}
+.lang-btn .lang-inactive{color:var(--faint)}
+[data-theme="light"] .icon-moon{display:block}
+[data-theme="light"] .icon-sun{display:none}
+[data-theme="dark"] .icon-moon{display:none}
+[data-theme="dark"] .icon-sun{display:block}
+.nav-toggle{display:none;width:40px;height:40px;border-radius:10px;align-items:center;justify-content:center;border:1px solid var(--line);background:var(--surface);color:var(--muted)}
+@media(max-width:900px){.nav-links{display:none}.nav-toggle{display:flex}.nav-cta .btn{display:none}}
+.mobile-menu{position:fixed;inset:56px 0 auto 0;z-index:99;background:var(--surface);border-bottom:1px solid var(--line);padding:12px 24px 20px;transform:translateY(-8px);opacity:0;pointer-events:none;transition:.22s ease;box-shadow:var(--shadow-lg)}
+.mobile-menu.open{transform:none;opacity:1;pointer-events:auto}
+.mobile-menu a{display:block;padding:13px 4px;font-size:15px;font-weight:500;border-bottom:1px solid var(--line)}
+.mobile-menu a:last-child{border:none}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:14.5px;font-weight:600;letter-spacing:-.005em;padding:12px 22px;border-radius:12px;transition:transform .15s ease, box-shadow .18s ease, background .15s ease;white-space:nowrap;cursor:pointer}
+.btn-primary{background:var(--brand);color:#fff;box-shadow:var(--shadow-brand)}
+.btn-primary:hover{background:#4E3FD4;transform:translateY(-1px);box-shadow:0 16px 36px -10px rgba(91,75,232,.5)}
+.btn-route{background:var(--route);color:#fff;box-shadow:var(--shadow-route)}
+.btn-route:hover{background:#059669;transform:translateY(-1px);box-shadow:0 16px 36px -10px rgba(16,185,129,.5)}
+.btn-secondary{background:var(--surface);color:var(--ink);border:1px solid var(--line)}
+.btn-secondary:hover{background:var(--surface);border-color:var(--line-2);transform:translateY(-1px);box-shadow:var(--shadow-md)}
+
+.breadcrumb{max-width:var(--container);margin:0 auto;padding:112px 24px 0;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--faint);flex-wrap:wrap}
+.breadcrumb a{transition:.15s}
+.breadcrumb a:hover{color:var(--route-ink)}
+.breadcrumb .sep{opacity:.5}
+.breadcrumb .current{color:var(--ink-2);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:280px}
+
+.article-header{max-width:820px;margin:0 auto;padding:32px 24px 0}
+.cat-chip{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--route-ink);background:var(--route-soft);padding:6px 12px;border-radius:99px;margin-bottom:22px}
+.cat-chip .dot{width:6px;height:6px;border-radius:50%;background:var(--route)}
+.article-header h1{font-family:var(--font-serif);font-size:clamp(32px,5vw,52px);font-weight:600;letter-spacing:-.028em;line-height:1.1;color:var(--ink);margin-bottom:20px}
+.article-header .lede{font-family:var(--font-serif);font-size:clamp(17px,1.6vw,20px);line-height:1.55;color:var(--muted);font-style:italic;margin-bottom:32px}
+.article-meta{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:22px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:32px}
+.author-mini{display:flex;align-items:center;gap:11px}
+.author-mini .av{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;color:#fff;font-size:13px;font-weight:700;background:linear-gradient(135deg,var(--route),var(--route-2));flex-shrink:0}
+.author-mini .name{font-size:13px;font-weight:600;color:var(--ink);line-height:1.2}
+.author-mini .role{font-size:11.5px;color:var(--faint);margin-top:2px}
+.meta-dot{width:4px;height:4px;border-radius:50%;background:var(--faint)}
+.meta-info{display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--faint);font-family:var(--font-mono);letter-spacing:.01em}
+.meta-info span{display:flex;align-items:center;gap:6px}
+
+.hero-visual{max-width:960px;margin:0 auto 56px;padding:0 24px}
+.hv-frame{background:linear-gradient(135deg,#D1FAE5,#A7F3D0 40%,#E0F2FE);border-radius:22px;padding:36px;position:relative;overflow:hidden;border:1px solid rgba(16,185,129,.15)}
+[data-theme="dark"] .hv-frame{background:linear-gradient(135deg,#052E16,#065F46 40%,#082F49)}
+.hv-frame::before{content:"";position:absolute;inset:0;background-image:linear-gradient(to right, rgba(255,255,255,.5) 1px, transparent 1px),linear-gradient(to bottom, rgba(255,255,255,.5) 1px, transparent 1px);background-size:32px 32px;mask-image:radial-gradient(circle at 50% 50%,#000,transparent 80%);-webkit-mask-image:radial-gradient(circle at 50% 50%,#000,transparent 80%);opacity:.5;pointer-events:none}
+[data-theme="dark"] .hv-frame::before{background-image:linear-gradient(to right, rgba(255,255,255,.06) 1px, transparent 1px),linear-gradient(to bottom, rgba(255,255,255,.06) 1px, transparent 1px)}
+.hv-dashboard{position:relative;background:var(--surface);border-radius:14px;box-shadow:0 30px 60px -20px rgba(20,20,50,.25),0 10px 24px -10px rgba(20,20,40,.12);overflow:hidden;border:1px solid var(--line)}
+.hv-chrome{padding:11px 14px;display:flex;align-items:center;gap:7px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+.hv-chrome .dot{width:9px;height:9px;border-radius:50%}
+.hv-chrome .title{font-size:11px;font-weight:600;color:var(--faint);margin-left:6px;letter-spacing:.02em;font-family:var(--font-mono)}
+.hv-body{padding:18px}
+.hv-status{display:flex;align-items:center;justify-content:space-between;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin-bottom:12px}
+.hv-status .hvs-l{display:flex;align-items:center;gap:9px}
+.hv-live{width:8px;height:8px;border-radius:50%;background:var(--route);box-shadow:0 0 0 3px rgba(16,185,129,.18);animation:pulse 1.8s ease-in-out infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.8)}}
+.hv-status .hvst-title{font-size:11.5px;font-weight:650;color:var(--ink)}
+.hv-status .hvst-sub{font-size:10px;color:var(--faint);font-family:var(--font-mono);margin-top:1px}
+.hv-status .hvst-tag{font-size:9.5px;font-weight:700;letter-spacing:.05em;color:var(--route-ink);background:var(--route-soft);padding:4px 9px;border-radius:6px}
+.hv-bus-grid{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:13px;margin-bottom:12px}
+.hv-bus-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
+.hv-bus-title{font-size:11px;font-weight:650;color:var(--ink)}
+.hv-bus-legend{display:flex;gap:10px;font-size:9.5px;color:var(--faint)}
+.hv-bus-legend i{width:7px;height:7px;border-radius:2px;display:inline-block;margin-right:4px;vertical-align:middle}
+.hv-buses{display:grid;grid-template-columns:repeat(8,1fr);gap:5px}
+.hv-bus{aspect-ratio:1;border-radius:6px;display:grid;place-items:center;font-size:9px;font-weight:700;background:var(--surface-3);color:var(--muted)}
+.hv-bus.low{background:rgba(0,196,140,.15);color:#0B8A66}
+.hv-bus.med{background:rgba(217,138,11,.15);color:#8B5A00}
+.hv-bus.high{background:rgba(224,82,107,.15);color:#9F1239}
+.hv-bus.crit{background:#10B981;color:#fff;animation:crit 1.6s infinite}
+@keyframes crit{0%,100%{opacity:1}50%{opacity:.6}}
+.hv-panels{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hv-panel{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:12px}
+.hv-panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.hv-panel-title{font-size:11px;font-weight:650;color:var(--ink)}
+.hv-panel-tag{font-size:9px;font-weight:700;letter-spacing:.04em;padding:3px 7px;border-radius:5px}
+.hv-panel-tag.red{background:rgba(224,82,107,.12);color:var(--rose)}
+.hv-panel-tag.green{background:rgba(16,185,129,.12);color:var(--route-ink)}
+.hv-metric{display:flex;align-items:baseline;justify-content:space-between;padding:5px 0;font-size:10.5px;border-bottom:1px solid var(--line)}
+.hv-metric:last-child{border-bottom:none}
+.hv-metric .lbl{color:var(--muted)}
+.hv-metric .val{font-weight:700;color:var(--ink);font-family:var(--font-mono);font-size:11px;font-feature-settings:"tnum"}
+.hv-metric .val.up{color:var(--route)}
+.hv-metric .val.warn{color:var(--amber)}
+.hv-metric .val.down{color:var(--rose)}
+@media(max-width:640px){.hv-frame{padding:22px}.hv-body{padding:14px}.hv-buses{gap:4px}.hv-bus{font-size:8px}.hv-panels{grid-template-columns:1fr}}
+
+.article-body{max-width:var(--article-width);margin:0 auto;padding:0 24px 96px;font-size:17.5px;line-height:1.72;color:var(--ink-2)}
+.article-body > * + *{margin-top:22px}
+.article-body p.lede-para{font-size:19.5px;color:var(--ink);line-height:1.65;font-weight:400}
+.article-body strong{color:var(--ink);font-weight:650}
+.article-body em{font-style:italic;color:var(--ink-2)}
+.article-body a{color:var(--route-ink);font-weight:500;text-decoration:underline;text-decoration-color:rgba(16,185,129,.3);text-underline-offset:3px;transition:.15s}
+.article-body a:hover{text-decoration-color:var(--route)}
+.article-body h2{font-family:var(--font-serif);font-size:30px;font-weight:600;letter-spacing:-.02em;line-height:1.22;color:var(--ink);margin-top:56px;margin-bottom:6px;padding-top:20px;border-top:1px solid var(--line);scroll-margin-top:100px}
+.article-body h2:first-child{margin-top:0;padding-top:0;border-top:none}
+.article-body h3{font-family:var(--font-sans);font-size:19px;font-weight:650;letter-spacing:-.012em;line-height:1.35;color:var(--ink);margin-top:36px;margin-bottom:2px}
+.article-body ul,
+.article-body ol{padding-left:0;list-style:none}
+.article-body ul li,
+.article-body ol li{position:relative;padding-left:26px;margin-bottom:12px;color:var(--ink-2)}
+.article-body ul li::before{content:"";position:absolute;left:6px;top:12px;width:7px;height:7px;border-radius:50%;background:var(--route);opacity:.5}
+.article-body ol{counter-reset:item}
+.article-body ol li{counter-increment:item}
+.article-body ol li::before{content:counter(item);position:absolute;left:0;top:2px;width:20px;height:20px;border-radius:6px;background:var(--route-soft);color:var(--route-ink);font-size:11px;font-weight:700;display:grid;place-items:center;font-family:var(--font-mono)}
+
+.pullquote{margin:44px 0;padding:32px 36px;background:linear-gradient(135deg,var(--route-soft) 0%,#F0FDF9 100%);border-radius:var(--radius-lg);border:1px solid rgba(16,185,129,.12);position:relative}
+[data-theme="dark"] .pullquote{background:linear-gradient(135deg,rgba(52,211,153,.1),var(--surface))}
+.pullquote::before{content:"“";position:absolute;top:-14px;left:24px;font-family:var(--font-serif);font-size:88px;line-height:1;color:var(--route);opacity:.25}
+.pullquote p{font-family:var(--font-serif);font-size:23px;font-weight:500;line-height:1.42;letter-spacing:-.012em;color:var(--ink);margin:0 !important}
+
+.callout{margin:32px 0;padding:20px 22px 20px 24px;border-radius:14px;border-left:3px solid;font-size:15.5px;line-height:1.65}
+.callout .co-label{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+.callout p{margin:0}
+.callout p + p{margin-top:10px}
+.callout.info{background:#F0FDF9;border-color:var(--route)}
+[data-theme="dark"] .callout.info{background:rgba(52,211,153,.08)}
+.callout.info .co-label{color:var(--route-ink)}
+.callout.warn{background:#FFF8EA;border-color:var(--amber)}
+[data-theme="dark"] .callout.warn{background:rgba(217,138,11,.08)}
+.callout.warn .co-label{color:#8B5A00}
+.callout.success{background:#F0FDF9;border-color:var(--accent)}
+[data-theme="dark"] .callout.success{background:rgba(0,196,140,.08)}
+.callout.success .co-label{color:#047857}
+
+.data-table{margin:32px 0;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;font-size:14.5px}
+.data-table .dt-head{padding:14px 20px;background:var(--surface-2);border-bottom:1px solid var(--line);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.data-table table{width:100%;border-collapse:collapse}
+.data-table th,
+.data-table td{padding:14px 20px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+.data-table tr:last-child td{border-bottom:none}
+.data-table th{font-weight:600;font-size:12px;color:var(--faint);letter-spacing:.04em;text-transform:uppercase;background:var(--surface-2)}
+.data-table td:first-child{font-weight:600;color:var(--ink)}
+.data-table td:nth-child(2){font-family:var(--font-mono);font-weight:600;color:var(--route-ink)}
+
+.plan-list{display:flex;flex-direction:column;gap:14px;margin:28px 0}
+.plan-item{display:grid;grid-template-columns:96px 1fr;gap:16px;padding:18px 20px;background:linear-gradient(135deg,var(--surface-2),var(--surface));border:1px solid var(--line);border-radius:14px}
+.plan-day{display:flex;flex-direction:column}
+.plan-day .num{font-family:var(--font-mono);font-size:16px;font-weight:700;color:var(--route-ink);line-height:1;letter-spacing:-.01em}
+.plan-day .unit{font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-top:4px}
+.plan-body h4{font-size:15.5px;font-weight:650;letter-spacing:-.012em;margin-bottom:8px;color:var(--ink)}
+.plan-body p{font-size:14.5px;color:var(--muted);line-height:1.6;margin:0}
+@media(max-width:520px){.plan-item{grid-template-columns:1fr;gap:10px;padding:16px}}
+
+.compare-inline{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.compare-box{border-radius:12px;padding:16px;border:1px solid}
+.compare-box.old{background:linear-gradient(180deg,#FFF8F5,#FFF);border-color:#F8E0D6}
+[data-theme="dark"] .compare-box.old{background:linear-gradient(180deg,rgba(224,82,107,.08),var(--surface))}
+.compare-box.new{background:linear-gradient(180deg,#F0FDF9,#FFF);border-color:#A7F3D0}
+[data-theme="dark"] .compare-box.new{background:linear-gradient(180deg,rgba(16,185,129,.08),var(--surface))}
+.compare-box .cb-label{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+.compare-box.old .cb-label{color:var(--rose)}
+.compare-box.new .cb-label{color:var(--route-ink)}
+.compare-box .cb-value{font-size:26px;font-weight:700;letter-spacing:-.025em;font-family:var(--font-mono);margin-bottom:4px}
+.compare-box.old .cb-value{color:var(--ink)}
+.compare-box.new .cb-value{color:var(--route)}
+.compare-box .cb-note{font-size:12px;color:var(--muted);line-height:1.5}
+@media(max-width:520px){.compare-inline{grid-template-columns:1fr}}
+
+.figure{margin:36px 0}
+.figure-visual{background:linear-gradient(135deg,var(--surface-2),#F0FDF9);border:1px solid var(--line);border-radius:16px;padding:26px;position:relative;overflow:hidden}
+[data-theme="dark"] .figure-visual{background:linear-gradient(135deg,var(--surface-2),#052E16)}
+.figure-caption{margin-top:12px;font-size:13px;color:var(--faint);line-height:1.55;font-style:italic;text-align:center}
+
+.author-card{max-width:var(--article-width);margin:56px auto 32px;padding:28px;background:linear-gradient(135deg,var(--surface-2),var(--surface));border:1px solid var(--line);border-radius:var(--radius-lg);display:flex;gap:18px;align-items:flex-start}
+.author-card .ac-av{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;color:#fff;font-size:18px;font-weight:700;background:linear-gradient(135deg,var(--route),var(--route-2));flex-shrink:0;box-shadow:0 8px 20px -6px rgba(16,185,129,.4)}
+.author-card .ac-body{flex:1;min-width:0}
+.author-card .ac-name{font-size:15px;font-weight:650;letter-spacing:-.01em;margin-bottom:2px}
+.author-card .ac-role{font-size:12.5px;color:var(--muted);margin-bottom:10px}
+.author-card .ac-bio{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:12px}
+.author-card .ac-links{display:flex;gap:8px;flex-wrap:wrap}
+.ac-link{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--route-ink);padding:6px 11px;border-radius:8px;background:var(--route-soft);transition:.15s}
+.ac-link:hover{background:var(--route);color:#fff}
+@media(max-width:520px){.author-card{flex-direction:column;gap:14px;padding:22px}}
+
+.share-footer{max-width:var(--article-width);margin:0 auto 64px;padding:24px 24px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.share-footer .sf-label{font-size:13px;font-weight:600;color:var(--muted)}
+.share-footer .sf-row{display:flex;gap:8px}
+.share-btn{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;background:var(--surface);border:1px solid var(--line);color:var(--muted);transition:.18s;cursor:pointer}
+.share-btn:hover{color:#fff;background:var(--route);border-color:var(--route);transform:translateY(-2px);box-shadow:0 8px 20px -6px rgba(16,185,129,.5)}
+.share-btn.copied{background:var(--accent);border-color:var(--accent);color:#fff}
+
+.related-section{max-width:var(--container);margin:0 auto;padding:0 24px 80px}
+.related-head{margin-bottom:32px}
+.related-head .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:12px}
+.related-head .eyebrow::before{content:"";width:20px;height:1px;background:var(--faint)}
+.related-head h2{font-family:var(--font-serif);font-size:clamp(24px,3vw,32px);font-weight:600;letter-spacing:-.022em;line-height:1.2}
+.related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:820px){.related-grid{grid-template-columns:1fr;gap:12px}}
+.rel-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:24px 22px 20px;display:flex;flex-direction:column;transition:transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s, border-color .25s;text-align:left}
+.rel-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:var(--line-2)}
+.rel-cat{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:6px;margin-bottom:14px}
+.rel-cat.retail{color:#9A3412;background:#FFEDD5}
+.rel-cat.cloud{color:#075985;background:#E0F2FE}
+.rel-cat.transport{color:var(--route-ink);background:var(--route-soft)}
+.rel-card h3{font-family:var(--font-serif);font-size:16px;font-weight:600;letter-spacing:-.015em;line-height:1.35;margin-bottom:8px;color:var(--ink)}
+.rel-card p{font-size:13.5px;color:var(--muted);line-height:1.55;flex:1;margin-bottom:16px}
+.rel-meta{display:flex;align-items:center;justify-content:space-between;font-size:11.5px;color:var(--faint);padding-top:14px;border-top:1px solid var(--line);font-family:var(--font-mono)}
+.rel-meta .read{display:flex;align-items:center;gap:5px}
+
+.newsletter-wrap{max-width:var(--container);margin:0 auto 80px;padding:0 24px}
+.newsletter{background:linear-gradient(135deg,#0F0F1E 0%,#1A1A33 60%,#252550 100%);border-radius:24px;padding:48px 44px;color:#fff;position:relative;overflow:hidden;display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center}
+.newsletter::before{content:"";position:absolute;inset:0;background:radial-gradient(600px 300px at 90% 20%, rgba(139,123,255,.35), transparent 60%),radial-gradient(400px 300px at 10% 90%, rgba(16,185,129,.15), transparent 60%);pointer-events:none}
+.newsletter::after{content:"";position:absolute;inset:0;background-image:linear-gradient(to right, rgba(255,255,255,.04) 1px, transparent 1px),linear-gradient(to bottom, rgba(255,255,255,.04) 1px, transparent 1px);background-size:44px 44px;mask-image:radial-gradient(ellipse at 30% 50%,#000,transparent 75%);-webkit-mask-image:radial-gradient(ellipse at 30% 50%,#000,transparent 75%);pointer-events:none}
+.newsletter > *{position:relative;z-index:1}
+.newsletter h3{font-family:var(--font-serif);font-size:clamp(22px,2.6vw,28px);font-weight:600;letter-spacing:-.02em;line-height:1.2;margin-bottom:12px}
+.newsletter h3 em{font-style:normal;background:linear-gradient(100deg,#C7B6FF,#8B7BFF 60%,#34D399);-webkit-background-clip:text;background-clip:text;color:transparent}
+.newsletter p{font-size:14.5px;line-height:1.6;color:rgba(255,255,255,.65)}
+.newsletter-form{display:flex;flex-direction:column;gap:10px}
+.newsletter-row{display:flex;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:5px 5px 5px 14px;transition:.2s}
+.newsletter-row:focus-within{background:rgba(255,255,255,.09);border-color:rgba(199,182,255,.4);box-shadow:0 0 0 4px rgba(139,123,255,.15)}
+.newsletter-row input{flex:1;font-size:14px;color:#fff;min-width:0}
+.newsletter-row input::placeholder{color:rgba(255,255,255,.4)}
+.newsletter-row button{background:#fff;color:#0F0F1E;font-size:13px;font-weight:600;padding:10px 18px;border-radius:9px;transition:.15s;white-space:nowrap}
+.newsletter-row button:hover{background:#F2F2F8;transform:translateY(-1px)}
+.newsletter-note{font-size:11.5px;color:rgba(255,255,255,.45);display:flex;align-items:center;gap:6px}
+@media(max-width:820px){.newsletter{grid-template-columns:1fr;gap:24px;padding:36px 24px;border-radius:20px}.newsletter-row{flex-direction:column;padding:10px;gap:8px}.newsletter-row input{padding:6px 8px;font-size:15px}.newsletter-row button{padding:12px;font-size:14px}}
+
+.footer{background:#0B0B16;color:rgba(255,255,255,.7);padding:64px 0 28px;margin-top:40px}
+.footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.08)}
+.footer-brand{display:flex;align-items:center;gap:10px;color:#fff;margin-bottom:14px}
+.footer-brand .brand-mark{box-shadow:none}
+.footer-brand .brand-name{font-size:16px}
+.footer-about{font-size:13.5px;line-height:1.65;max-width:320px;color:rgba(255,255,255,.55)}
+.footer-social{display:flex;gap:10px;margin-top:18px}
+.social-btn{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.75);transition:.2s}
+.social-btn:hover{background:var(--route);color:#fff;transform:translateY(-2px);border-color:var(--route)}
+.footer h5{font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:16px}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13.5px;color:rgba(255,255,255,.7);transition:.15s;display:inline-block}
+.footer-links a:hover{color:#fff;transform:translateX(3px)}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:26px;gap:16px;flex-wrap:wrap;font-size:12.5px;color:rgba(255,255,255,.4)}
+.footer-bottom .made{display:flex;align-items:center;gap:8px}
+@media(max-width:820px){.footer-grid{grid-template-columns:1fr 1fr;gap:32px}.footer-grid > div:first-child{grid-column:1/-1}.footer-bottom{flex-direction:column;text-align:center}}
+
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.8,.2,1), transform .7s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+@media(max-width:720px){
+  .container{padding:0 18px}
+  .breadcrumb{padding:96px 18px 0;font-size:12px}
+  .breadcrumb .current{max-width:180px}
+  .article-header{padding:22px 18px 0}
+  .article-header h1{font-size:clamp(28px,8vw,38px);line-height:1.15}
+  .article-header .lede{font-size:16px;line-height:1.55;margin-bottom:24px}
+  .article-meta{gap:12px;padding-top:18px;margin-bottom:32px}
+  .meta-info{font-size:11.5px;gap:12px}
+  .hero-visual{padding:0 18px;margin-bottom:40px}
+  .article-body{padding:0 18px 48px;font-size:16.5px;line-height:1.7}
+  .article-body p.lede-para{font-size:18px}
+  .article-body h2{font-size:24px;margin-top:44px}
+  .article-body h3{font-size:18px;margin-top:28px}
+  .pullquote{padding:24px 22px 22px;margin:32px 0;border-radius:16px}
+  .pullquote::before{font-size:64px;top:-10px;left:18px}
+  .pullquote p{font-size:19px}
+  .callout{padding:16px 18px;font-size:14.5px;margin:24px 0}
+  .data-table{font-size:13px}
+  .data-table th,.data-table td{padding:11px 14px}
+  .data-table th{font-size:10.5px}
+  .figure-visual{padding:16px;border-radius:14px}
+  .author-card{margin:44px auto 24px;padding:20px}
+  .share-footer{padding:18px;margin:0 auto 48px}
+  .related-section{padding:0 18px 56px}
+  .related-head h2{font-size:22px}
+  .rel-card{padding:20px 18px 16px}
+  .newsletter-wrap{padding:0 18px;margin:0 auto 56px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important}
+  .reveal{opacity:1;transform:none}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="#" class="brand">
+      <span class="brand-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="3" fill="#fff" stroke="none"/>
+        </svg>
+      </span>
+      <span class="brand-name">HashVeno</span>
+    </a>
+
+    <div class="nav-links">
+      <a class="nav-link" href="#" data-i18n="nav.services">Services</a>
+      <a class="nav-link" href="#" data-i18n="nav.products">Products</a>
+      <a class="nav-link active" href="#" data-i18n="nav.articles">Articles</a>
+      <a class="nav-link" href="#" data-i18n="nav.careers">Careers</a>
+      <a class="nav-link" href="#contact" data-i18n="nav.contact">Contact</a>
+    </div>
+
+    <div class="nav-cta">
+      <div class="nav-controls">
+        <button class="control-btn lang-btn" id="langToggle" aria-label="Language">
+          <span class="lang-active" id="langActive">EN</span>
+          <span class="lang-inactive">/</span>
+          <span class="lang-inactive" id="langInactive">த</span>
+        </button>
+        <button class="control-btn" id="themeToggle" aria-label="Theme">
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+          </svg>
+        </button>
+      </div>
+
+      <a href="#contact" class="btn btn-route">
+        <span data-i18n="nav.getInTouch">Get in touch</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+      </a>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M4 7h16M4 12h16M4 17h16"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#" data-i18n="nav.services">Services</a>
+  <a href="#" data-i18n="nav.products">Products</a>
+  <a href="#" data-i18n="nav.articles">Articles</a>
+  <a href="#" data-i18n="nav.careers">Careers</a>
+  <a href="#contact" data-i18n="nav.contact">Contact</a>
+</div>
+
+<div class="breadcrumb">
+  <a href="#" data-i18n="nav.articles">Articles</a>
+  <span class="sep">/</span>
+  <span class="current" data-i18n="a4.breadcrumb">Overcrowding &amp; Fare Evasion in MTC Buses</span>
+</div>
+
+<header class="article-header">
+  <span class="cat-chip"><span class="dot"></span> <span data-i18n="a4.cat">Transport</span></span>
+
+  <h1 data-i18n="a4.h1">Overcrowding &amp; Fare Evasion in MTC Buses</h1>
+
+  <p class="lede" data-i18n="a4.lede">
+    MTC buses struggle with unauthorized passengers and overcrowding — leading
+    to revenue loss and delays. Smart fleet tracking enables better passenger
+    management, without adding a single conductor.
+  </p>
+
+  <div class="article-meta">
+    <div class="author-mini">
+      <div class="av">KR</div>
+      <div>
+        <div class="name">Karthik Rajan</div>
+        <div class="role" data-i18n="a4.authorRole">Head of Transit Practice</div>
+      </div>
+    </div>
+    <span class="meta-dot"></span>
+    <div class="meta-info">
+      <span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+        <span data-i18n="a4.date">Mar 22, 2026</span>
+      </span>
+      <span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <span data-i18n="a4.readTime">5 min read</span>
+      </span>
+    </div>
+  </div>
+</header>
+
+<div class="hero-visual">
+  <div class="hv-frame">
+    <div class="hv-dashboard">
+      <div class="hv-chrome">
+        <span class="dot" style="background:#FF5F57"></span>
+        <span class="dot" style="background:#FEBC2E"></span>
+        <span class="dot" style="background:#28C840"></span>
+        <span class="title">route.hashveno.com / fleet-view</span>
+      </div>
+
+      <div class="hv-body">
+        <div class="hv-status">
+          <div class="hvs-l">
+            <span class="hv-live"></span>
+            <div>
+              <div class="hvst-title" data-i18n="a4.hv.depot">Depot 04 · Route 21G</div>
+              <div class="hvst-sub" data-i18n="a4.hv.sub">8 buses active · 142 / 160 fleet online · updated 5s ago</div>
+            </div>
+          </div>
+          <span class="hvst-tag" data-i18n="a4.hv.tag">LIVE FLEET</span>
+        </div>
+
+        <div class="hv-bus-grid">
+          <div class="hv-bus-head">
+            <span class="hv-bus-title" data-i18n="a4.hv.load">Bus load · live</span>
+            <div class="hv-bus-legend">
+              <span><i style="background:rgba(0,196,140,.4)"></i><span data-i18n="a4.hv.light">Light</span></span>
+              <span><i style="background:rgba(217,138,11,.5)"></i><span data-i18n="a4.hv.full">Full</span></span>
+              <span><i style="background:rgba(224,82,107,.5)"></i><span data-i18n="a4.hv.over">Over</span></span>
+              <span><i style="background:#10B981"></i><span data-i18n="a4.hv.crit">Critical</span></span>
+            </div>
+          </div>
+          <div class="hv-buses">
+            <div class="hv-bus low">201</div>
+            <div class="hv-bus low">202</div>
+            <div class="hv-bus med">203</div>
+            <div class="hv-bus low">204</div>
+            <div class="hv-bus crit">205</div>
+            <div class="hv-bus high">206</div>
+            <div class="hv-bus low">207</div>
+            <div class="hv-bus med">208</div>
+          </div>
+        </div>
+
+        <div class="hv-panels">
+          <div class="hv-panel">
+            <div class="hv-panel-head">
+              <span class="hv-panel-title" data-i18n="a4.hv.compliance">Fare compliance</span>
+              <span class="hv-panel-tag green">94.7%</span>
+            </div>
+            <div class="hv-metric"><span class="lbl" data-i18n="a4.hv.issued">Tickets issued</span><span class="val">1,284</span></div>
+            <div class="hv-metric"><span class="lbl" data-i18n="a4.hv.detected">Detected onboard</span><span class="val">1,356</span></div>
+            <div class="hv-metric"><span class="lbl" data-i18n="a4.hv.gap">Gap</span><span class="val warn">72</span></div>
+            <div class="hv-metric"><span class="lbl" data-i18n="a4.hv.recovered">Recovered today</span><span class="val up">48</span></div>
+          </div>
+
+          <div class="hv-panel">
+            <div class="hv-panel-head">
+              <span class="hv-panel-title" data-i18n="a4.hv.alerts">Active alerts</span>
+              <span class="hv-panel-tag red">3 <span data-i18n="a4.hv.open">open</span></span>
+            </div>
+            <div class="hv-metric"><span class="lbl" data-i18n="a4.hv.a1">Bus 205 · over capacity</span><span class="val down">HIGH</span></div>
+            <div class="hv-metric"><span class="lbl" data-i18n="a4.hv.a2">Bus 206 · fare gap</span><span class="val down">HIGH</span></div>
+            <div class="hv-metric"><span class="lbl" data-i18n="a4.hv.a3">Stop · T. Nagar</span><span class="val warn">MED</span></div>
+            <div class="hv-metric"><span class="lbl" data-i18n="a4.hv.avg">Avg. response</span><span class="val up">2.8s</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<article class="article-body" id="articleBody">
+
+  <h2 data-i18n="a4.s1.h2">The scale</h2>
+
+  <p class="lede-para" data-i18n="a4.s1.p1">
+    MTC runs one of the largest city bus networks in India. Roughly 3,500 buses
+    moving close to 4.5 million passengers every day across more than 600 routes.
+  </p>
+
+  <p data-i18n="a4.s1.p2">
+    At that scale, small frictions compound quickly. A fare-evasion rate of even
+    3% on MTC's daily ridership is over 130,000 unticketed journeys a day. On a
+    single route with 40 daily trips, that's roughly 5–8 missed fares per trip —
+    invisible to any conductor trying to move 60 people through a doorway in
+    90 seconds.
+  </p>
+
+  <p data-i18n="a4.s1.p3">
+    Overcrowding sits on top of that. Peak-hour routes like 21G, 5M, and 47A
+    regularly run 20–40% over designed capacity. The consequences fall into
+    three buckets:
+  </p>
+
+  <ul>
+    <li data-i18n="a4.s1.l1"><strong>Revenue loss</strong> — unticketed passengers take up space that ticketed passengers could occupy</li>
+    <li data-i18n="a4.s1.l2"><strong>Safety risk</strong> — crowded footboards and doorways are where most bus-related incidents happen</li>
+    <li data-i18n="a4.s1.l3"><strong>Schedule collapse</strong> — overloaded buses take longer at each stop, and delays compound across the trip</li>
+  </ul>
+
+  <p data-i18n="a4.s1.p4">
+    Every one of these problems is measurable. None of them are currently
+    measured in real time. That's the gap.
+  </p>
+
+  <div class="pullquote">
+    <p data-i18n="a4.s1.pq">On a train, a TTE can walk the length of the coach. On a bus, there's nowhere to walk. That's why fare evasion on buses looks different — and needs a different fix.</p>
+  </div>
+
+  <h2 data-i18n="a4.s2.h2">Why fare evasion on buses is structurally different</h2>
+
+  <p data-i18n="a4.s2.p1">
+    Rail fare evasion and bus fare evasion look like the same problem. They
+    aren't. Three structural differences matter.
+  </p>
+
+  <h3 data-i18n="a4.s2.h3a">1. Every stop is a fresh boarding event</h3>
+  <p data-i18n="a4.s2.p2">
+    A train boards at stations with minutes of dwell time. A bus boards at
+    dozens of stops per trip with 15–30 seconds of dwell time. That's where
+    unauthorized boarding happens — not because anyone's negligent, but
+    because 20 people are trying to board through one door in under a minute.
+  </p>
+
+  <h3 data-i18n="a4.s2.h3b">2. The conductor is inside the flow</h3>
+  <p data-i18n="a4.s2.p3">
+    A TTE stands outside the passenger flow. A bus conductor is the flow.
+    They're issuing tickets, giving change, answering questions, and managing
+    the door — all at the same time. Detecting anomalies is physically
+    impossible without tooling.
+  </p>
+
+  <h3 data-i18n="a4.s2.h3c">3. There's no manifest to check against</h3>
+  <p data-i18n="a4.s2.p4">
+    A train has a reservation chart. A bus doesn't. The conductor issues a
+    ticket for each passenger who pays. There's no independent count of how
+    many people should have paid. Without that baseline, fare evasion is
+    invisible.
+  </p>
+
+  <div class="callout info">
+    <div class="co-label">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><path d="M12 8v.01M12 12v4"/></svg>
+      <span data-i18n="a4.callout1.label">Worth noting</span>
+    </div>
+    <p data-i18n="a4.callout1.text">
+      The single most useful thing a smart fleet system does for a bus
+      corporation is create a baseline count — how many people actually
+      boarded, vs how many tickets were issued. Once you have that number,
+      everything else follows.
+    </p>
+  </div>
+
+  <h2 data-i18n="a4.s3.h2">What smart fleet tracking actually changes</h2>
+
+  <p data-i18n="a4.s3.p1">
+    Real-time fleet monitoring for buses doesn't replace conductors. It gives
+    them, the depot manager, and the control room a shared, live picture of
+    what's happening on every bus. Three shifts.
+  </p>
+
+  <h3 data-i18n="a4.s3.h3a">1. Live passenger load per bus, per stop</h3>
+  <p data-i18n="a4.s3.p2">
+    Using existing cameras or a small onboard sensor, each bus continuously
+    reports occupancy. Over-crowding on Bus 205 is visible immediately — not
+    discovered at the depot at end of day.
+  </p>
+
+  <h3 data-i18n="a4.s3.h3b">2. Real-time fare compliance signal</h3>
+  <p data-i18n="a4.s3.p3">
+    The system compares tickets issued against detected boardings for each
+    stop. A gap larger than the normal tolerance triggers an alert to the
+    conductor and depot. It's not a penalty tool — it's a "hey, something's off
+    on this trip" signal that lets the conductor act before the gap grows.
+  </p>
+
+  <h3 data-i18n="a4.s3.h3c">3. Route-level intelligence</h3>
+  <p data-i18n="a4.s3.p4">
+    After a month, patterns emerge. Which stops account for most unauthorized
+    boardings? Which time windows? Which routes? Which buses? Depot managers
+    stop scheduling enforcement by intuition and start scheduling it by data.
+  </p>
+
+  <div class="callout success">
+    <div class="co-label">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+      <span data-i18n="a4.callout2.label">Real impact</span>
+    </div>
+    <p data-i18n="a4.callout2.text">
+      In pilot depots, average time from overload detection to depot
+      intervention dropped from end-of-day to under 3 minutes. Fare compliance
+      visibility went from unmeasured to 94%+ within the first month. Not
+      because conductors changed — because for the first time, they could see
+      the gaps as they happened.
+    </p>
+  </div>
+
+  <h2 data-i18n="a4.s4.h2">Where it works best</h2>
+
+  <p data-i18n="a4.s4.p1">
+    Every route benefits, but the return is highest on specific route types.
+    Here's the honest picture.
+  </p>
+
+  <div class="data-table">
+    <div class="dt-head" data-i18n="a4.table.head">Deployment fit by route type</div>
+    <table>
+      <thead>
+        <tr>
+          <th data-i18n="a4.table.col1">Route type</th>
+          <th data-i18n="a4.table.col2">Fit</th>
+          <th data-i18n="a4.table.col3">Primary value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-i18n="a4.table.r1">Peak-hour arterial routes</td>
+          <td data-i18n="a4.table.r1f">Highest</td>
+          <td data-i18n="a4.table.r1w">Overcrowding alerts + fare gaps during rush</td>
+        </tr>
+        <tr>
+          <td data-i18n="a4.table.r2">Long suburban routes</td>
+          <td data-i18n="a4.table.r2f">High</td>
+          <td data-i18n="a4.table.r2w">Many stops, high passenger churn, hard to enforce</td>
+        </tr>
+        <tr>
+          <td data-i18n="a4.table.r3">Airport / express services</td>
+          <td data-i18n="a4.table.r3f">Medium</td>
+          <td data-i18n="a4.table.r3w">Lower evasion, but useful for crowd and schedule monitoring</td>
+        </tr>
+        <tr>
+          <td data-i18n="a4.table.r4">Feeder / short-distance</td>
+          <td data-i18n="a4.table.r4f">Medium</td>
+          <td data-i18n="a4.table.r4w">Shorter trips, smaller impact per route</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p data-i18n="a4.s4.p2">
+    The strongest case is always the same: routes where fare evasion is known
+    to happen but can't be measured, and where overcrowding is consistent
+    enough to affect safety. That's where the return is immediate.
+  </p>
+
+  <h2 data-i18n="a4.s5.h2">What a depot pilot looks like</h2>
+
+  <p data-i18n="a4.s5.p1">
+    The fastest way to prove value is a focused 30-day pilot at one depot.
+    Here's the realistic path from decision to evidence.
+  </p>
+
+  <div class="plan-list">
+    <div class="plan-item">
+      <div class="plan-day">
+        <span class="num">Day 1–5</span>
+        <span class="unit" data-i18n="a4.plan.unit1">Setup</span>
+      </div>
+      <div class="plan-body">
+        <h4 data-i18n="a4.plan.1.h4">Integration with existing fleet systems</h4>
+        <p data-i18n="a4.plan.1.p">Connect to existing GPS units and ETM systems. No new hardware needed on buses in most cases — the platform reads what's already being transmitted.</p>
+      </div>
+    </div>
+
+    <div class="plan-item">
+      <div class="plan-day">
+        <span class="num">Day 6–20</span>
+        <span class="unit" data-i18n="a4.plan.unit2">Baseline</span>
+      </div>
+      <div class="plan-body">
+        <h4 data-i18n="a4.plan.2.h4">Silent monitoring phase</h4>
+        <p data-i18n="a4.plan.2.p">System runs in parallel to normal operations. All alerts logged but not actioned. This establishes your baseline for both over-crowding frequency and fare compliance — usually worse than the depot's intuition suggests.</p>
+      </div>
+    </div>
+
+    <div class="plan-item">
+      <div class="plan-day">
+        <span class="num">Day 21–30</span>
+        <span class="unit" data-i18n="a4.plan.unit3">Live</span>
+      </div>
+      <div class="plan-body">
+        <h4 data-i18n="a4.plan.3.h4">Alerts go live to conductors and depot</h4>
+        <p data-i18n="a4.plan.3.p">Over-crowding and fare anomaly alerts start routing to the right people in real time. Daily reports track intervention time, compliance rate, and revenue impact. Full written report at day 30 — the data you'd need to justify scaling to a full corporation.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="figure">
+    <div class="figure-visual">
+      <div class="compare-inline">
+        <div class="compare-box old">
+          <div class="cb-label" data-i18n="a4.fig.old.label">● Without fleet monitoring</div>
+          <div class="cb-value" data-i18n="a4.fig.old.value">End of day</div>
+          <div class="cb-note" data-i18n="a4.fig.old.note">Time to discover over-crowding and fare gaps on any given route</div>
+        </div>
+        <div class="compare-box new">
+          <div class="cb-label" data-i18n="a4.fig.new.label">● With HashRoute</div>
+          <div class="cb-value">&lt;3 min</div>
+          <div class="cb-note" data-i18n="a4.fig.new.note">Same event, alerted to conductor and depot in real time</div>
+        </div>
+      </div>
+    </div>
+    <div class="figure-caption" data-i18n="a4.fig.caption">
+      Pilot averages across two depots, roughly 40 buses monitored per depot,
+      during the 30-day deployment window.
+    </div>
+  </div>
+
+  <h2 data-i18n="a4.s6.h2">Common objections, answered honestly</h2>
+
+  <h3 data-i18n="a4.s6.h3a">"Our conductors are already doing their best — will this add pressure?"</h3>
+  <p data-i18n="a4.s6.p1">
+    The opposite, in practice. Today, conductors get blamed for fare gaps they
+    have no way of seeing. With monitoring, the system flags gaps as they
+    happen — which is helpful, not accusatory. Conductors get a "something's
+    off" signal at the right time, not a reprimand at month-end.
+  </p>
+
+  <h3 data-i18n="a4.s6.h3b">"We already have GPS — what's the difference?"</h3>
+  <p data-i18n="a4.s6.p2">
+    GPS tells you where a bus is. It doesn't tell you how full it is, or
+    whether the tickets match the passengers. Most corporations have tracking
+    for schedule adherence, but no visibility into passenger load or fare
+    compliance. That's the layer that changes things.
+  </p>
+
+  <h3 data-i18n="a4.s6.h3c">"What about passenger privacy?"</h3>
+  <p data-i18n="a4.s6.p3">
+    The system counts people and detects density. It does not identify
+    individuals, store faces, or keep biometric data. Processing happens
+    onboard — no personal data leaves the bus. Deployments align with India's
+    DPDP Act and standard transit privacy guidelines.
+  </p>
+
+  <h3 data-i18n="a4.s6.h3d">"Will this work on our older buses?"</h3>
+  <p data-i18n="a4.s6.p4">
+    If your older buses have working GPS and ETM systems, yes — no hardware
+    changes are needed. For buses with degraded equipment, a small retrofit
+    module handles the monitoring and connects through the same pipeline. The
+    platform itself doesn't care about bus age.
+  </p>
+
+  <div class="callout warn">
+    <div class="co-label">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 14H4l8-14z"/><path d="M12 10v4M12 17v.01"/></svg>
+      <span data-i18n="a4.callout3.label">What it doesn't do</span>
+    </div>
+    <p data-i18n="a4.callout3.text">
+      HashRoute doesn't issue fines, doesn't decide who's authorized to travel,
+      and doesn't replace conductors. The system's job is to surface what's
+      happening on every bus, live — the action is still taken by people, using
+      better information than they had before.
+    </p>
+  </div>
+
+  <h2 data-i18n="a4.s7.h2">The bottom line</h2>
+
+  <p data-i18n="a4.s7.p1">
+    Fare evasion on city buses isn't a new problem. It's been understood for
+    decades, and the current response — conductors doing their best in an
+    impossible window, depot managers working from end-of-day numbers — is
+    genuinely impressive given the constraints.
+  </p>
+
+  <p data-i18n="a4.s7.p2">
+    What's changed is the ability to see it. Smart fleet tracking turns a
+    distributed, hard-to-measure problem into a per-bus, per-stop signal that
+    can be acted on within minutes. That's the entire shift.
+  </p>
+
+  <p data-i18n="a4.s7.p3">
+    The question isn't whether a depot can solve this. It's whether it wants
+    visibility into what's already happening on its own routes.
+  </p>
+
+  <p data-i18n="a4.s7.p4">Most depots, once they see the numbers from a pilot, don't go back.</p>
+
+</article>
+
+<div class="author-card">
+  <div class="ac-av">KR</div>
+  <div class="ac-body">
+    <div class="ac-name">Karthik Rajan</div>
+    <div class="ac-role" data-i18n="a4.authorCard.role">Head of Transit Practice · HashVeno</div>
+    <p class="ac-bio" data-i18n="a4.authorCard.bio">
+      Karthik leads HashVeno's transit and mobility practice, working with
+      state transport corporations on fleet monitoring, fare compliance, and
+      passenger safety. He writes about the operational realities of running
+      large-scale public transport in Indian cities.
+    </p>
+    <div class="ac-links">
+      <a href="#" class="ac-link">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.2 2H21l-6.6 7.5L22 22h-6.8l-5.3-7-6.1 7H1l7-8L2 2h6.9l4.8 6.4L18.2 2zm-2.4 18h1.6L7.8 3.9H6l9.8 16.1z"/></svg>
+        <span data-i18n="a4.authorCard.follow">Follow on X</span>
+      </a>
+      <a href="#" class="ac-link">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4"/></svg>
+        <span data-i18n="a4.authorCard.connect">Connect on LinkedIn</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="share-footer">
+  <span class="sf-label" data-i18n="a4.share">Share this article</span>
+  <div class="sf-row">
+    <button class="share-btn" data-share="twitter" aria-label="Share on X">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.2 2H21l-6.6 7.5L22 22h-6.8l-5.3-7-6.1 7H1l7-8L2 2h6.9l4.8 6.4L18.2 2zm-2.4 18h1.6L7.8 3.9H6l9.8 16.1z"/></svg>
+    </button>
+    <button class="share-btn" data-share="linkedin" aria-label="Share on LinkedIn">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4"/></svg>
+    </button>
+    <button class="share-btn" data-share="copy" aria-label="Copy link">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+    </button>
+  </div>
+</div>
+
+<section class="related-section">
+  <div class="related-head">
+    <div class="eyebrow" data-i18n="a4.related">Continue reading</div>
+    <h2 data-i18n="a4.relatedTitle">Related articles</h2>
+  </div>
+
+  <div class="related-grid">
+    <a href="#" class="rel-card">
+      <span class="rel-cat retail" data-i18n="nav.retail">Retail</span>
+      <h3 data-i18n="a1.title">Is Your Shop Management Holding You Back?</h3>
+      <p data-i18n="a1.excerpt">Legacy tools slowly drain your store's efficiency. Here's how modern shop management moves beyond inventory tracking into real-time analytics and customer engagement.</p>
+      <div class="rel-meta">
+        <span>Feb 2026</span>
+        <span class="read">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          8 min
+        </span>
+      </div>
+    </a>
+
+    <a href="#" class="rel-card">
+      <span class="rel-cat cloud" data-i18n="nav.cloud">Cloud</span>
+      <h3 data-i18n="a2.title">Future-Proof Retail with Cloud and Automation</h3>
+      <p data-i18n="a2.excerpt">Small changes today lead to big competitive advantages tomorrow. Integrating cloud POS, automated billing, and smart dashboards can elevate your entire retail game.</p>
+      <div class="rel-meta">
+        <span>Mar 2026</span>
+        <span class="read">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          9 min
+        </span>
+      </div>
+    </a>
+
+    <a href="#" class="rel-card">
+      <span class="rel-cat transport" data-i18n="nav.transport">Transport</span>
+      <h3 data-i18n="a3.title">Rising Unauthorized Travel in Indian Railways</h3>
+      <p data-i18n="a3.excerpt">Indian Railways faces increasing numbers of passengers traveling without valid tickets — causing revenue loss and overcrowding. Real-time monitoring can help detect it early.</p>
+      <div class="rel-meta">
+        <span>Mar 2026</span>
+        <span class="read">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          8 min
+        </span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<section class="newsletter-wrap" id="contact">
+  <div class="newsletter">
+    <div>
+      <h3><span data-i18n="nl.h3a">Engineering notes,</span> <em data-i18n="nl.h3b">monthly.</em></h3>
+      <p data-i18n="nl.lead">Short essays on building software for Indian businesses — retail, transit, and enterprise. No fluff, no marketing. Just what we've learned.</p>
+    </div>
+
+    <form class="newsletter-form" onsubmit="event.preventDefault(); this.reset(); alert('Thanks — check your inbox to confirm.');">
+      <div class="newsletter-row">
+        <input type="email" placeholder="you@company.com" required />
+        <button type="submit" data-i18n="nl.subscribe">Subscribe</button>
+      </div>
+      <div class="newsletter-note">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+        <span data-i18n="nl.note">One email per month. Unsubscribe any time.</span>
+      </div>
+    </form>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <span class="brand-mark">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="3" fill="#fff" stroke="none"/>
+            </svg>
+          </span>
+          <span class="brand-name">HashVeno</span>
+        </div>
+        <p class="footer-about" data-i18n="footer.about">
+          IT product &amp; service provider helping businesses grow through
+          smart technology solutions. Built and operated from Chennai, India.
+        </p>
+        <div class="footer-social">
+          <a href="#" class="social-btn" aria-label="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="LinkedIn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="Twitter">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.2 2H21l-6.6 7.5L22 22h-6.8l-5.3-7-6.1 7H1l7-8L2 2h6.9l4.8 6.4L18.2 2zm-2.4 18h1.6L7.8 3.9H6l9.8 16.1z"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="YouTube">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="6" width="18" height="12" rx="3"/><path d="M11 10l4 2-4 2v-4z" fill="currentColor"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h5 data-i18n="footer.services">Services</h5>
+        <div class="footer-links">
+          <a href="#" data-i18n="services.s1.title">Custom Software</a>
+          <a href="#" data-i18n="services.s2.title">Cloud Applications</a>
+          <a href="#" data-i18n="services.s3.title">Support &amp; Maintenance</a>
+          <a href="#" data-i18n="services.s4.title">Integrations</a>
+        </div>
+      </div>
+
+      <div>
+        <h5 data-i18n="footer.products">Products</h5>
+        <div class="footer-links">
+          <a href="#">HashVeno Retail</a>
+          <a href="#">HashRail</a>
+          <a href="#">HashRoute</a>
+          <a href="#" data-i18n="nav.tutorials">Tutorials</a>
+        </div>
+      </div>
+
+      <div>
+        <h5 data-i18n="footer.company">Company</h5>
+        <div class="footer-links">
+          <a href="#" data-i18n="nav.articles">Articles</a>
+          <a href="#" data-i18n="nav.careers">Careers</a>
+          <a href="#" data-i18n="nav.terms">Terms</a>
+          <a href="#" data-i18n="nav.privacy">Privacy</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2026 HashVeno. <span data-i18n="footer.rights">All rights reserved.</span></div>
+      <div class="made">
+        <span>🇮🇳</span>
+        <span data-i18n="footer.made">made in India · Chennai</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const translations = {
+  en: {
+    'nav.home': 'Home','nav.services': 'Services','nav.products': 'Products',
+    'nav.articles': 'Articles','nav.tutorials': 'Tutorials','nav.careers': 'Careers',
+    'nav.terms': 'Terms','nav.privacy': 'Privacy','nav.contact': 'Contact',
+    'nav.getInTouch': 'Get in touch','nav.retail': 'Retail','nav.cloud': 'Cloud','nav.transport': 'Transport',
+
+    'a4.breadcrumb': 'Overcrowding & Fare Evasion in MTC Buses',
+    'a4.cat': 'Transport',
+    'a4.h1': 'Overcrowding & Fare Evasion in MTC Buses',
+    'a4.lede': 'MTC buses struggle with unauthorized passengers and overcrowding — leading to revenue loss and delays. Smart fleet tracking enables better passenger management, without adding a single conductor.',
+    'a4.authorRole': 'Head of Transit Practice',
+    'a4.date': 'Mar 22, 2026','a4.readTime': '5 min read',
+
+    'a4.hv.depot': 'Depot 04 · Route 21G',
+    'a4.hv.sub': '8 buses active · 142 / 160 fleet online · updated 5s ago',
+    'a4.hv.tag': 'LIVE FLEET',
+    'a4.hv.load': 'Bus load · live',
+    'a4.hv.light': 'Light','a4.hv.full': 'Full','a4.hv.over': 'Over','a4.hv.crit': 'Critical',
+    'a4.hv.compliance': 'Fare compliance',
+    'a4.hv.issued': 'Tickets issued','a4.hv.detected': 'Detected onboard','a4.hv.gap': 'Gap','a4.hv.recovered': 'Recovered today',
+    'a4.hv.alerts': 'Active alerts','a4.hv.open': 'open',
+    'a4.hv.a1': 'Bus 205 · over capacity','a4.hv.a2': 'Bus 206 · fare gap','a4.hv.a3': 'Stop · T. Nagar','a4.hv.avg': 'Avg. response',
+
+    'a4.s1.h2': 'The scale',
+    'a4.s1.p1': 'MTC runs one of the largest city bus networks in India. Roughly 3,500 buses moving close to 4.5 million passengers every day across more than 600 routes.',
+    'a4.s1.p2': "At that scale, small frictions compound quickly. A fare-evasion rate of even 3% on MTC's daily ridership is over 130,000 unticketed journeys a day. On a single route with 40 daily trips, that's roughly 5–8 missed fares per trip — invisible to any conductor trying to move 60 people through a doorway in 90 seconds.",
+    'a4.s1.p3': 'Overcrowding sits on top of that. Peak-hour routes like 21G, 5M, and 47A regularly run 20–40% over designed capacity. The consequences fall into three buckets:',
+    'a4.s1.l1': 'Revenue loss — unticketed passengers take up space that ticketed passengers could occupy',
+    'a4.s1.l2': 'Safety risk — crowded footboards and doorways are where most bus-related incidents happen',
+    'a4.s1.l3': 'Schedule collapse — overloaded buses take longer at each stop, and delays compound across the trip',
+    'a4.s1.p4': "Every one of these problems is measurable. None of them are currently measured in real time. That's the gap.",
+    'a4.s1.pq': "On a train, a TTE can walk the length of the coach. On a bus, there's nowhere to walk. That's why fare evasion on buses looks different — and needs a different fix.",
+
+    'a4.s2.h2': 'Why fare evasion on buses is structurally different',
+    'a4.s2.p1': "Rail fare evasion and bus fare evasion look like the same problem. They aren't. Three structural differences matter.",
+    'a4.s2.h3a': '1. Every stop is a fresh boarding event',
+    'a4.s2.p2': "A train boards at stations with minutes of dwell time. A bus boards at dozens of stops per trip with 15–30 seconds of dwell time. That's where unauthorized boarding happens — not because anyone's negligent, but because 20 people are trying to board through one door in under a minute.",
+    'a4.s2.h3b': '2. The conductor is inside the flow',
+    'a4.s2.p3': "A TTE stands outside the passenger flow. A bus conductor is the flow. They're issuing tickets, giving change, answering questions, and managing the door — all at the same time. Detecting anomalies is physically impossible without tooling.",
+    'a4.s2.h3c': "3. There's no manifest to check against",
+    'a4.s2.p4': "A train has a reservation chart. A bus doesn't. The conductor issues a ticket for each passenger who pays. There's no independent count of how many people should have paid. Without that baseline, fare evasion is invisible.",
+
+    'a4.callout1.label': 'Worth noting',
+    'a4.callout1.text': 'The single most useful thing a smart fleet system does for a bus corporation is create a baseline count — how many people actually boarded, vs how many tickets were issued. Once you have that number, everything else follows.',
+
+    'a4.s3.h2': 'What smart fleet tracking actually changes',
+    'a4.s3.p1': "Real-time fleet monitoring for buses doesn't replace conductors. It gives them, the depot manager, and the control room a shared, live picture of what's happening on every bus. Three shifts.",
+    'a4.s3.h3a': '1. Live passenger load per bus, per stop',
+    'a4.s3.p2': 'Using existing cameras or a small onboard sensor, each bus continuously reports occupancy. Over-crowding on Bus 205 is visible immediately — not discovered at the depot at end of day.',
+    'a4.s3.h3b': '2. Real-time fare compliance signal',
+    'a4.s3.p3': "The system compares tickets issued against detected boardings for each stop. A gap larger than the normal tolerance triggers an alert to the conductor and depot. It's not a penalty tool — it's a \"hey, something's off on this trip\" signal that lets the conductor act before the gap grows.",
+    'a4.s3.h3c': '3. Route-level intelligence',
+    'a4.s3.p4': 'After a month, patterns emerge. Which stops account for most unauthorized boardings? Which time windows? Which routes? Which buses? Depot managers stop scheduling enforcement by intuition and start scheduling it by data.',
+
+    'a4.callout2.label': 'Real impact',
+    'a4.callout2.text': 'In pilot depots, average time from overload detection to depot intervention dropped from end-of-day to under 3 minutes. Fare compliance visibility went from unmeasured to 94%+ within the first month. Not because conductors changed — because for the first time, they could see the gaps as they happened.',
+
+    'a4.s4.h2': 'Where it works best',
+    'a4.s4.p1': "Every route benefits, but the return is highest on specific route types. Here's the honest picture.",
+    'a4.table.head': 'Deployment fit by route type',
+    'a4.table.col1': 'Route type','a4.table.col2': 'Fit','a4.table.col3': 'Primary value',
+    'a4.table.r1': 'Peak-hour arterial routes','a4.table.r1f': 'Highest','a4.table.r1w': 'Overcrowding alerts + fare gaps during rush',
+    'a4.table.r2': 'Long suburban routes','a4.table.r2f': 'High','a4.table.r2w': 'Many stops, high passenger churn, hard to enforce',
+    'a4.table.r3': 'Airport / express services','a4.table.r3f': 'Medium','a4.table.r3w': 'Lower evasion, but useful for crowd and schedule monitoring',
+    'a4.table.r4': 'Feeder / short-distance','a4.table.r4f': 'Medium','a4.table.r4w': 'Shorter trips, smaller impact per route',
+    'a4.s4.p2': "The strongest case is always the same: routes where fare evasion is known to happen but can't be measured, and where overcrowding is consistent enough to affect safety. That's where the return is immediate.",
+
+    'a4.s5.h2': 'What a depot pilot looks like',
+    'a4.s5.p1': "The fastest way to prove value is a focused 30-day pilot at one depot. Here's the realistic path from decision to evidence.",
+    'a4.plan.unit1': 'Setup','a4.plan.unit2': 'Baseline','a4.plan.unit3': 'Live',
+    'a4.plan.1.h4': 'Integration with existing fleet systems',
+    'a4.plan.1.p': "Connect to existing GPS units and ETM systems. No new hardware needed on buses in most cases — the platform reads what's already being transmitted.",
+    'a4.plan.2.h4': 'Silent monitoring phase',
+    'a4.plan.2.p': "System runs in parallel to normal operations. All alerts logged but not actioned. This establishes your baseline for both over-crowding frequency and fare compliance — usually worse than the depot's intuition suggests.",
+    'a4.plan.3.h4': 'Alerts go live to conductors and depot',
+    'a4.plan.3.p': "Over-crowding and fare anomaly alerts start routing to the right people in real time. Daily reports track intervention time, compliance rate, and revenue impact. Full written report at day 30 — the data you'd need to justify scaling to a full corporation.",
+
+    'a4.fig.old.label': '● Without fleet monitoring',
+    'a4.fig.old.value': 'End of day',
+    'a4.fig.old.note': 'Time to discover over-crowding and fare gaps on any given route',
+    'a4.fig.new.label': '● With HashRoute',
+    'a4.fig.new.note': 'Same event, alerted to conductor and depot in real time',
+    'a4.fig.caption': 'Pilot averages across two depots, roughly 40 buses monitored per depot, during the 30-day deployment window.',
+
+    'a4.s6.h2': 'Common objections, answered honestly',
+    'a4.s6.h3a': '"Our conductors are already doing their best — will this add pressure?"',
+    'a4.s6.p1': 'The opposite, in practice. Today, conductors get blamed for fare gaps they have no way of seeing. With monitoring, the system flags gaps as they happen — which is helpful, not accusatory. Conductors get a "something\'s off" signal at the right time, not a reprimand at month-end.',
+    'a4.s6.h3b': '"We already have GPS — what\'s the difference?"',
+    'a4.s6.p2': "GPS tells you where a bus is. It doesn't tell you how full it is, or whether the tickets match the passengers. Most corporations have tracking for schedule adherence, but no visibility into passenger load or fare compliance. That's the layer that changes things.",
+    'a4.s6.h3c': '"What about passenger privacy?"',
+    'a4.s6.p3': "The system counts people and detects density. It does not identify individuals, store faces, or keep biometric data. Processing happens onboard — no personal data leaves the bus. Deployments align with India's DPDP Act and standard transit privacy guidelines.",
+    'a4.s6.h3d': '"Will this work on our older buses?"',
+    'a4.s6.p4': "If your older buses have working GPS and ETM systems, yes — no hardware changes are needed. For buses with degraded equipment, a small retrofit module handles the monitoring and connects through the same pipeline. The platform itself doesn't care about bus age.",
+
+    'a4.callout3.label': "What it doesn't do",
+    'a4.callout3.text': "HashRoute doesn't issue fines, doesn't decide who's authorized to travel, and doesn't replace conductors. The system's job is to surface what's happening on every bus, live — the action is still taken by people, using better information than they had before.",
+
+    'a4.s7.h2': 'The bottom line',
+    'a4.s7.p1': "Fare evasion on city buses isn't a new problem. It's been understood for decades, and the current response — conductors doing their best in an impossible window, depot managers working from end-of-day numbers — is genuinely impressive given the constraints.",
+    'a4.s7.p2': "What's changed is the ability to see it. Smart fleet tracking turns a distributed, hard-to-measure problem into a per-bus, per-stop signal that can be acted on within minutes. That's the entire shift.",
+    'a4.s7.p3': "The question isn't whether a depot can solve this. It's whether it wants visibility into what's already happening on its own routes.",
+    'a4.s7.p4': "Most depots, once they see the numbers from a pilot, don't go back.",
+
+    'a4.authorCard.role': 'Head of Transit Practice · HashVeno',
+    'a4.authorCard.bio': "Karthik leads HashVeno's transit and mobility practice, working with state transport corporations on fleet monitoring, fare compliance, and passenger safety. He writes about the operational realities of running large-scale public transport in Indian cities.",
+    'a4.authorCard.follow': 'Follow on X',
+    'a4.authorCard.connect': 'Connect on LinkedIn',
+    'a4.share': 'Share this article',
+    'a4.related': 'Continue reading',
+    'a4.relatedTitle': 'Related articles',
+
+    'a1.title': 'Is Your Shop Management Holding You Back?',
+    'a1.excerpt': "Legacy tools slowly drain your store's efficiency. Here's how modern shop management moves beyond inventory tracking into real-time analytics and customer engagement.",
+    'a2.title': 'Future-Proof Retail with Cloud and Automation',
+    'a2.excerpt': 'Small changes today lead to big competitive advantages tomorrow. Integrating cloud POS, automated billing, and smart dashboards can elevate your entire retail game.',
+    'a3.title': 'Rising Unauthorized Travel in Indian Railways',
+    'a3.excerpt': 'Indian Railways faces increasing numbers of passengers traveling without valid tickets — causing revenue loss and overcrowding. Real-time monitoring can help detect it early.',
+
+    'nl.h3a': 'Engineering notes,','nl.h3b': 'monthly.',
+    'nl.lead': "Short essays on building software for Indian businesses — retail, transit, and enterprise. No fluff, no marketing. Just what we've learned.",
+    'nl.subscribe': 'Subscribe',
+    'nl.note': 'One email per month. Unsubscribe any time.',
+
+    'services.s1.title': 'Custom Software','services.s2.title': 'Cloud Applications',
+    'services.s3.title': 'Support & Maintenance','services.s4.title': 'Integrations',
+
+    'footer.about': 'IT product & service provider helping businesses grow through smart technology solutions. Built and operated from Chennai, India.',
+    'footer.services': 'Services','footer.products': 'Products','footer.company': 'Company',
+    'footer.rights': 'All rights reserved.','footer.made': 'made in India · Chennai'
+  },
+
+  ta: {
+    'nav.home': 'முகப்பு','nav.services': 'சேவைகள்','nav.products': 'தயாரிப்புகள்',
+    'nav.articles': 'கட்டுரைகள்','nav.tutorials': 'பயிற்சிகள்','nav.careers': 'வேலை வாய்ப்புகள்',
+    'nav.terms': 'விதிமுறைகள்','nav.privacy': 'தனியுரிமை','nav.contact': 'தொடர்பு',
+    'nav.getInTouch': 'தொடர்பு கொள்ளுங்கள்','nav.retail': 'சில்லறை','nav.cloud': 'கிளவுட்','nav.transport': 'போக்குவரத்து',
+
+    'a4.breadcrumb': 'MTC பேருந்துகளில் கூட்டம் & கட்டண ஏமாற்று',
+    'a4.cat': 'போக்குவரத்து',
+    'a4.h1': 'MTC பேருந்துகளில் கூட்டம் & கட்டண ஏமாற்று',
+    'a4.lede': 'MTC பேருந்துகள் அங்கீகரிக்கப்படாத பயணிகள் மற்றும் கூட்டத்துடன் போராடுகின்றன — வருவாய் இழப்பு மற்றும் தாமதங்களுக்கு வழிவகுக்கிறது. ஸ்மார்ட் வாகன கண்காணிப்பு ஒரு நடத்துனரையும் சேர்க்காமல் சிறந்த பயணிகள் மேலாண்மையை இயக்குகிறது.',
+    'a4.authorRole': 'போக்குவரத்து நடைமுறை தலைவர்',
+    'a4.date': 'மார்ச் 22, 2026','a4.readTime': '5 நிமிட வாசிப்பு',
+
+    'a4.hv.depot': 'டிப்போ 04 · பாதை 21G',
+    'a4.hv.sub': '8 பேருந்துகள் செயலில் · 142 / 160 வாகனம் ஆன்லைனில் · 5 வி முன்பு புதுப்பிக்கப்பட்டது',
+    'a4.hv.tag': 'நேரடி வாகனம்',
+    'a4.hv.load': 'பேருந்து சுமை · நேரடி',
+    'a4.hv.light': 'இலகு','a4.hv.full': 'நிரம்பியது','a4.hv.over': 'அதிகம்','a4.hv.crit': 'முக்கியம்',
+    'a4.hv.compliance': 'கட்டண இணக்கம்',
+    'a4.hv.issued': 'வழங்கப்பட்ட டிக்கெட்டுகள்','a4.hv.detected': 'ஆன்போர்டு கண்டறியப்பட்டது','a4.hv.gap': 'இடைவெளி','a4.hv.recovered': 'இன்று மீட்கப்பட்டது',
+    'a4.hv.alerts': 'செயலில் உள்ள எச்சரிக்கைகள்','a4.hv.open': 'திறந்த',
+    'a4.hv.a1': 'பேருந்து 205 · திறனுக்கு மேல்','a4.hv.a2': 'பேருந்து 206 · கட்டண இடைவெளி','a4.hv.a3': 'நிறுத்தம் · தி. நகர்','a4.hv.avg': 'சராசரி பதில்',
+
+    'a4.s1.h2': 'அளவு',
+    'a4.s1.p1': 'MTC இந்தியாவின் மிகப்பெரிய நகர பேருந்து நெட்வொர்க்குகளில் ஒன்றை இயக்குகிறது. தோராயமாக 3,500 பேருந்துகள் ஒவ்வொரு நாளும் 600-க்கும் மேற்பட்ட பாதைகளில் 4.5 மில்லியன் பயணிகளை நெருங்கி நகர்த்துகின்றன.',
+    'a4.s1.p2': 'அந்த அளவில், சிறிய உராய்வுகள் விரைவாக மேலும் பெருகுகின்றன. MTC-இன் தினசரி பயணிகளில் 3% கட்டண ஏமாற்று விகிதம் கூட ஒரு நாளைக்கு 130,000-க்கும் மேற்பட்ட டிக்கெட் இல்லாத பயணங்கள். 40 தினசரி பயணங்களைக் கொண்ட ஒரே பாதையில், அது ஒரு பயணத்திற்கு தோராயமாக 5–8 தவறவிட்ட கட்டணங்கள் — 90 வினாடிகளில் ஒரு வாசல் வழியாக 60 பேரை நகர்த்த முயற்சிக்கும் எந்த நடத்துனருக்கும் கண்ணுக்குத் தெரியாதது.',
+    'a4.s1.p3': 'அதன் மேல் கூட்டம் உள்ளது. 21G, 5M மற்றும் 47A போன்ற உச்ச நேர பாதைகள் வழக்கமாக வடிவமைக்கப்பட்ட திறனை விட 20–40% அதிகமாக இயங்குகின்றன. விளைவுகள் மூன்று வகையாக விழுகின்றன:',
+    'a4.s1.l1': 'வருவாய் இழப்பு — டிக்கெட் இல்லாத பயணிகள் டிக்கெட் பயணிகள் ஆக்கிரமிக்கக்கூடிய இடத்தை ஆக்கிரமிக்கிறார்கள்',
+    'a4.s1.l2': 'பாதுகாப்பு ஆபத்து — நெரிசலான படிக்கட்டுகள் மற்றும் வாசல்கள்தான் பெரும்பாலான பேருந்து தொடர்பான சம்பவங்கள் நடக்கும் இடம்',
+    'a4.s1.l3': 'அட்டவணை சரிவு — அதிக சுமை கொண்ட பேருந்துகள் ஒவ்வொரு நிறுத்தத்திலும் அதிக நேரம் எடுக்கும், தாமதங்கள் பயணம் முழுவதும் சேர்கின்றன',
+    'a4.s1.p4': 'இந்த பிரச்சினைகள் ஒவ்வொன்றும் அளவிடக்கூடியது. அவை எதுவும் தற்போது நிகழ்நேரத்தில் அளவிடப்படவில்லை. அதுதான் இடைவெளி.',
+    'a4.s1.pq': 'ஒரு ரயிலில், ஒரு TTE பெட்டியின் நீளத்தை நடக்க முடியும். ஒரு பேருந்தில், நடக்க எங்கும் இல்லை. அதனால்தான் பேருந்துகளில் கட்டண ஏமாற்று வித்தியாசமாகத் தெரிகிறது — மற்றும் வெவ்வேறு தீர்வு தேவைப்படுகிறது.',
+
+    'a4.s2.h2': 'பேருந்துகளில் கட்டண ஏமாற்று கட்டமைப்பு ரீதியாக ஏன் வேறுபடுகிறது',
+    'a4.s2.p1': 'ரயில் கட்டண ஏமாற்று மற்றும் பேருந்து கட்டண ஏமாற்று ஒரே பிரச்சினை போல் தெரிகின்றன. அவை இல்லை. மூன்று கட்டமைப்பு வேறுபாடுகள் முக்கியம்.',
+    'a4.s2.h3a': '1. ஒவ்வொரு நிறுத்தமும் ஒரு புதிய ஏற்ற நிகழ்வு',
+    'a4.s2.p2': 'ஒரு ரயில் நிமிடங்கள் தங்கும் நேரத்துடன் நிலையங்களில் ஏறுகிறது. ஒரு பேருந்து ஒரு பயணத்திற்கு டஜன் கணக்கான நிறுத்தங்களில் 15–30 வினாடிகள் தங்கும் நேரத்துடன் ஏறுகிறது. அங்குதான் அங்கீகரிக்கப்படாத ஏற்றம் நடக்கிறது — யாரும் அலட்சியமாக இருப்பதால் அல்ல, ஆனால் 20 பேர் ஒரு நிமிடத்திற்குள் ஒரு வாசல் வழியாக ஏற முயற்சிப்பதால்.',
+    'a4.s2.h3b': '2. நடத்துனர் ஓட்டத்தின் உள்ளே இருக்கிறார்',
+    'a4.s2.p3': 'ஒரு TTE பயணிகள் ஓட்டத்திற்கு வெளியே நிற்கிறார். ஒரு பேருந்து நடத்துனர் ஓட்டமே. அவர்கள் டிக்கெட்டுகளை வழங்குகிறார்கள், சில்லறை கொடுக்கிறார்கள், கேள்விகளுக்கு பதிலளிக்கிறார்கள், மற்றும் வாசலை நிர்வகிக்கிறார்கள் — அனைத்தையும் ஒரே நேரத்தில். கருவி இல்லாமல் முரண்பாடுகளைக் கண்டறிவது உடல் ரீதியாக சாத்தியமற்றது.',
+    'a4.s2.h3c': '3. சரிபார்க்க எந்த மேனிஃபெஸ்டும் இல்லை',
+    'a4.s2.p4': 'ஒரு ரயிலில் முன்பதிவு அட்டவணை உள்ளது. ஒரு பேருந்தில் இல்லை. நடத்துனர் பணம் செலுத்தும் ஒவ்வொரு பயணிக்கும் ஒரு டிக்கெட்டை வழங்குகிறார். எத்தனை பேர் பணம் செலுத்தியிருக்க வேண்டும் என்பதற்கான சுயாதீன எண்ணிக்கை இல்லை. அந்த அடிப்படை இல்லாமல், கட்டண ஏமாற்று கண்ணுக்குத் தெரியாதது.',
+
+    'a4.callout1.label': 'கவனிக்கத்தக்கது',
+    'a4.callout1.text': 'ஒரு பேருந்து கார்ப்பரேஷனுக்கு ஒரு ஸ்மார்ட் வாகன அமைப்பு செய்யும் ஒரே மிகவும் பயனுள்ள விஷயம் ஒரு அடிப்படை எண்ணிக்கையை உருவாக்குவதுதான் — உண்மையில் எத்தனை பேர் ஏறினார்கள், எத்தனை டிக்கெட்டுகள் வழங்கப்பட்டன. அந்த எண்ணைப் பெற்றவுடன், மற்ற அனைத்தும் பின்தொடர்கிறது.',
+
+    'a4.s3.h2': 'ஸ்மார்ட் வாகன கண்காணிப்பு உண்மையில் என்ன மாற்றுகிறது',
+    'a4.s3.p1': 'பேருந்துகளுக்கான நிகழ்நேர வாகன கண்காணிப்பு நடத்துனர்களை மாற்றாது. இது அவர்களுக்கும், டிப்போ மேலாளருக்கும், கட்டுப்பாட்டு அறைக்கும் ஒவ்வொரு பேருந்திலும் என்ன நடக்கிறது என்பதற்கான பகிரப்பட்ட, நேரடி படத்தை வழங்குகிறது. மூன்று மாற்றங்கள்.',
+    'a4.s3.h3a': '1. ஒவ்வொரு பேருந்து, ஒவ்வொரு நிறுத்தத்திற்கும் நேரடி பயணிகள் சுமை',
+    'a4.s3.p2': 'தற்போதைய கேமராக்கள் அல்லது ஒரு சிறிய ஆன்போர்டு சென்சாரைப் பயன்படுத்தி, ஒவ்வொரு பேருந்தும் தொடர்ந்து ஆக்கிரமிப்பை அறிவிக்கிறது. பேருந்து 205-இல் அதிக கூட்டம் உடனடியாகத் தெரியும் — நாள் இறுதியில் டிப்போவில் கண்டுபிடிக்கப்படுவதில்லை.',
+    'a4.s3.h3b': '2. நிகழ்நேர கட்டண இணக்க சமிக்ஞை',
+    'a4.s3.p3': 'அமைப்பு ஒவ்வொரு நிறுத்தத்திற்கும் வழங்கப்பட்ட டிக்கெட்டுகளை கண்டறியப்பட்ட ஏற்றங்களுடன் ஒப்பிடுகிறது. சாதாரண சகிப்புத்தன்மையை விட பெரிய இடைவெளி நடத்துனர் மற்றும் டிப்போவுக்கு ஒரு எச்சரிக்கையைத் தூண்டுகிறது. இது ஒரு அபராத கருவி அல்ல — இது ஒரு "இந்த பயணத்தில் ஏதோ தவறு" சமிக்ஞை, இடைவெளி வளரும் முன் நடத்துனர் செயல்பட அனுமதிக்கிறது.',
+    'a4.s3.h3c': '3. பாதை-நிலை நுண்ணறிவு',
+    'a4.s3.p4': 'ஒரு மாதத்திற்குப் பிறகு, வடிவங்கள் வெளிப்படுகின்றன. எந்த நிறுத்தங்கள் பெரும்பாலான அங்கீகரிக்கப்படாத ஏற்றங்களுக்குக் காரணம்? எந்த நேர சாளரங்கள்? எந்த பாதைகள்? எந்த பேருந்துகள்? டிப்போ மேலாளர்கள் உள்ளுணர்வால் அமலாக்கத்தை திட்டமிடுவதை நிறுத்தி தரவால் திட்டமிடத் தொடங்குகிறார்கள்.',
+
+    'a4.callout2.label': 'உண்மையான தாக்கம்',
+    'a4.callout2.text': 'பைலட் டிப்போக்களில், அதிக சுமை கண்டறிதலிலிருந்து டிப்போ தலையீடு வரை சராசரி நேரம் நாள் இறுதியிலிருந்து 3 நிமிடங்களுக்கும் குறைவாக குறைந்தது. கட்டண இணக்க தெரிவுநிலை அளவிடப்படாததிலிருந்து முதல் மாதத்திற்குள் 94%+ ஆனது. நடத்துனர்கள் மாறியதால் அல்ல — முதல் முறையாக அவர்கள் இடைவெளிகளை நடக்கும்போதே பார்க்க முடிந்ததால்.',
+
+    'a4.s4.h2': 'அது எங்கே சிறந்தது',
+    'a4.s4.p1': 'ஒவ்வொரு பாதையும் பயனடைகிறது, ஆனால் குறிப்பிட்ட பாதை வகைகளில் வருவாய் அதிகம். நேர்மையான படம் இங்கே.',
+    'a4.table.head': 'பாதை வகை வாரியாக அமர்த்தல் பொருத்தம்',
+    'a4.table.col1': 'பாதை வகை','a4.table.col2': 'பொருத்தம்','a4.table.col3': 'முதன்மை மதிப்பு',
+    'a4.table.r1': 'உச்ச நேர தமனி பாதைகள்','a4.table.r1f': 'மிக உயர்ந்தது','a4.table.r1w': 'நெரிசல் எச்சரிக்கைகள் + அவசர நேரத்தில் கட்டண இடைவெளிகள்',
+    'a4.table.r2': 'நீண்ட புறநகர் பாதைகள்','a4.table.r2f': 'உயர்','a4.table.r2w': 'பல நிறுத்தங்கள், அதிக பயணிகள் விற்றுமுதல், அமல்படுத்த கடினம்',
+    'a4.table.r3': 'விமான நிலையம் / எக்ஸ்பிரஸ் சேவைகள்','a4.table.r3f': 'நடுத்தரம்','a4.table.r3w': 'குறைந்த ஏமாற்று, ஆனால் கூட்டம் மற்றும் அட்டவணை கண்காணிப்புக்கு பயனுள்ளது',
+    'a4.table.r4': 'ஊட்டி / குறுகிய-தூரம்','a4.table.r4f': 'நடுத்தரம்','a4.table.r4w': 'குறுகிய பயணங்கள், ஒவ்வொரு பாதைக்கும் சிறிய தாக்கம்',
+    'a4.s4.p2': 'வலுவான வழக்கு எப்போதும் ஒரே மாதிரியாக உள்ளது: கட்டண ஏமாற்று நடக்கும் என்று அறியப்பட்ட பாதைகள் ஆனால் அளவிட முடியாதவை, மேலும் கூட்டம் பாதுகாப்பை பாதிக்கும் அளவுக்கு நிலையானது. அங்குதான் வருவாய் உடனடியானது.',
+
+    'a4.s5.h2': 'ஒரு டிப்போ பைலட் எப்படி இருக்கும்',
+    'a4.s5.p1': 'மதிப்பை நிரூபிக்க வேகமான வழி ஒரு டிப்போவில் கவனம் செலுத்தப்பட்ட 30-நாள் பைலட். முடிவிலிருந்து ஆதாரம் வரையிலான யதார்த்தமான பாதை இங்கே.',
+    'a4.plan.unit1': 'அமைப்பு','a4.plan.unit2': 'அடிப்படை','a4.plan.unit3': 'நேரடி',
+    'a4.plan.1.h4': 'தற்போதைய வாகன அமைப்புகளுடன் ஒருங்கிணைப்பு',
+    'a4.plan.1.p': 'தற்போதைய GPS அலகுகள் மற்றும் ETM அமைப்புகளுடன் இணைக்கவும். பெரும்பாலான சந்தர்ப்பங்களில் பேருந்துகளில் புதிய வன்பொருள் தேவை இல்லை — தளம் ஏற்கனவே அனுப்பப்படுவதைப் படிக்கிறது.',
+    'a4.plan.2.h4': 'அமைதியான கண்காணிப்பு கட்டம்',
+    'a4.plan.2.p': 'சாதாரண செயல்பாடுகளுக்கு இணையாக அமைப்பு இயங்குகிறது. அனைத்து எச்சரிக்கைகளும் பதிவு செய்யப்பட்டன, ஆனால் நடவடிக்கை எடுக்கப்படவில்லை. இது அதிக கூட்டம் அதிர்வெண் மற்றும் கட்டண இணக்கம் இரண்டிற்கும் உங்கள் அடிப்படையை நிறுவுகிறது — பொதுவாக டிப்போவின் உள்ளுணர்வு பரிந்துரைப்பதை விட மோசமானது.',
+    'a4.plan.3.h4': 'நடத்துனர்கள் மற்றும் டிப்போவுக்கு எச்சரிக்கைகள் நேரடியாகச் செல்கின்றன',
+    'a4.plan.3.p': 'அதிக கூட்டம் மற்றும் கட்டண முரண்பாடு எச்சரிக்கைகள் நிகழ்நேரத்தில் சரியான நபர்களுக்கு அனுப்பத் தொடங்குகின்றன. தினசரி அறிக்கைகள் தலையீட்டு நேரம், இணக்க விகிதம் மற்றும் வருவாய் தாக்கத்தைக் கண்காணிக்கின்றன. 30-ஆம் நாளில் முழு எழுதப்பட்ட அறிக்கை.',
+
+    'a4.fig.old.label': '● வாகன கண்காணிப்பு இல்லாமல்',
+    'a4.fig.old.value': 'நாள் இறுதி',
+    'a4.fig.old.note': 'எந்த ஒரு பாதையிலும் அதிக கூட்டம் மற்றும் கட்டண இடைவெளிகளைக் கண்டறிய நேரம்',
+    'a4.fig.new.label': '● HashRoute உடன்',
+    'a4.fig.new.note': 'அதே நிகழ்வு, நிகழ்நேரத்தில் நடத்துனர் மற்றும் டிப்போவுக்கு எச்சரிக்கப்பட்டது',
+    'a4.fig.caption': 'இரண்டு டிப்போக்கள் முழுவதும் பைலட் சராசரிகள், ஒரு டிப்போவுக்கு தோராயமாக 40 பேருந்துகள் கண்காணிக்கப்பட்டன, 30-நாள் அமர்த்தல் சாளரத்தின் போது.',
+
+    'a4.s6.h2': 'பொதுவான எதிர்ப்புகள், நேர்மையாக பதிலளிக்கப்பட்டன',
+    'a4.s6.h3a': '"எங்கள் நடத்துனர்கள் ஏற்கனவே தங்களால் முடிந்ததைச் செய்கிறார்கள் — இது அழுத்தத்தைச் சேர்க்குமா?"',
+    'a4.s6.p1': 'நடைமுறையில் நேர்மாறானது. இன்று, நடத்துனர்கள் பார்க்க வழியில்லாத கட்டண இடைவெளிகளுக்குக் குற்றம் சாட்டப்படுகிறார்கள். கண்காணிப்புடன், அமைப்பு இடைவெளிகளை நடக்கும்போதே குறிக்கிறது — இது உதவிகரமானது, குற்றச்சாட்டு அல்ல.',
+    'a4.s6.h3b': '"எங்களிடம் ஏற்கனவே GPS உள்ளது — வித்தியாசம் என்ன?"',
+    'a4.s6.p2': 'GPS ஒரு பேருந்து எங்கே இருக்கிறது என்று சொல்கிறது. அது எவ்வளவு நிரம்பியுள்ளது, அல்லது டிக்கெட்டுகள் பயணிகளுடன் பொருந்துகிறதா என்பதைச் சொல்லவில்லை. பெரும்பாலான கார்ப்பரேஷன்கள் அட்டவணை இணக்கத்திற்கான கண்காணிப்பைக் கொண்டுள்ளன, ஆனால் பயணிகள் சுமை அல்லது கட்டண இணக்கம் பற்றிய தெரிவுநிலை இல்லை. அந்த அடுக்குதான் விஷயங்களை மாற்றுகிறது.',
+    'a4.s6.h3c': '"பயணிகள் தனியுரிமை பற்றி என்ன?"',
+    'a4.s6.p3': 'அமைப்பு நபர்களை எண்ணி அடர்த்தியைக் கண்டறிகிறது. இது தனிநபர்களை அடையாளம் காட்டாது, முகங்களைச் சேமிக்காது, பயோமெட்ரிக் தரவை வைத்திருக்காது. செயலாக்கம் ஆன்போர்டு நடக்கிறது — தனிப்பட்ட தரவு பேருந்தை விட்டு வெளியேறாது.',
+    'a4.s6.h3d': '"இது எங்கள் பழைய பேருந்துகளில் வேலை செய்யுமா?"',
+    'a4.s6.p4': 'உங்கள் பழைய பேருந்துகளில் வேலை செய்யும் GPS மற்றும் ETM அமைப்புகள் இருந்தால், ஆம் — வன்பொருள் மாற்றங்கள் தேவை இல்லை. சிதைந்த உபகரணங்களைக் கொண்ட பேருந்துகளுக்கு, ஒரு சிறிய மறுவடிவமைப்பு தொகுதி கண்காணிப்பைக் கையாண்டு அதே குழாய் வழியாக இணைக்கிறது.',
+
+    'a4.callout3.label': 'அது என்ன செய்யாது',
+    'a4.callout3.text': 'HashRoute அபராதங்களை வழங்காது, யார் பயணம் செய்ய அங்கீகரிக்கப்பட்டவர்கள் என்பதைத் தீர்மானிக்காது, நடத்துனர்களை மாற்றாது. ஒவ்வொரு பேருந்திலும் என்ன நடக்கிறது என்பதை நேரடியாக வெளிப்படுத்துவதுதான் அமைப்பின் வேலை — நடவடிக்கை இன்னும் மக்களால் எடுக்கப்படுகிறது.',
+
+    'a4.s7.h2': 'கடைசி வரி',
+    'a4.s7.p1': 'நகர பேருந்துகளில் கட்டண ஏமாற்று ஒரு புதிய பிரச்சினை அல்ல. இது பல தசாப்தங்களாக புரிந்து கொள்ளப்பட்டது, மேலும் தற்போதைய பதில் — நடத்துனர்கள் ஒரு சாத்தியமற்ற சாளரத்தில் தங்களால் முடிந்ததைச் செய்வது, டிப்போ மேலாளர்கள் நாள் இறுதி எண்களிலிருந்து வேலை செய்வது — கட்டுப்பாடுகளைக் கருத்தில் கொண்டு உண்மையிலேயே ஈர்க்கக்கூடியது.',
+    'a4.s7.p2': 'மாறியது அதைப் பார்க்கும் திறன். ஸ்மார்ட் வாகன கண்காணிப்பு ஒரு விநியோகிக்கப்பட்ட, அளவிட கடினமான பிரச்சினையை நிமிடங்களில் செயல்படக்கூடிய ஒரு பேருந்து-வாரியான, நிறுத்தம்-வாரியான சமிக்ஞையாக மாற்றுகிறது. அதுதான் முழு மாற்றம்.',
+    'a4.s7.p3': 'ஒரு டிப்போ இதைத் தீர்க்க முடியுமா என்பது கேள்வி அல்ல. அதன் சொந்த பாதைகளில் ஏற்கனவே என்ன நடக்கிறது என்பதற்கான தெரிவுநிலையை அது விரும்புகிறதா என்பதுதான்.',
+    'a4.s7.p4': 'பெரும்பாலான டிப்போக்கள், ஒரு பைலட்டிலிருந்து எண்களைப் பார்த்த பிறகு, திரும்பிச் செல்வதில்லை.',
+
+    'a4.authorCard.role': 'போக்குவரத்து நடைமுறை தலைவர் · HashVeno',
+    'a4.authorCard.bio': 'கார்த்திக் HashVeno-இன் போக்குவரத்து மற்றும் இயக்க நடைமுறையை வழிநடத்துகிறார், மாநில போக்குவரத்து கார்ப்பரேஷன்களுடன் வாகன கண்காணிப்பு, கட்டண இணக்கம் மற்றும் பயணிகள் பாதுகாப்பில் பணியாற்றுகிறார். இந்திய நகரங்களில் பெரிய அளவிலான பொது போக்குவரத்தை இயக்குவதன் செயல்பாட்டு யதார்த்தங்களைப் பற்றி எழுதுகிறார்.',
+    'a4.authorCard.follow': 'X-இல் பின்தொடரவும்',
+    'a4.authorCard.connect': 'LinkedIn-இல் இணையுங்கள்',
+    'a4.share': 'இந்த கட்டுரையைப் பகிரவும்',
+    'a4.related': 'தொடர்ந்து படிக்கவும்',
+    'a4.relatedTitle': 'தொடர்புடைய கட்டுரைகள்',
+
+    'a1.title': 'உங்கள் கடை மேலாண்மை உங்களை பின்னுக்கு இழுக்கிறதா?',
+    'a1.excerpt': 'பழைய கருவிகள் உங்கள் கடையின் செயல்திறனை மெதுவாக வடிகட்டுகின்றன. நவீன கடை மேலாண்மை எவ்வாறு சரக்கு கண்காணிப்புக்கு அப்பால் நிகழ்நேர பகுப்பாய்வு மற்றும் வாடிக்கையாளர் ஈடுபாட்டுக்குச் செல்கிறது என்பது இங்கே.',
+    'a2.title': 'கிளவுட் மற்றும் தானியங்கியுடன் எதிர்கால-ஆய்வு சில்லறை',
+    'a2.excerpt': 'இன்று சிறிய மாற்றங்கள் நாளை பெரிய போட்டி நன்மைகளுக்கு வழிவகுக்கும். கிளவுட் POS, தானியங்கி பில்லிங் மற்றும் ஸ்மார்ட் டாஷ்போர்டுகளை ஒருங்கிணைப்பது உங்கள் முழு சில்லறை விளையாட்டையும் உயர்த்தும்.',
+    'a3.title': 'இந்திய ரயில்வேயில் அங்கீகரிக்கப்படாத பயணம் அதிகரிக்கிறது',
+    'a3.excerpt': 'இந்திய ரயில்வே சரியான டிக்கெட்டுகள் இல்லாமல் பயணிக்கும் பயணிகளின் எண்ணிக்கை அதிகரித்து வருகிறது — வருவாய் இழப்பு மற்றும் கூட்டத்தை ஏற்படுத்துகிறது. நிகழ்நேர கண்காணிப்பு அதை ஆரம்பத்திலேயே கண்டறிய உதவும்.',
+
+    'nl.h3a': 'பொறியியல் குறிப்புகள்,','nl.h3b': 'மாதந்தோறும்.',
+    'nl.lead': 'இந்திய வணிகங்களுக்கான மென்பொருள் கட்டுவது பற்றிய சிறு கட்டுரைகள் — சில்லறை, போக்குவரத்து மற்றும் நிறுவனம். ஸ்பேம் இல்லை, சந்தைப்படுத்தல் இல்லை. நாங்கள் கற்றுக்கொண்டவை மட்டுமே.',
+    'nl.subscribe': 'குழுசேர்',
+    'nl.note': 'மாதத்திற்கு ஒரு மின்னஞ்சல். எப்போது வேண்டுமானாலும் குழுவிலகுங்கள்.',
+
+    'services.s1.title': 'விருப்ப மென்பொருள்','services.s2.title': 'கிளவுட் பயன்பாடுகள்',
+    'services.s3.title': 'ஆதரவு & பராமரிப்பு','services.s4.title': 'ஒருங்கிணைப்புகள்',
+
+    'footer.about': 'வணிகங்கள் ஸ்மார்ட் தொழில்நுட்ப தீர்வுகள் மூலம் வளர உதவும் IT தயாரிப்பு & சேவை வழங்குநர். சென்னை, இந்தியாவில் கட்டப்பட்டு இயக்கப்படுகிறது.',
+    'footer.services': 'சேவைகள்','footer.products': 'தயாரிப்புகள்','footer.company': 'நிறுவனம்',
+    'footer.rights': 'அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை.','footer.made': 'இந்தியாவில் தயாரிக்கப்பட்டது · சென்னை'
+  }
+};
+
+/* THEME */
+const themeToggle = document.getElementById('themeToggle');
+const root = document.documentElement;
+const savedTheme = localStorage.getItem('hv-theme');
+if (savedTheme) root.setAttribute('data-theme', savedTheme);
+themeToggle.addEventListener('click', () => {
+  const current = root.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  root.setAttribute('data-theme', next);
+  localStorage.setItem('hv-theme', next);
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', next === 'dark' ? '#07080F' : '#F7F7FB');
+});
+
+/* LANGUAGE */
+const langToggle = document.getElementById('langToggle');
+const langActive = document.getElementById('langActive');
+const langInactive = document.getElementById('langInactive');
+let currentLang = localStorage.getItem('hv-lang') || 'en';
+
+function applyLanguage(lang){
+  const dict = translations[lang] || translations.en;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (dict[key] !== undefined) el.textContent = dict[key];
+  });
+  document.documentElement.lang = lang;
+  document.documentElement.setAttribute('data-lang', lang);
+  if (lang === 'ta') {
+    langActive.textContent = 'த';
+    langInactive.textContent = 'EN';
+  } else {
+    langActive.textContent = 'EN';
+    langInactive.textContent = 'த';
+  }
+  localStorage.setItem('hv-lang', lang);
+  currentLang = lang;
+}
+langToggle.addEventListener('click', () => {
+  applyLanguage(currentLang === 'en' ? 'ta' : 'en');
+});
+applyLanguage(currentLang);
+
+/* NAV */
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 12);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+const navToggle = document.getElementById('navToggle');
+const mobileMenu = document.getElementById('mobileMenu');
+navToggle.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+mobileMenu.querySelectorAll('a').forEach(a =>
+  a.addEventListener('click', () => mobileMenu.classList.remove('open'))
+);
+
+/* REVEAL */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('in');
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* READING PROGRESS */
+const progressBar = document.getElementById('progressBar');
+const articleBody = document.getElementById('articleBody');
+function updateProgress(){
+  const rect = articleBody.getBoundingClientRect();
+  const total = articleBody.offsetHeight - window.innerHeight + 200;
+  const scrolled = Math.min(Math.max(-rect.top + 100, 0), total);
+  const pct = Math.min((scrolled / total) * 100, 100);
+  progressBar.style.width = pct + '%';
+}
+window.addEventListener('scroll', updateProgress, { passive: true });
+window.addEventListener('resize', updateProgress);
+updateProgress();
+
+/* SHARE */
+const pageUrl = window.location.href;
+const pageTitle = document.title;
+document.querySelectorAll('[data-share]').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const type = btn.dataset.share;
+    if (type === 'twitter'){
+      window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(pageTitle) + '&url=' + encodeURIComponent(pageUrl), '_blank', 'noopener');
+    }
+    if (type === 'linkedin'){
+      window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(pageUrl), '_blank', 'noopener');
+    }
+    if (type === 'copy'){
+      try{
+        await navigator.clipboard.writeText(pageUrl);
+        btn.classList.add('copied');
+        const original = btn.innerHTML;
+        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
+        setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = original; }, 1800);
+      } catch(e){}
+    }
+  });
+});
+</script>
+</body>
+</html>

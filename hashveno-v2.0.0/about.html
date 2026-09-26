@@ -1,0 +1,1561 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>About — HashVeno</title>
+<meta name="description" content="Founded in 2026 after six years of watching business software fail. HashVeno builds no-click automation for Indian businesses — one team, no handoffs, everything we ship we run." />
+<meta name="theme-color" content="#0A0A12" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   DESIGN TOKENS — LIGHT
+============================================================ */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F7FB;
+  --surface:#FFFFFF;
+  --surface-2:#F1F1F7;
+  --surface-3:#E8E8F0;
+  --ink:#0A0A12;
+  --ink-2:#252532;
+  --muted:#63637A;
+  --faint:#9B9BAA;
+  --line:#E8E8F0;
+  --line-2:#DCDCE5;
+
+  --brand:#5B4BE8;
+  --brand-2:#8B7BFF;
+  --brand-soft:#EFECFF;
+  --brand-ink:#3D2FC9;
+
+  --accent:#00C48C;
+  --amber:#D98A0B;
+  --rose:#E0526B;
+
+  --radius:14px;
+  --radius-lg:20px;
+  --shadow-sm:0 1px 2px rgba(15,15,30,.04);
+  --shadow-md:0 8px 24px -8px rgba(20,20,40,.08),0 2px 6px rgba(20,20,40,.03);
+  --shadow-lg:0 24px 60px -20px rgba(20,20,50,.18),0 8px 20px rgba(20,20,40,.06);
+  --shadow-brand:0 12px 32px -8px rgba(91,75,232,.35);
+
+  --font-sans:'Inter','Noto Sans Tamil',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --font-serif:'Lora','Noto Sans Tamil',Georgia,serif;
+  --font-mono:'JetBrains Mono',ui-monospace,monospace;
+  --container:1200px;
+}
+
+/* ============================================================
+   DARK THEME
+============================================================ */
+[data-theme="dark"]{
+  --bg:#07080F;
+  --surface:#0F1119;
+  --surface-2:#161824;
+  --surface-3:#1D1F2E;
+  --ink:#F4F5FA;
+  --ink-2:#D8DAE6;
+  --muted:#8B8BA3;
+  --faint:#5A5A78;
+  --line:rgba(255,255,255,.06);
+  --line-2:rgba(255,255,255,.12);
+
+  --brand:#6366F1;
+  --brand-2:#818CF8;
+  --brand-soft:rgba(99,102,241,.15);
+  --brand-ink:#A5B4FC;
+
+  --shadow-md:0 8px 24px -8px rgba(0,0,0,.4),0 2px 6px rgba(0,0,0,.2);
+  --shadow-lg:0 24px 60px -20px rgba(0,0,0,.5),0 8px 20px rgba(0,0,0,.3);
+}
+
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--font-sans);background:var(--bg);color:var(--ink);
+  line-height:1.55;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;transition:background .3s ease, color .3s ease;
+}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input{font:inherit;border:none;outline:none;background:none;color:inherit}
+::selection{background:var(--brand);color:#fff}
+
+[data-lang="ta"] body{font-family:'Noto Sans Tamil','Inter',sans-serif;line-height:1.7}
+[data-lang="ta"] h1,[data-lang="ta"] h2,[data-lang="ta"] h3{letter-spacing:-.01em;line-height:1.4}
+
+.container{width:100%;max-width:var(--container);margin:0 auto;padding:0 24px}
+.section{padding:96px 0;position:relative}
+
+/* ============================================================
+   NAV (same as other pages)
+============================================================ */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 0;
+  transition:background .25s ease, backdrop-filter .25s ease,
+             border-color .25s ease, padding .25s ease;
+  border-bottom:1px solid transparent;
+}
+.nav.scrolled{
+  background:color-mix(in srgb, var(--bg) 85%, transparent);
+  backdrop-filter:saturate(180%) blur(20px);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-bottom-color:var(--line);padding:10px 0;
+}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.02em}
+.brand-mark{
+  width:34px;height:34px;border-radius:10px;
+  background:linear-gradient(135deg,var(--brand),var(--brand-2));
+  display:grid;place-items:center;color:#fff;
+  box-shadow:0 6px 16px -4px rgba(91,75,232,.45);position:relative;
+}
+.brand-mark::after{
+  content:"";position:absolute;inset:0;border-radius:10px;
+  background:linear-gradient(135deg,rgba(255,255,255,.35),transparent 55%);pointer-events:none;
+}
+.brand-name{font-size:17px}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-link{
+  font-size:14px;font-weight:500;color:var(--muted);
+  padding:8px 14px;border-radius:9px;transition:.15s;
+}
+.nav-link:hover{color:var(--ink);background:var(--surface-2)}
+.nav-link.active{color:var(--brand-ink);background:var(--brand-soft)}
+.nav-cta{display:flex;align-items:center;gap:8px}
+.nav-controls{display:flex;align-items:center;gap:6px}
+.control-btn{
+  width:36px;height:36px;border-radius:9px;
+  display:grid;place-items:center;color:var(--muted);
+  background:var(--surface);border:1px solid var(--line);transition:.15s;
+}
+.control-btn:hover{color:var(--ink);border-color:var(--line-2)}
+.control-btn svg{width:16px;height:16px}
+.lang-btn{width:auto;padding:0 11px;font-size:12px;font-weight:700;letter-spacing:.02em;gap:5px}
+.lang-btn .lang-active{color:var(--ink)}
+.lang-btn .lang-inactive{color:var(--faint)}
+[data-theme="light"] .icon-moon{display:block}
+[data-theme="light"] .icon-sun{display:none}
+[data-theme="dark"] .icon-moon{display:none}
+[data-theme="dark"] .icon-sun{display:block}
+.nav-toggle{
+  display:none;width:40px;height:40px;border-radius:10px;
+  align-items:center;justify-content:center;
+  border:1px solid var(--line);background:var(--surface);color:var(--muted);
+}
+@media(max-width:900px){
+  .nav-links{display:none}
+  .nav-toggle{display:flex}
+  .nav-cta .btn{display:none}
+}
+.mobile-menu{
+  position:fixed;inset:56px 0 auto 0;z-index:99;
+  background:var(--surface);border-bottom:1px solid var(--line);
+  padding:12px 24px 20px;transform:translateY(-8px);
+  opacity:0;pointer-events:none;transition:.22s ease;
+  box-shadow:var(--shadow-lg);
+}
+.mobile-menu.open{transform:none;opacity:1;pointer-events:auto}
+.mobile-menu a{
+  display:block;padding:13px 4px;font-size:15px;font-weight:500;
+  border-bottom:1px solid var(--line);
+}
+.mobile-menu a:last-child{border:none}
+
+/* ============================================================
+   BUTTONS
+============================================================ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-size:14.5px;font-weight:600;letter-spacing:-.005em;
+  padding:12px 22px;border-radius:12px;
+  transition:transform .15s ease, box-shadow .18s ease, background .15s ease;
+  white-space:nowrap;cursor:pointer;
+}
+.btn-primary{background:var(--brand);color:#fff;box-shadow:var(--shadow-brand)}
+.btn-primary:hover{background:#4E3FD4;transform:translateY(-1px);box-shadow:0 16px 36px -10px rgba(91,75,232,.5)}
+.btn-secondary{background:var(--surface);color:var(--ink);border:1px solid var(--line)}
+.btn-secondary:hover{background:var(--surface);border-color:var(--line-2);transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.btn svg{transition:transform .18s}
+.btn:hover svg{transform:translateX(2px)}
+.btn-lg{font-size:15.5px;padding:14px 26px;border-radius:13px}
+
+/* ============================================================
+   BREADCRUMB
+============================================================ */
+.breadcrumb{
+  max-width:var(--container);margin:0 auto;
+  padding:112px 24px 0;
+  display:flex;align-items:center;gap:8px;
+  font-size:13px;color:var(--faint);flex-wrap:wrap;
+}
+.breadcrumb a{transition:.15s}
+.breadcrumb a:hover{color:var(--brand-ink)}
+.breadcrumb .sep{opacity:.5}
+.breadcrumb .current{color:var(--ink-2);font-weight:500}
+
+/* ============================================================
+   HERO
+============================================================ */
+.hero{
+  position:relative;padding:32px 0 80px;
+  overflow:hidden;isolation:isolate;
+}
+.hero-bg{
+  position:absolute;inset:0;z-index:-1;
+  background:
+    radial-gradient(1000px 500px at 50% -10%, rgba(91,75,232,.13), transparent 70%),
+    radial-gradient(700px 400px at 90% 15%, rgba(139,123,255,.08), transparent 60%);
+}
+.hero-grid{
+  position:absolute;inset:0;z-index:-1;opacity:.5;
+  background-image:
+    linear-gradient(to right, rgba(91,75,232,.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(91,75,232,.05) 1px, transparent 1px);
+  background-size:56px 56px;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+}
+.hero-inner{max-width:820px;margin:0 auto;text-align:center}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--brand-ink);background:var(--brand-soft);
+  padding:6px 12px;border-radius:99px;margin-bottom:22px;
+}
+.eyebrow .dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--brand);box-shadow:0 0 0 3px rgba(91,75,232,.18);
+}
+.hero h1{
+  font-family:var(--font-serif);
+  font-size:clamp(36px,5.6vw,64px);
+  font-weight:600;letter-spacing:-.032em;
+  line-height:1.08;margin-bottom:24px;
+}
+.hero h1 em{
+  font-style:normal;
+  background:linear-gradient(100deg,var(--brand),var(--brand-2) 55%,#C7B6FF);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero .lede{
+  font-family:var(--font-serif);
+  font-size:clamp(18px,1.8vw,22px);
+  line-height:1.55;color:var(--muted);font-style:italic;
+  max-width:660px;margin:0 auto;
+}
+
+/* ============================================================
+   STORY
+============================================================ */
+.story-section{max-width:var(--container);margin:0 auto;padding:0 24px 96px}
+.story-grid{
+  display:grid;grid-template-columns:1.15fr 1fr;gap:64px;align-items:center;
+}
+@media(max-width:900px){.story-grid{grid-template-columns:1fr;gap:40px}}
+
+.story-content{max-width:560px}
+.story-label{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--faint);margin-bottom:18px;
+}
+.story-label::before{content:"";width:20px;height:1px;background:var(--faint)}
+.story-content h2{
+  font-family:var(--font-serif);
+  font-size:clamp(28px,3.6vw,40px);
+  font-weight:600;letter-spacing:-.028em;
+  line-height:1.15;margin-bottom:22px;
+}
+.story-content h2 em{font-style:normal;color:var(--brand)}
+.story-content p{
+  font-size:16px;line-height:1.72;color:var(--ink-2);margin-bottom:18px;
+}
+.story-content p:last-of-type{margin-bottom:0}
+.story-content strong{color:var(--ink);font-weight:650}
+
+.story-visual{
+  position:relative;padding:40px;border-radius:var(--radius-lg);
+  background:linear-gradient(135deg,#EFECFF,#DDD6FE 60%,#E0F2FE);
+  border:1px solid rgba(91,75,232,.12);
+  overflow:hidden;min-height:440px;
+  display:grid;place-items:center;
+}
+[data-theme="dark"] .story-visual{
+  background:linear-gradient(135deg,#1E1B4B,#312E81 60%,#082F49);
+  border-color:rgba(99,102,241,.2);
+}
+.story-visual::before{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,.5) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,.5) 1px, transparent 1px);
+  background-size:32px 32px;
+  mask-image:radial-gradient(circle at 50% 50%,#000,transparent 75%);
+  -webkit-mask-image:radial-gradient(circle at 50% 50%,#000,transparent 75%);
+  opacity:.55;
+}
+[data-theme="dark"] .story-visual::before{
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,.06) 1px, transparent 1px);
+}
+.journey{
+  position:relative;z-index:1;width:100%;max-width:320px;
+  display:flex;flex-direction:column;gap:18px;
+}
+.journey-item{
+  display:flex;align-items:flex-start;gap:16px;
+  padding:18px 20px;background:var(--surface);border-radius:14px;
+  box-shadow:0 12px 28px -10px rgba(20,20,50,.15);
+  border:1px solid var(--line);
+}
+.journey-item.past{opacity:.72}
+.journey-year{
+  font-family:var(--font-mono);font-size:15px;font-weight:700;
+  letter-spacing:-.01em;color:var(--brand-ink);flex-shrink:0;padding-top:2px;
+}
+.journey-item.past .journey-year{color:var(--faint)}
+.journey-text{font-size:13.5px;line-height:1.5;color:var(--ink-2)}
+.journey-item.past .journey-text{color:var(--muted)}
+.journey-text b{color:var(--ink);font-weight:600;display:block;margin-bottom:2px}
+.journey-item.past .journey-text b{color:var(--ink-2)}
+@media(max-width:600px){
+  .story-visual{padding:28px 20px;min-height:340px}
+  .journey-item{padding:16px 16px;gap:14px}
+}
+
+/* ============================================================
+   MISSION
+============================================================ */
+.mission-section{max-width:var(--container);margin:0 auto;padding:0 24px 96px}
+.mission-card{
+  background:linear-gradient(135deg,#0F0F1E 0%,#1A1A33 60%,#252550 100%);
+  border-radius:28px;padding:72px 64px;color:#fff;
+  position:relative;overflow:hidden;text-align:center;
+}
+.mission-card::before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(800px 400px at 50% 0%, rgba(139,123,255,.4), transparent 60%),
+    radial-gradient(600px 400px at 90% 90%, rgba(0,196,140,.15), transparent 60%);
+  pointer-events:none;
+}
+.mission-card::after{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size:44px 44px;
+  mask-image:radial-gradient(ellipse at 50% 50%,#000,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse at 50% 50%,#000,transparent 75%);
+  pointer-events:none;
+}
+.mission-card > *{position:relative;z-index:1}
+.mission-label{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(199,182,255,.95);padding:6px 13px;border-radius:99px;
+  background:rgba(139,123,255,.15);
+  border:1px solid rgba(139,123,255,.25);
+  margin-bottom:26px;
+}
+.mission-label .dot{
+  width:5px;height:5px;border-radius:50%;background:rgba(199,182,255,.95);
+}
+.mission-card h2{
+  font-family:var(--font-serif);
+  font-size:clamp(28px,4vw,46px);
+  font-weight:600;letter-spacing:-.03em;
+  line-height:1.15;margin-bottom:24px;
+  max-width:820px;margin-left:auto;margin-right:auto;
+}
+.mission-card h2 em{
+  font-style:normal;
+  background:linear-gradient(100deg,#C7B6FF,#8B7BFF 55%,#00C48C);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.mission-card p{
+  font-size:16.5px;line-height:1.7;
+  color:rgba(255,255,255,.72);max-width:620px;margin:0 auto;
+}
+.mission-card p + p{margin-top:14px}
+@media(max-width:640px){
+  .mission-card{padding:48px 26px;border-radius:22px}
+}
+
+/* ============================================================
+   VALUES
+============================================================ */
+.values-section{max-width:var(--container);margin:0 auto;padding:0 24px 96px}
+.section-head{max-width:680px;margin-bottom:52px}
+.section-head.center{margin-left:auto;margin-right:auto;text-align:center}
+.section-head h2{
+  font-family:var(--font-serif);
+  font-size:clamp(28px,4vw,42px);
+  font-weight:600;letter-spacing:-.028em;
+  line-height:1.14;margin-bottom:14px;
+}
+.section-head h2 em{
+  font-style:normal;
+  background:linear-gradient(100deg,var(--brand),var(--brand-2) 60%,#C7B6FF);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.section-head p{font-size:16px;line-height:1.65;color:var(--muted)}
+
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:900px){.values-grid{grid-template-columns:1fr}}
+
+.value-group{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius-lg);padding:32px 30px 28px;
+  transition:transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s, border-color .25s;
+}
+.value-group:hover{
+  transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:var(--line-2);
+}
+.vg-label{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:5px 11px;border-radius:99px;margin-bottom:22px;
+}
+.vg-label.build{color:#9A3412;background:#FFEDD5}
+.vg-label.clients{color:#075985;background:#E0F2FE}
+.vg-label.team{color:#047857;background:#D1FAE5}
+[data-theme="dark"] .vg-label.build{color:#FDBA74;background:rgba(251,146,60,.15)}
+[data-theme="dark"] .vg-label.clients{color:#7DD3FC;background:rgba(56,189,248,.15)}
+[data-theme="dark"] .vg-label.team{color:#6EE7B7;background:rgba(52,211,153,.15)}
+.vg-label .dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+.value-list{display:flex;flex-direction:column;gap:22px}
+.value-item{padding-bottom:22px;border-bottom:1px solid var(--line)}
+.value-item:last-child{padding-bottom:0;border-bottom:none}
+.value-title{
+  font-family:var(--font-serif);
+  font-size:17px;font-weight:600;
+  letter-spacing:-.018em;line-height:1.3;
+  color:var(--ink);margin-bottom:8px;
+}
+.value-desc{font-size:13.8px;line-height:1.6;color:var(--muted)}
+
+/* ============================================================
+   TEAM
+============================================================ */
+.team-section{max-width:var(--container);margin:0 auto;padding:0 24px 96px}
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:900px){.team-grid{grid-template-columns:1fr}}
+
+.team-card{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius-lg);padding:32px 30px 28px;
+  position:relative;overflow:hidden;
+  transition:transform .28s cubic-bezier(.2,.8,.2,1), box-shadow .28s, border-color .28s;
+}
+.team-card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--brand),var(--brand-2));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .4s cubic-bezier(.2,.8,.2,1);
+}
+.team-card:hover{
+  transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--line-2);
+}
+.team-card:hover::before{transform:scaleX(1)}
+.tc-top{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  margin-bottom:22px;
+}
+.tc-avatar{
+  width:64px;height:64px;border-radius:18px;
+  display:grid;place-items:center;color:#fff;
+  font-size:22px;font-weight:700;letter-spacing:-.02em;
+  flex-shrink:0;position:relative;
+  box-shadow:0 12px 28px -8px rgba(91,75,232,.35);
+}
+.tc-avatar::after{
+  content:"";position:absolute;inset:0;border-radius:18px;
+  background:linear-gradient(135deg,rgba(255,255,255,.35),transparent 55%);
+  pointer-events:none;
+}
+.tc-avatar.ds{background:linear-gradient(135deg,#5B4BE8,#8B7BFF)}
+.tc-avatar.sp{background:linear-gradient(135deg,#D98A0B,#FBBF24)}
+.tc-avatar.hs{background:linear-gradient(135deg,#E0526B,#FF7A59)}
+.tc-num{
+  font-family:var(--font-mono);font-size:11.5px;font-weight:600;
+  color:var(--faint);letter-spacing:.05em;
+}
+.tc-name{
+  font-family:var(--font-serif);
+  font-size:21px;font-weight:600;
+  letter-spacing:-.022em;color:var(--ink);margin-bottom:6px;
+}
+.tc-role{
+  font-size:12.5px;font-weight:600;
+  color:var(--brand-ink);letter-spacing:.005em;
+  margin-bottom:18px;padding-bottom:18px;
+  border-bottom:1px solid var(--line);
+}
+.tc-bio{font-size:14px;line-height:1.65;color:var(--muted)}
+
+/* ============================================================
+   TIMELINE
+============================================================ */
+.milestones-section{max-width:var(--container);margin:0 auto;padding:0 24px 96px}
+.timeline{
+  position:relative;max-width:820px;margin:0 auto;padding-left:8px;
+}
+.timeline::before{
+  content:"";position:absolute;left:24px;top:14px;bottom:14px;
+  width:2px;
+  background:linear-gradient(180deg,
+    rgba(91,75,232,.15),
+    rgba(91,75,232,.5) 30%,
+    rgba(91,75,232,.5) 70%,
+    rgba(91,75,232,.15));
+  border-radius:2px;
+}
+.tl-item{position:relative;padding-left:72px;padding-bottom:44px}
+.tl-item:last-child{padding-bottom:0}
+.tl-dot{
+  position:absolute;left:16px;top:4px;
+  width:18px;height:18px;border-radius:50%;
+  background:var(--surface);border:2.5px solid var(--line);z-index:1;
+  transition:.3s;
+}
+.tl-item.done .tl-dot{
+  background:var(--brand);border-color:var(--brand);
+  box-shadow:0 0 0 4px rgba(91,75,232,.15);
+}
+.tl-item.now .tl-dot{
+  background:var(--accent);border-color:var(--accent);
+  box-shadow:0 0 0 4px rgba(0,196,140,.15);
+  animation:tlPulse 2s ease-in-out infinite;
+}
+@keyframes tlPulse{
+  0%,100%{box-shadow:0 0 0 4px rgba(0,196,140,.15)}
+  50%{box-shadow:0 0 0 8px rgba(0,196,140,.08)}
+}
+.tl-year{
+  font-family:var(--font-mono);font-size:12px;font-weight:600;
+  letter-spacing:.05em;color:var(--faint);margin-bottom:6px;
+}
+.tl-item.done .tl-year{color:var(--brand-ink)}
+.tl-item.now .tl-year{color:#047857}
+[data-theme="dark"] .tl-item.now .tl-year{color:#6EE7B7}
+.tl-title{
+  font-family:var(--font-serif);
+  font-size:19px;font-weight:600;
+  letter-spacing:-.02em;line-height:1.3;
+  color:var(--ink);margin-bottom:8px;
+}
+.tl-item.next .tl-title{color:var(--muted)}
+.tl-desc{font-size:14.5px;line-height:1.65;color:var(--muted);max-width:560px}
+
+/* ============================================================
+   WHERE WE WORK
+============================================================ */
+.where-section{max-width:var(--container);margin:0 auto;padding:0 24px 96px}
+.where-card{
+  background:linear-gradient(135deg,var(--surface-2),var(--surface));
+  border:1px solid var(--line);border-radius:var(--radius-lg);
+  padding:64px 56px;
+  display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;
+}
+@media(max-width:820px){
+  .where-card{grid-template-columns:1fr;gap:40px;padding:40px 28px}
+}
+.where-content .story-label{margin-bottom:14px}
+.where-content h2{
+  font-family:var(--font-serif);
+  font-size:clamp(26px,3.2vw,36px);
+  font-weight:600;letter-spacing:-.026em;
+  line-height:1.16;color:var(--ink);margin-bottom:20px;
+}
+.where-content p{font-size:15.5px;line-height:1.72;color:var(--muted);margin-bottom:16px}
+.where-content p:last-of-type{margin-bottom:0}
+.where-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.where-stat{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius);padding:24px 22px;
+}
+.where-stat .num{
+  font-family:var(--font-serif);
+  font-size:32px;font-weight:600;
+  letter-spacing:-.028em;color:var(--ink);
+  line-height:1;margin-bottom:8px;
+}
+.where-stat .num em{font-style:normal;color:var(--brand)}
+.where-stat .lbl{font-size:12.5px;color:var(--muted);line-height:1.4}
+
+/* ============================================================
+   CTA
+============================================================ */
+.cta-section{max-width:var(--container);margin:0 auto;padding:0 24px 96px}
+.cta-final{
+  background:linear-gradient(135deg,#0F0F1E 0%,#1A1A33 60%,#252550 100%);
+  border-radius:28px;padding:64px 48px;color:#fff;
+  position:relative;overflow:hidden;text-align:center;
+}
+.cta-final::before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(800px 400px at 50% 0%, rgba(139,123,255,.35), transparent 60%),
+    radial-gradient(600px 400px at 90% 90%, rgba(0,196,140,.15), transparent 60%);
+  pointer-events:none;
+}
+.cta-final::after{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size:44px 44px;
+  mask-image:radial-gradient(ellipse at 50% 50%,#000,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse at 50% 50%,#000,transparent 75%);
+  pointer-events:none;
+}
+.cta-final > *{position:relative;z-index:1}
+.cta-final h2{
+  font-family:var(--font-serif);
+  font-size:clamp(28px,4vw,44px);
+  font-weight:600;letter-spacing:-.03em;
+  line-height:1.1;margin-bottom:16px;
+}
+.cta-final h2 em{
+  font-style:normal;
+  background:linear-gradient(100deg,#C7B6FF,#8B7BFF 60%,#00C48C);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.cta-final p{
+  font-size:16px;color:rgba(255,255,255,.7);
+  line-height:1.65;max-width:560px;margin:0 auto 32px;
+}
+.cta-final .actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.cta-final .btn-white{
+  background:#fff;color:var(--brand-ink);
+  box-shadow:0 12px 32px -10px rgba(255,255,255,.3);
+}
+.cta-final .btn-white:hover{background:#F2F2F8;transform:translateY(-2px)}
+.cta-final .btn-outline{
+  background:rgba(255,255,255,.08);color:#fff;
+  border:1px solid rgba(255,255,255,.15);
+}
+.cta-final .btn-outline:hover{
+  background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25);
+}
+@media(max-width:620px){
+  .cta-final{padding:48px 24px;border-radius:20px}
+  .cta-final .actions{flex-direction:column}
+  .cta-final .btn{width:100%;justify-content:center}
+}
+
+/* ============================================================
+   FOOTER
+============================================================ */
+.footer{background:#0B0B16;color:rgba(255,255,255,.7);padding:64px 0 28px;margin-top:40px}
+.footer-grid{
+  display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px;
+  padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.08);
+}
+.footer-brand{display:flex;align-items:center;gap:10px;color:#fff;margin-bottom:14px}
+.footer-brand .brand-mark{box-shadow:none}
+.footer-brand .brand-name{font-size:16px}
+.footer-about{font-size:13.5px;line-height:1.65;max-width:320px;color:rgba(255,255,255,.55)}
+.footer-social{display:flex;gap:10px;margin-top:18px}
+.social-btn{
+  width:38px;height:38px;border-radius:11px;display:grid;place-items:center;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
+  color:rgba(255,255,255,.75);transition:.2s;
+}
+.social-btn:hover{
+  background:var(--brand);color:#fff;
+  transform:translateY(-2px);border-color:var(--brand);
+}
+.footer h5{
+  font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  color:rgba(255,255,255,.5);margin-bottom:16px;
+}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13.5px;color:rgba(255,255,255,.7);transition:.15s;display:inline-block}
+.footer-links a:hover{color:#fff;transform:translateX(3px)}
+.footer-bottom{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:26px;gap:16px;flex-wrap:wrap;
+  font-size:12.5px;color:rgba(255,255,255,.4);
+}
+.footer-bottom .made{display:flex;align-items:center;gap:8px}
+@media(max-width:820px){
+  .footer-grid{grid-template-columns:1fr 1fr;gap:32px}
+  .footer-grid > div:first-child{grid-column:1/-1}
+  .footer-bottom{flex-direction:column;text-align:center}
+}
+
+/* ============================================================
+   REVEAL
+============================================================ */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.8,.2,1), transform .7s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* ============================================================
+   MOBILE
+============================================================ */
+@media(max-width:720px){
+  .section{padding:64px 0}
+  .container{padding:0 18px}
+  .breadcrumb{padding:96px 18px 0;font-size:12px}
+  .hero{padding:24px 0 56px}
+  .hero h1{font-size:clamp(30px,8vw,42px)}
+  .hero .lede{font-size:16px}
+  .story-section{padding:0 18px 64px}
+  .mission-section{padding:0 18px 64px}
+  .values-section{padding:0 18px 64px}
+  .team-section{padding:0 18px 64px}
+  .milestones-section{padding:0 18px 64px}
+  .where-section{padding:0 18px 64px}
+  .cta-section{padding:0 18px 64px}
+  .section-head{margin-bottom:36px}
+  .section-head h2{font-size:clamp(24px,7vw,32px)}
+  .section-head p{font-size:14.5px}
+  .values-grid{gap:14px}
+  .value-group{padding:26px 22px 22px}
+  .team-grid{gap:14px}
+  .team-card{padding:26px 22px 24px}
+  .story-content h2{font-size:26px}
+  .story-content p{font-size:15px}
+  .timeline{padding-left:0}
+  .tl-item{padding-left:56px;padding-bottom:36px}
+  .timeline::before{left:14px}
+  .tl-dot{left:6px;width:16px;height:16px}
+  .where-stat{padding:20px 18px}
+  .where-stat .num{font-size:26px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important}
+  .reveal{opacity:1;transform:none}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="#" class="brand">
+      <span class="brand-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="3" fill="#fff" stroke="none"/>
+        </svg>
+      </span>
+      <span class="brand-name">HashVeno</span>
+    </a>
+
+    <div class="nav-links">
+      <a class="nav-link" href="#" data-i18n="nav.services">Services</a>
+      <a class="nav-link" href="#" data-i18n="nav.products">Products</a>
+      <a class="nav-link" href="#" data-i18n="nav.articles">Articles</a>
+      <a class="nav-link" href="#" data-i18n="nav.tutorials">Tutorials</a>
+      <a class="nav-link active" href="#" data-i18n="nav.about">About</a>
+    </div>
+
+    <div class="nav-cta">
+      <div class="nav-controls">
+        <button class="control-btn lang-btn" id="langToggle" aria-label="Language">
+          <span class="lang-active" id="langActive">EN</span>
+          <span class="lang-inactive">/</span>
+          <span class="lang-inactive" id="langInactive">த</span>
+        </button>
+        <button class="control-btn" id="themeToggle" aria-label="Theme">
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+          </svg>
+        </button>
+      </div>
+
+      <a href="#contact" class="btn btn-primary">
+        <span data-i18n="nav.getInTouch">Get in touch</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h13M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M4 7h16M4 12h16M4 17h16"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#" data-i18n="nav.services">Services</a>
+  <a href="#" data-i18n="nav.products">Products</a>
+  <a href="#" data-i18n="nav.articles">Articles</a>
+  <a href="#" data-i18n="nav.tutorials">Tutorials</a>
+  <a href="#" data-i18n="nav.about">About</a>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <a href="#" data-i18n="nav.home">Home</a>
+  <span class="sep">/</span>
+  <span class="current" data-i18n="nav.about">About</span>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <div class="container">
+    <div class="hero-inner">
+      <div class="eyebrow"><span class="dot"></span> <span data-i18n="about.eyebrow">About HashVeno</span></div>
+
+      <h1>
+        <span data-i18n="about.hero.h1a">The software we wished</span><br>
+        <em data-i18n="about.hero.h1b">existed in 2020.</em>
+      </h1>
+
+      <p class="lede" data-i18n="about.hero.lede">
+        We spent years watching business software fail the people who used it
+        most. In 2026, we stopped waiting and started building.
+      </p>
+    </div>
+  </div>
+</header>
+
+<!-- STORY -->
+<section class="story-section">
+  <div class="story-grid">
+    <div class="story-content reveal">
+      <div class="story-label" data-i18n="about.story.label">Origin</div>
+      <h2>
+        <span data-i18n="about.story.h2a">Six years of notes.</span><br>
+        <em data-i18n="about.story.h2b">Then we built it.</em>
+      </h2>
+
+      <p data-i18n="about.story.p1">
+        The idea for HashVeno started around 2020. It stayed an idea for a long
+        time — a set of notes, a few prototypes, and a growing frustration with
+        how business software actually worked in the real world.
+      </p>
+
+      <p data-i18n="about.story.p2">
+        The frustration was specific. Every tool we tried assumed someone would
+        sit in front of it and click. Click to process an order. Click to update
+        stock. Click to reconcile payments. Click, click, click — until the day
+        ended and the work still wasn't done.
+      </p>
+
+      <p data-i18n="about.story.p3">
+        We kept asking a simple question: what if the software just did the work
+        instead of asking people to do it?
+      </p>
+
+      <p data-i18n="about.story.p4">
+        In 2026, we stopped waiting and started building. HashVeno is what came
+        out of that — a company built around one idea: no-click automation. The
+        system does the work. The person makes the decisions.
+      </p>
+    </div>
+
+    <div class="story-visual reveal">
+      <div class="journey">
+        <div class="journey-item past">
+          <div class="journey-year">2020</div>
+          <div class="journey-text">
+            <b data-i18n="about.j1.t">Idea stage</b>
+            <span data-i18n="about.j1.d">Notes, prototypes, and a frustration that wouldn't go away.</span>
+          </div>
+        </div>
+
+        <div class="journey-item past">
+          <div class="journey-year">2025</div>
+          <div class="journey-text">
+            <b data-i18n="about.j2.t">Building in the open</b>
+            <span data-i18n="about.j2.d">First product architecture. First customers in conversation.</span>
+          </div>
+        </div>
+
+        <div class="journey-item">
+          <div class="journey-year">2026</div>
+          <div class="journey-text">
+            <b data-i18n="about.j3.t">HashVeno launches</b>
+            <span data-i18n="about.j3.d">First product shipped to commercial launch. Co-founder joins.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MISSION -->
+<section class="mission-section">
+  <div class="mission-card reveal">
+    <div class="mission-label"><span class="dot"></span> <span data-i18n="about.mission.label">Our mission</span></div>
+    <h2>
+      <span data-i18n="about.mission.h2a">Make software do the work,</span><br>
+      <em data-i18n="about.mission.h2b">so people can do their job.</em>
+    </h2>
+    <p data-i18n="about.mission.p1">
+      No-click automation isn't a feature. It's a different way of thinking
+      about management software — where the system watches, learns, and acts,
+      and the human makes the calls that actually need a human.
+    </p>
+    <p data-i18n="about.mission.p2">
+      Everything we build starts from that principle. Every product we ship is
+      measured against it.
+    </p>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="values-section">
+  <div class="section-head center reveal">
+    <h2>
+      <span data-i18n="about.values.h2a">Three things we</span>
+      <em data-i18n="about.values.h2b">actually operate by.</em>
+    </h2>
+    <p data-i18n="about.values.lead">Not slogans. Rules our team follows even when they're inconvenient.</p>
+  </div>
+
+  <div class="values-grid">
+    <!-- How we build -->
+    <div class="value-group reveal">
+      <div class="vg-label build">
+        <span class="dot"></span> <span data-i18n="about.values.g1">How we build</span>
+      </div>
+      <div class="value-list">
+        <div class="value-item">
+          <div class="value-title" data-i18n="about.values.v1.t">We run what we build.</div>
+          <div class="value-desc" data-i18n="about.values.v1.d">Every product we ship, we operate ourselves. If we wouldn't be willing to run it in production, we don't sell it to you.</div>
+        </div>
+        <div class="value-item">
+          <div class="value-title" data-i18n="about.values.v2.t">Ship small, ship often.</div>
+          <div class="value-desc" data-i18n="about.values.v2.d">Working software every week, not big-bang releases. Progress you can click through, not slide decks about progress.</div>
+        </div>
+        <div class="value-item">
+          <div class="value-title" data-i18n="about.values.v3.t">No-click automation.</div>
+          <div class="value-desc" data-i18n="about.values.v3.d">The software does the work, not the user. Every feature we build has to answer one question: who does this save, and how much?</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- How we treat clients -->
+    <div class="value-group reveal">
+      <div class="vg-label clients">
+        <span class="dot"></span> <span data-i18n="about.values.g2">How we treat clients</span>
+      </div>
+      <div class="value-list">
+        <div class="value-item">
+          <div class="value-title" data-i18n="about.values.v4.t">Every client becomes a reference.</div>
+          <div class="value-desc" data-i18n="about.values.v4.d">If we can't picture a client recommending us six months after the project ends, we don't take the project.</div>
+        </div>
+        <div class="value-item">
+          <div class="value-title" data-i18n="about.values.v5.t">Say no honestly.</div>
+          <div class="value-desc" data-i18n="about.values.v5.d">If a project isn't right for us, we tell you — and refer someone who can do it better. A wrong "yes" costs more than a clean "no."</div>
+        </div>
+        <div class="value-item">
+          <div class="value-title" data-i18n="about.values.v6.t">Fixed price, no surprises.</div>
+          <div class="value-desc" data-i18n="about.values.v6.d">No hourly billing, no scope creep invoices. You approve the scope, we commit to a price, and the risk of overrun sits with us.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- How we operate -->
+    <div class="value-group reveal">
+      <div class="vg-label team">
+        <span class="dot"></span> <span data-i18n="about.values.g3">How we operate</span>
+      </div>
+      <div class="value-list">
+        <div class="value-item">
+          <div class="value-title" data-i18n="about.values.v7.t">Founder-led.</div>
+          <div class="value-desc" data-i18n="about.values.v7.d">The people who start something stay accountable for it. No silent partners, no hidden decision-makers, no surprises.</div>
+        </div>
+        <div class="value-item">
+          <div class="value-title" data-i18n="about.values.v8.t">One team, no handoffs.</div>
+          <div class="value-desc" data-i18n="about.values.v8.d">Design, build, and support by the same people. You never get passed from sales to delivery to support to someone else.</div>
+        </div>
+        <div class="value-item">
+          <div class="value-title" data-i18n="about.values.v9.t">Built for India, priced for India.</div>
+          <div class="value-desc" data-i18n="about.values.v9.d">We build for local businesses at prices that make sense for local businesses. World-class software shouldn't require a world-class budget.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="team-section">
+  <div class="section-head center reveal">
+    <h2>
+      <span data-i18n="about.team.h2a">The people</span>
+      <em data-i18n="about.team.h2b">behind HashVeno.</em>
+    </h2>
+    <p data-i18n="about.team.lead">Three founders, one accountable team. No handoffs to strangers.</p>
+  </div>
+
+  <div class="team-grid">
+    <div class="team-card reveal">
+      <div class="tc-top">
+        <div class="tc-avatar ds">DS</div>
+        <span class="tc-num">/ 01</span>
+      </div>
+      <h3 class="tc-name">Dinesh Sankar</h3>
+      <div class="tc-role" data-i18n="about.team.p1.role">Founder &amp; Chief Executive Officer</div>
+      <p class="tc-bio" data-i18n="about.team.p1.bio">
+        Dinesh leads product development, marketing, sales, and client
+        relationships at HashVeno. He started the company solo in 2026 after
+        years of frustration with how business software actually worked in the
+        field — and built the first version of HashVeno Retail himself.
+      </p>
+    </div>
+
+    <div class="team-card reveal">
+      <div class="tc-top">
+        <div class="tc-avatar sp">SP</div>
+        <span class="tc-num">/ 02</span>
+      </div>
+      <h3 class="tc-name">Sabitha Prabu</h3>
+      <div class="tc-role" data-i18n="about.team.p2.role">Co-founder &amp; Chief Financial Officer</div>
+      <p class="tc-bio" data-i18n="about.team.p2.bio">
+        Sabitha joined shortly after launch as co-founder, bringing two things
+        the company needed from the start: a sharp eye for what customers
+        actually want to buy, and the financial discipline to make it
+        sustainable. She leads financial management, competitive analysis, and
+        external communications.
+      </p>
+    </div>
+
+    <div class="team-card reveal">
+      <div class="tc-top">
+        <div class="tc-avatar hs">HS</div>
+        <span class="tc-num">/ 03</span>
+      </div>
+      <h3 class="tc-name">Hemanathan Sankar</h3>
+      <div class="tc-role" data-i18n="about.team.p3.role">Chief Revenue &amp; Operating Officer</div>
+      <p class="tc-bio" data-i18n="about.team.p3.bio">
+        Hemanathan runs revenue and operations at HashVeno — from how the team
+        delivers projects to how clients stay successful after launch. He
+        believes every client engagement should be able to become a reference
+        for the next one.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="milestones-section">
+  <div class="section-head center reveal">
+    <h2>
+      <span data-i18n="about.timeline.h2a">The journey</span>
+      <em data-i18n="about.timeline.h2b">so far.</em>
+    </h2>
+    <p data-i18n="about.timeline.lead">Where we've been, where we are, and where we're headed next.</p>
+  </div>
+
+  <div class="timeline reveal">
+    <div class="tl-item done">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2026 · Q1</div>
+      <div class="tl-title" data-i18n="about.tl.1.t">HashVeno founded</div>
+      <div class="tl-desc" data-i18n="about.tl.1.d">Dinesh starts the company solo. First version of HashVeno Retail shipped to commercial launch with V1 features.</div>
+    </div>
+
+    <div class="tl-item done">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2026 · Q1</div>
+      <div class="tl-title" data-i18n="about.tl.2.t">Co-founder joins, team grows</div>
+      <div class="tl-desc" data-i18n="about.tl.2.d">Sabitha joins as co-founder. Team expands to 6+ people across product, engineering, and operations.</div>
+    </div>
+
+    <div class="tl-item done">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2026 · Q1</div>
+      <div class="tl-title" data-i18n="about.tl.3.t">HashRail and HashRoute shipped</div>
+      <div class="tl-desc" data-i18n="about.tl.3.d">Two new products deployed — real-time passenger monitoring for Indian Railways and fleet tracking for government bus systems.</div>
+    </div>
+
+    <div class="tl-item now">
+      <div class="tl-dot"></div>
+      <div class="tl-year" data-i18n="about.tl.now.year">Now · 2026</div>
+      <div class="tl-title" data-i18n="about.tl.4.t">Growing across Chennai</div>
+      <div class="tl-desc" data-i18n="about.tl.4.d">Scaling adoption of our products across retail shops, railway divisions, and bus depots in Chennai.</div>
+    </div>
+
+    <div class="tl-item next">
+      <div class="tl-dot"></div>
+      <div class="tl-year" data-i18n="about.tl.next.year">Next</div>
+      <div class="tl-title" data-i18n="about.tl.5.t">Expanding across Tamil Nadu</div>
+      <div class="tl-desc" data-i18n="about.tl.5.d">Taking the products statewide — to shops, divisions, and depots across Tamil Nadu, with the same founder-led commitment.</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHERE WE WORK -->
+<section class="where-section">
+  <div class="where-card reveal">
+    <div class="where-content">
+      <div class="story-label" data-i18n="about.where.label">Where we work</div>
+      <h2 data-i18n="about.where.h2">Built and operated from Chennai.</h2>
+      <p data-i18n="about.where.p1">
+        Our team works out of a single office in Chennai — engineers, designers,
+        and operations all in one place. No distributed layers between the people
+        who decide and the people who build.
+      </p>
+      <p data-i18n="about.where.p2">
+        We're still small by design. Small enough that the founders stay close
+        to every project, and every customer has access to the people actually
+        doing the work.
+      </p>
+    </div>
+
+    <div class="where-stats">
+      <div class="where-stat">
+        <div class="num"><em>6+</em></div>
+        <div class="lbl" data-i18n="about.where.s1">People on the team today</div>
+      </div>
+      <div class="where-stat">
+        <div class="num">1</div>
+        <div class="lbl" data-i18n="about.where.s2">Office — Chennai, India</div>
+      </div>
+      <div class="where-stat">
+        <div class="num">3</div>
+        <div class="lbl" data-i18n="about.where.s3">Founders, one accountable team</div>
+      </div>
+      <div class="where-stat">
+        <div class="num">2026</div>
+        <div class="lbl" data-i18n="about.where.s4">Launched. Building since 2020.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="cta-final reveal">
+    <h2>
+      <span data-i18n="about.cta.h2a">Want to work</span><br>
+      <em data-i18n="about.cta.h2b">with us?</em>
+    </h2>
+    <p data-i18n="about.cta.lead">
+      Whether you're a business looking for software, or a builder looking for
+      a place to do the best work of your career — we'd like to hear from you.
+    </p>
+    <div class="actions">
+      <a href="#" class="btn btn-white btn-lg">
+        <span data-i18n="about.cta.b1">Start a project</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h13M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+      <a href="#" class="btn btn-outline btn-lg" data-i18n="about.cta.b2">Explore careers</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <span class="brand-mark">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="3" fill="#fff" stroke="none"/>
+            </svg>
+          </span>
+          <span class="brand-name">HashVeno</span>
+        </div>
+        <p class="footer-about" data-i18n="footer.about">
+          IT product &amp; service provider helping businesses grow through
+          smart technology solutions. Built and operated from Chennai, India.
+        </p>
+        <div class="footer-social">
+          <a href="#" class="social-btn" aria-label="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="LinkedIn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="Twitter">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.2 2H21l-6.6 7.5L22 22h-6.8l-5.3-7-6.1 7H1l7-8L2 2h6.9l4.8 6.4L18.2 2zm-2.4 18h1.6L7.8 3.9H6l9.8 16.1z"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="YouTube">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="6" width="18" height="12" rx="3"/><path d="M11 10l4 2-4 2v-4z" fill="currentColor"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h5 data-i18n="footer.services">Services</h5>
+        <div class="footer-links">
+          <a href="#" data-i18n="services.s1.title">Custom Software</a>
+          <a href="#" data-i18n="services.s2.title">Cloud Applications</a>
+          <a href="#" data-i18n="services.s3.title">Support &amp; Maintenance</a>
+          <a href="#" data-i18n="services.s4.title">Integrations</a>
+        </div>
+      </div>
+
+      <div>
+        <h5 data-i18n="footer.products">Products</h5>
+        <div class="footer-links">
+          <a href="#">HashVeno Retail</a>
+          <a href="#">HashRail</a>
+          <a href="#">HashRoute</a>
+          <a href="#" data-i18n="nav.tutorials">Tutorials</a>
+        </div>
+      </div>
+
+      <div>
+        <h5 data-i18n="footer.company">Company</h5>
+        <div class="footer-links">
+          <a href="#" data-i18n="nav.articles">Articles</a>
+          <a href="#" data-i18n="nav.careers">Careers</a>
+          <a href="#" data-i18n="nav.terms">Terms</a>
+          <a href="#" data-i18n="nav.privacy">Privacy</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2026 HashVeno. <span data-i18n="footer.rights">All rights reserved.</span></div>
+      <div class="made">
+        <span>🇮🇳</span>
+        <span data-i18n="footer.made">made in India · Chennai</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* TRANSLATIONS */
+const translations = {
+  en: {
+    'nav.home': 'Home',
+    'nav.services': 'Services',
+    'nav.products': 'Products',
+    'nav.articles': 'Articles',
+    'nav.tutorials': 'Tutorials',
+    'nav.about': 'About',
+    'nav.careers': 'Careers',
+    'nav.terms': 'Terms',
+    'nav.privacy': 'Privacy',
+    'nav.getInTouch': 'Get in touch',
+
+    'about.eyebrow': 'About HashVeno',
+    'about.hero.h1a': 'The software we wished',
+    'about.hero.h1b': 'existed in 2020.',
+    'about.hero.lede': 'We spent years watching business software fail the people who used it most. In 2026, we stopped waiting and started building.',
+
+    'about.story.label': 'Origin',
+    'about.story.h2a': 'Six years of notes.',
+    'about.story.h2b': 'Then we built it.',
+    'about.story.p1': "The idea for HashVeno started around 2020. It stayed an idea for a long time — a set of notes, a few prototypes, and a growing frustration with how business software actually worked in the real world.",
+    'about.story.p2': "The frustration was specific. Every tool we tried assumed someone would sit in front of it and click. Click to process an order. Click to update stock. Click to reconcile payments. Click, click, click — until the day ended and the work still wasn't done.",
+    'about.story.p3': 'We kept asking a simple question: what if the software just did the work instead of asking people to do it?',
+    'about.story.p4': 'In 2026, we stopped waiting and started building. HashVeno is what came out of that — a company built around one idea: no-click automation. The system does the work. The person makes the decisions.',
+
+    'about.j1.t': 'Idea stage',
+    'about.j1.d': "Notes, prototypes, and a frustration that wouldn't go away.",
+    'about.j2.t': 'Building in the open',
+    'about.j2.d': 'First product architecture. First customers in conversation.',
+    'about.j3.t': 'HashVeno launches',
+    'about.j3.d': 'First product shipped to commercial launch. Co-founder joins.',
+
+    'about.mission.label': 'Our mission',
+    'about.mission.h2a': 'Make software do the work,',
+    'about.mission.h2b': 'so people can do their job.',
+    'about.mission.p1': "No-click automation isn't a feature. It's a different way of thinking about management software — where the system watches, learns, and acts, and the human makes the calls that actually need a human.",
+    'about.mission.p2': 'Everything we build starts from that principle. Every product we ship is measured against it.',
+
+    'about.values.h2a': 'Three things we',
+    'about.values.h2b': 'actually operate by.',
+    'about.values.lead': "Not slogans. Rules our team follows even when they're inconvenient.",
+    'about.values.g1': 'How we build',
+    'about.values.g2': 'How we treat clients',
+    'about.values.g3': 'How we operate',
+    'about.values.v1.t': 'We run what we build.',
+    'about.values.v1.d': "Every product we ship, we operate ourselves. If we wouldn't be willing to run it in production, we don't sell it to you.",
+    'about.values.v2.t': 'Ship small, ship often.',
+    'about.values.v2.d': 'Working software every week, not big-bang releases. Progress you can click through, not slide decks about progress.',
+    'about.values.v3.t': 'No-click automation.',
+    'about.values.v3.d': 'The software does the work, not the user. Every feature we build has to answer one question: who does this save, and how much?',
+    'about.values.v4.t': 'Every client becomes a reference.',
+    'about.values.v4.d': "If we can't picture a client recommending us six months after the project ends, we don't take the project.",
+    'about.values.v5.t': 'Say no honestly.',
+    'about.values.v5.d': 'If a project isn\'t right for us, we tell you — and refer someone who can do it better. A wrong "yes" costs more than a clean "no."',
+    'about.values.v6.t': 'Fixed price, no surprises.',
+    'about.values.v6.d': 'No hourly billing, no scope creep invoices. You approve the scope, we commit to a price, and the risk of overrun sits with us.',
+    'about.values.v7.t': 'Founder-led.',
+    'about.values.v7.d': 'The people who start something stay accountable for it. No silent partners, no hidden decision-makers, no surprises.',
+    'about.values.v8.t': 'One team, no handoffs.',
+    'about.values.v8.d': 'Design, build, and support by the same people. You never get passed from sales to delivery to support to someone else.',
+    'about.values.v9.t': 'Built for India, priced for India.',
+    'about.values.v9.d': "We build for local businesses at prices that make sense for local businesses. World-class software shouldn't require a world-class budget.",
+
+    'about.team.h2a': 'The people',
+    'about.team.h2b': 'behind HashVeno.',
+    'about.team.lead': 'Three founders, one accountable team. No handoffs to strangers.',
+    'about.team.p1.role': 'Founder & Chief Executive Officer',
+    'about.team.p1.bio': 'Dinesh leads product development, marketing, sales, and client relationships at HashVeno. He started the company solo in 2026 after years of frustration with how business software actually worked in the field — and built the first version of HashVeno Retail himself.',
+    'about.team.p2.role': 'Co-founder & Chief Financial Officer',
+    'about.team.p2.bio': 'Sabitha joined shortly after launch as co-founder, bringing two things the company needed from the start: a sharp eye for what customers actually want to buy, and the financial discipline to make it sustainable. She leads financial management, competitive analysis, and external communications.',
+    'about.team.p3.role': 'Chief Revenue & Operating Officer',
+    'about.team.p3.bio': 'Hemanathan runs revenue and operations at HashVeno — from how the team delivers projects to how clients stay successful after launch. He believes every client engagement should be able to become a reference for the next one.',
+
+    'about.timeline.h2a': 'The journey',
+    'about.timeline.h2b': 'so far.',
+    'about.timeline.lead': "Where we've been, where we are, and where we're headed next.",
+    'about.tl.1.t': 'HashVeno founded',
+    'about.tl.1.d': 'Dinesh starts the company solo. First version of HashVeno Retail shipped to commercial launch with V1 features.',
+    'about.tl.2.t': 'Co-founder joins, team grows',
+    'about.tl.2.d': 'Sabitha joins as co-founder. Team expands to 6+ people across product, engineering, and operations.',
+    'about.tl.3.t': 'HashRail and HashRoute shipped',
+    'about.tl.3.d': 'Two new products deployed — real-time passenger monitoring for Indian Railways and fleet tracking for government bus systems.',
+    'about.tl.now.year': 'Now · 2026',
+    'about.tl.4.t': 'Growing across Chennai',
+    'about.tl.4.d': 'Scaling adoption of our products across retail shops, railway divisions, and bus depots in Chennai.',
+    'about.tl.next.year': 'Next',
+    'about.tl.5.t': 'Expanding across Tamil Nadu',
+    'about.tl.5.d': 'Taking the products statewide — to shops, divisions, and depots across Tamil Nadu, with the same founder-led commitment.',
+
+    'about.where.label': 'Where we work',
+    'about.where.h2': 'Built and operated from Chennai.',
+    'about.where.p1': 'Our team works out of a single office in Chennai — engineers, designers, and operations all in one place. No distributed layers between the people who decide and the people who build.',
+    'about.where.p2': "We're still small by design. Small enough that the founders stay close to every project, and every customer has access to the people actually doing the work.",
+    'about.where.s1': 'People on the team today',
+    'about.where.s2': 'Office — Chennai, India',
+    'about.where.s3': 'Founders, one accountable team',
+    'about.where.s4': 'Launched. Building since 2020.',
+
+    'about.cta.h2a': 'Want to work',
+    'about.cta.h2b': 'with us?',
+    'about.cta.lead': "Whether you're a business looking for software, or a builder looking for a place to do the best work of your career — we'd like to hear from you.",
+    'about.cta.b1': 'Start a project',
+    'about.cta.b2': 'Explore careers',
+
+    'services.s1.title': 'Custom Software',
+    'services.s2.title': 'Cloud Applications',
+    'services.s3.title': 'Support & Maintenance',
+    'services.s4.title': 'Integrations',
+
+    'footer.about': 'IT product & service provider helping businesses grow through smart technology solutions. Built and operated from Chennai, India.',
+    'footer.services': 'Services',
+    'footer.products': 'Products',
+    'footer.company': 'Company',
+    'footer.rights': 'All rights reserved.',
+    'footer.made': 'made in India · Chennai'
+  },
+
+  ta: {
+    'nav.home': 'முகப்பு',
+    'nav.services': 'சேவைகள்',
+    'nav.products': 'தயாரிப்புகள்',
+    'nav.articles': 'கட்டுரைகள்',
+    'nav.tutorials': 'பயிற்சிகள்',
+    'nav.about': 'எங்களை பற்றி',
+    'nav.careers': 'வேலை வாய்ப்புகள்',
+    'nav.terms': 'விதிமுறைகள்',
+    'nav.privacy': 'தனியுரிமை',
+    'nav.getInTouch': 'தொடர்பு கொள்ளுங்கள்',
+
+    'about.eyebrow': 'HashVeno பற்றி',
+    'about.hero.h1a': '2020-இல் நாங்கள் விரும்பிய',
+    'about.hero.h1b': 'மென்பொருள்.',
+    'about.hero.lede': 'வணிக மென்பொருள் அதை அதிகம் பயன்படுத்தியவர்களை எவ்வாறு தோல்வியடையச் செய்தது என்பதை பார்த்து பல வருடங்கள் கழிந்தன. 2026-இல், காத்திருப்பதை நிறுத்தி கட்டத் தொடங்கினோம்.',
+
+    'about.story.label': 'தோற்றம்',
+    'about.story.h2a': 'ஆறு வருடங்களின் குறிப்புகள்.',
+    'about.story.h2b': 'பின்னர் அதை கட்டினோம்.',
+    'about.story.p1': 'HashVeno-இன் யோசனை 2020-இல் தொடங்கியது. அது நீண்ட காலமாக ஒரு யோசனையாகவே இருந்தது — குறிப்புகள், சில முன்மாதிரிகள், மற்றும் வணிக மென்பொருள் உண்மையில் எவ்வாறு இயங்கியது என்பதில் அதிகரித்து வந்த விரக்தி.',
+    'about.story.p2': 'விரக்தி குறிப்பாக இருந்தது. நாங்கள் முயற்சித்த ஒவ்வொரு கருவியும் யாராவது அதன் முன் உட்கார்ந்து கிளிக் செய்வார்கள் என்று கருதியது. ஆர்டரைச் செயலாக்க கிளிக். சரக்கைப் புதுப்பிக்க கிளிக். பணம் செலுத்துதல்களை ஒப்புக்கொள்ள கிளிக். கிளிக், கிளிக், கிளிக் — நாள் முடிந்தும் வேலை முடியவில்லை.',
+    'about.story.p3': 'நாங்கள் ஒரு எளிய கேள்வியைத் தொடர்ந்து கேட்டோம்: மக்கள் செய்யச் சொல்வதற்குப் பதிலாக மென்பொருள் வேலையைச் செய்தால் என்ன?',
+    'about.story.p4': '2026-இல், காத்திருப்பதை நிறுத்தி கட்டத் தொடங்கினோம். HashVeno என்பது அதிலிருந்து வந்தது — ஒரு யோசனையைச் சுற்றி கட்டப்பட்ட ஒரு நிறுவனம்: கிளிக் இல்லாத தானியக்கம். சிஸ்டம் வேலையைச் செய்கிறது. நபர் முடிவுகளை எடுக்கிறார்.',
+
+    'about.j1.t': 'யோசனை கட்டம்',
+    'about.j1.d': 'குறிப்புகள், முன்மாதிரிகள், மற்றும் விலகாத விரக்தி.',
+    'about.j2.t': 'வெளிப்படையாக கட்டுதல்',
+    'about.j2.d': 'முதல் தயாரிப்பு கட்டமைப்பு. முதல் வாடிக்கையாளர்கள் உரையாடலில்.',
+    'about.j3.t': 'HashVeno தொடங்குகிறது',
+    'about.j3.d': 'முதல் தயாரிப்பு வணிக வெளியீட்டிற்கு அனுப்பப்பட்டது. இணை நிறுவனர் சேருகிறார்.',
+
+    'about.mission.label': 'எங்கள் பணி',
+    'about.mission.h2a': 'மென்பொருள் வேலையைச் செய்யட்டும்,',
+    'about.mission.h2b': 'மக்கள் தங்கள் வேலையைச் செய்யட்டும்.',
+    'about.mission.p1': 'கிளிக் இல்லாத தானியக்கம் ஒரு அம்சம் அல்ல. இது மேலாண்மை மென்பொருளைப் பற்றி சிந்திக்கும் வேறு வழி — சிஸ்டம் பார்க்கிறது, கற்றுக்கொள்கிறது, செயல்படுகிறது, மற்றும் மனிதன் உண்மையில் மனிதன் தேவைப்படும் அழைப்புகளை எடுக்கிறார்.',
+    'about.mission.p2': 'நாங்கள் கட்டும் அனைத்தும் அந்த கொள்கையிலிருந்து தொடங்குகிறது. நாங்கள் அனுப்பும் ஒவ்வொரு தயாரிப்பும் அதற்கு எதிராக அளவிடப்படுகிறது.',
+
+    'about.values.h2a': 'நாங்கள் உண்மையில்',
+    'about.values.h2b': 'செயல்படும் மூன்று விஷயங்கள்.',
+    'about.values.lead': 'குறிக்கோள்கள் அல்ல. எங்கள் குழு சிரமமாக இருந்தாலும் பின்பற்றும் விதிகள்.',
+    'about.values.g1': 'நாங்கள் எப்படி கட்டுகிறோம்',
+    'about.values.g2': 'வாடிக்கையாளர்களை எப்படி நடத்துகிறோம்',
+    'about.values.g3': 'நாங்கள் எப்படி செயல்படுகிறோம்',
+    'about.values.v1.t': 'நாங்கள் கட்டுவதை இயக்குகிறோம்.',
+    'about.values.v1.d': 'நாங்கள் அனுப்பும் ஒவ்வொரு தயாரிப்பையும் நாமே இயக்குகிறோம். உற்பத்தியில் இயக்கத் தயாராக இல்லாவிட்டால், அதை விற்க மாட்டோம்.',
+    'about.values.v2.t': 'சிறியதாக அனுப்பு, அடிக்கடி அனுப்பு.',
+    'about.values.v2.d': 'ஒவ்வொரு வாரமும் வேலை செய்யும் மென்பொருள், பெரிய வெளியீடுகள் அல்ல. நீங்கள் கிளிக் செய்யக்கூடிய முன்னேற்றம்.',
+    'about.values.v3.t': 'கிளிக் இல்லாத தானியக்கம்.',
+    'about.values.v3.d': 'மென்பொருள் வேலையைச் செய்கிறது, பயனர் அல்ல. நாங்கள் கட்டும் ஒவ்வொரு அம்சமும் ஒரு கேள்விக்கு பதிலளிக்க வேண்டும்: இது யாருக்கு எவ்வளவு சேமிக்கிறது?',
+    'about.values.v4.t': 'ஒவ்வொரு வாடிக்கையாளரும் ஒரு குறிப்பாக மாறுகிறார்.',
+    'about.values.v4.d': 'திட்டம் முடிந்த ஆறு மாதங்களுக்குப் பிறகு ஒரு வாடிக்கையாளர் எங்களை பரிந்துரைப்பதை நினைக்க முடியாவிட்டால், நாங்கள் அந்த திட்டத்தை எடுக்க மாட்டோம்.',
+    'about.values.v5.t': 'நேர்மையாக இல்லை என்று சொல்லுங்கள்.',
+    'about.values.v5.d': 'ஒரு திட்டம் எங்களுக்குப் பொருந்தவில்லை என்றால், நாங்கள் சொல்கிறோம் — மேலும் சிறப்பாகச் செய்யக்கூடிய ஒருவரை பரிந்துரைக்கிறோம்.',
+    'about.values.v6.t': 'நிலையான விலை, ஆச்சரியங்கள் இல்லை.',
+    'about.values.v6.d': 'மணிநேர பில்லிங் இல்லை, ஸ்கோப் க்ரீப் இன்வாய்ஸ்கள் இல்லை. நீங்கள் ஸ்கோப்பை அங்கீகரிக்கிறீர்கள், நாங்கள் ஒரு விலைக்கு உறுதியளிக்கிறோம்.',
+    'about.values.v7.t': 'நிறுவனர் தலைமையிலானது.',
+    'about.values.v7.d': 'ஒன்றைத் தொடங்கியவர்கள் அதற்குப் பொறுப்பேற்கிறார்கள். அமைதியான பங்காளிகள் இல்லை, மறைந்த முடிவெடுப்பவர்கள் இல்லை.',
+    'about.values.v8.t': 'ஒரு குழு, ஒப்படைப்புகள் இல்லை.',
+    'about.values.v8.d': 'வடிவமைப்பு, கட்டுமானம் மற்றும் ஆதரவு ஒரே நபர்களால். விற்பனையிலிருந்து விநியோகம் வரை நீங்கள் அனுப்பப்படுவதில்லை.',
+    'about.values.v9.t': 'இந்தியாவுக்காக கட்டப்பட்டது, இந்தியாவுக்கான விலை.',
+    'about.values.v9.d': 'உள்ளூர் வணிகங்களுக்கு அர்த்தமுள்ள விலையில் நாங்கள் கட்டுகிறோம். உலகத் தர மென்பொருளுக்கு உலகத் தர பட்ஜெட் தேவைப்படக்கூடாது.',
+
+    'about.team.h2a': 'HashVeno-இன் பின்னால்',
+    'about.team.h2b': 'உள்ளவர்கள்.',
+    'about.team.lead': 'மூன்று நிறுவனர்கள், ஒரு பொறுப்பான குழு. அந்நியர்களுக்கு ஒப்படைப்புகள் இல்லை.',
+    'about.team.p1.role': 'நிறுவனர் & தலைமை நிர்வாக அதிகாரி',
+    'about.team.p1.bio': 'தினேஷ் HashVeno-இல் தயாரிப்பு மேம்பாடு, சந்தைப்படுத்தல், விற்பனை மற்றும் வாடிக்கையாளர் உறவுகளை வழிநடத்துகிறார். களத்தில் வணிக மென்பொருள் உண்மையில் எவ்வாறு இயங்கியது என்பதில் பல வருட விரக்திக்குப் பிறகு 2026-இல் நிறுவனத்தைத் தனியாகத் தொடங்கினார்.',
+    'about.team.p2.role': 'இணை நிறுவனர் & தலைமை நிதி அதிகாரி',
+    'about.team.p2.bio': 'சபிதா தொடங்கிய சிறிது நேரத்திலேயே இணை நிறுவனராக சேர்ந்தார், நிறுவனத்திற்கு ஆரம்பத்திலிருந்தே தேவைப்பட்ட இரண்டு விஷயங்களைக் கொண்டு வந்தார்: வாடிக்கையாளர்கள் உண்மையில் என்ன வாங்க விரும்புகிறார்கள் என்பதைப் பற்றிய கூர்மையான கண், மற்றும் அதை நிலைநிறுத்துவதற்கான நிதி ஒழுக்கம்.',
+    'about.team.p3.role': 'தலைமை வருவாய் & இயக்க அதிகாரி',
+    'about.team.p3.bio': 'ஹேமநாதன் HashVeno-இல் வருவாய் மற்றும் செயல்பாடுகளை நடத்துகிறார் — குழு திட்டங்களை எவ்வாறு வழங்குகிறது என்பதிலிருந்து வாடிக்கையாளர்கள் தொடக்கத்திற்குப் பிறகு எவ்வாறு வெற்றிகரமாக இருக்கிறார்கள் என்பது வரை.',
+
+    'about.timeline.h2a': 'இதுவரையான',
+    'about.timeline.h2b': 'பயணம்.',
+    'about.timeline.lead': 'நாங்கள் எங்கே இருந்தோம், எங்கே இருக்கிறோம், அடுத்து எங்கே செல்கிறோம்.',
+    'about.tl.1.t': 'HashVeno நிறுவப்பட்டது',
+    'about.tl.1.d': 'தினேஷ் நிறுவனத்தைத் தனியாகத் தொடங்குகிறார். HashVeno Retail-இன் முதல் பதிப்பு V1 அம்சங்களுடன் வணிக வெளியீட்டிற்கு அனுப்பப்பட்டது.',
+    'about.tl.2.t': 'இணை நிறுவனர் சேர்கிறார், குழு வளர்கிறது',
+    'about.tl.2.d': 'சபிதா இணை நிறுவனராக சேர்கிறார். குழு தயாரிப்பு, பொறியியல் மற்றும் செயல்பாடுகள் முழுவதும் 6+ நபர்களாக விரிவடைகிறது.',
+    'about.tl.3.t': 'HashRail மற்றும் HashRoute அனுப்பப்பட்டன',
+    'about.tl.3.d': 'இரண்டு புதிய தயாரிப்புகள் வரிசைப்படுத்தப்பட்டன — இந்திய ரயில்வேக்கான நிகழ்நேர பயணிகள் கண்காணிப்பு மற்றும் அரசு பேருந்து அமைப்புகளுக்கான வாகன கண்காணிப்பு.',
+    'about.tl.now.year': 'இப்போது · 2026',
+    'about.tl.4.t': 'சென்னை முழுவதும் வளர்ச்சி',
+    'about.tl.4.d': 'சென்னையில் சில்லறை கடைகள், ரயில்வே பிரிவுகள் மற்றும் பேருந்து டிப்போக்கள் முழுவதும் எங்கள் தயாரிப்புகளின் ஏற்றத்தை அளவிடுதல்.',
+    'about.tl.next.year': 'அடுத்து',
+    'about.tl.5.t': 'தமிழ்நாடு முழுவதும் விரிவாக்கம்',
+    'about.tl.5.d': 'தயாரிப்புகளை மாநிலம் முழுவதும் எடுத்துச் செல்லுதல் — கடைகள், பிரிவுகள் மற்றும் டிப்போக்களுக்கு, அதே நிறுவனர் தலைமையிலான அர்ப்பணிப்புடன்.',
+
+    'about.where.label': 'நாங்கள் எங்கு வேலை செய்கிறோம்',
+    'about.where.h2': 'சென்னையில் கட்டப்பட்டு இயக்கப்படுகிறது.',
+    'about.where.p1': 'எங்கள் குழு சென்னையில் ஒரே அலுவலகத்தில் வேலை செய்கிறது — பொறியாளர்கள், வடிவமைப்பாளர்கள் மற்றும் செயல்பாடுகள் அனைத்தும் ஒரே இடத்தில். முடிவெடுப்பவர்களுக்கும் கட்டுபவர்களுக்கும் இடையே விநியோகிக்கப்பட்ட அடுக்குகள் இல்லை.',
+    'about.where.p2': 'நாங்கள் வடிவமைப்பின்படி இன்னும் சிறியவர்களாக இருக்கிறோம். நிறுவனர்கள் ஒவ்வொரு திட்டத்திற்கும் நெருக்கமாக இருக்கும் அளவுக்கு சிறியது.',
+    'about.where.s1': 'இன்று குழுவில் உள்ளவர்கள்',
+    'about.where.s2': 'அலுவலகம் — சென்னை, இந்தியா',
+    'about.where.s3': 'நிறுவனர்கள், ஒரு பொறுப்பான குழு',
+    'about.where.s4': 'தொடங்கப்பட்டது. 2020 முதல் கட்டுதல்.',
+
+    'about.cta.h2a': 'எங்களுடன் வேலை செய்ய',
+    'about.cta.h2b': 'விரும்புகிறீர்களா?',
+    'about.cta.lead': 'நீங்கள் மென்பொருள் தேடும் ஒரு வணிகமாக இருந்தாலும், உங்கள் வாழ்க்கையின் சிறந்த வேலையைச் செய்ய ஒரு இடத்தைத் தேடும் ஒரு கட்டுபவராக இருந்தாலும் — உங்களிடமிருந்து கேட்க விரும்புகிறோம்.',
+    'about.cta.b1': 'ஒரு திட்டத்தைத் தொடங்குங்கள்',
+    'about.cta.b2': 'வேலை வாய்ப்புகளை ஆராயுங்கள்',
+
+    'services.s1.title': 'விருப்ப மென்பொருள்',
+    'services.s2.title': 'கிளவுட் பயன்பாடுகள்',
+    'services.s3.title': 'ஆதரவு & பராமரிப்பு',
+    'services.s4.title': 'ஒருங்கிணைப்புகள்',
+
+    'footer.about': 'வணிகங்கள் ஸ்மார்ட் தொழில்நுட்ப தீர்வுகள் மூலம் வளர உதவும் IT தயாரிப்பு & சேவை வழங்குநர். சென்னை, இந்தியாவில் கட்டப்பட்டு இயக்கப்படுகிறது.',
+    'footer.services': 'சேவைகள்',
+    'footer.products': 'தயாரிப்புகள்',
+    'footer.company': 'நிறுவனம்',
+    'footer.rights': 'அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை.',
+    'footer.made': 'இந்தியாவில் தயாரிக்கப்பட்டது · சென்னை'
+  }
+};
+
+/* THEME */
+const themeToggle = document.getElementById('themeToggle');
+const root = document.documentElement;
+const savedTheme = localStorage.getItem('hv-theme');
+if (savedTheme) root.setAttribute('data-theme', savedTheme);
+themeToggle.addEventListener('click', () => {
+  const current = root.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  root.setAttribute('data-theme', next);
+  localStorage.setItem('hv-theme', next);
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', next === 'dark' ? '#07080F' : '#F7F7FB');
+});
+
+/* LANGUAGE */
+const langToggle = document.getElementById('langToggle');
+const langActive = document.getElementById('langActive');
+const langInactive = document.getElementById('langInactive');
+let currentLang = localStorage.getItem('hv-lang') || 'en';
+
+function applyLanguage(lang){
+  const dict = translations[lang] || translations.en;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (dict[key] !== undefined) el.textContent = dict[key];
+  });
+  document.documentElement.lang = lang;
+  document.documentElement.setAttribute('data-lang', lang);
+  if (lang === 'ta') {
+    langActive.textContent = 'த';
+    langInactive.textContent = 'EN';
+  } else {
+    langActive.textContent = 'EN';
+    langInactive.textContent = 'த';
+  }
+  localStorage.setItem('hv-lang', lang);
+  currentLang = lang;
+}
+langToggle.addEventListener('click', () => {
+  applyLanguage(currentLang === 'en' ? 'ta' : 'en');
+});
+applyLanguage(currentLang);
+
+/* NAV SCROLL */
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 12);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+/* MOBILE MENU */
+const navToggle = document.getElementById('navToggle');
+const mobileMenu = document.getElementById('mobileMenu');
+navToggle.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+mobileMenu.querySelectorAll('a').forEach(a =>
+  a.addEventListener('click', () => mobileMenu.classList.remove('open'))
+);
+
+/* REVEAL */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('in');
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* SMOOTH ANCHOR */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    const href = a.getAttribute('href');
+    if (href === '#') return;
+    const target = document.querySelector(href);
+    if (target){
+      e.preventDefault();
+      const top = target.getBoundingClientRect().top + window.pageYOffset - 90;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  });
+});
+</script>
+</body>
+</html>

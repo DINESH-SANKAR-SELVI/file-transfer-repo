@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Site Map &amp; Navigation — HashVeno</title>
+<meta name="description" content="Complete site map, URL structure, navigation flow, and hosting reference for the HashVeno website." />
+<meta name="theme-color" content="#0A0A12" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F7FB;--surface:#FFFFFF;--surface-2:#F1F1F7;--surface-3:#E8E8F0;
+  --ink:#0A0A12;--ink-2:#252532;--muted:#63637A;--faint:#9B9BAA;
+  --line:#E8E8F0;--line-2:#DCDCE5;
+  --brand:#5B4BE8;--brand-2:#8B7BFF;--brand-soft:#EFECFF;--brand-ink:#3D2FC9;
+  --slate:#0F172A;--slate-2:#1E293B;--slate-soft:#F1F5F9;
+  --a-landing:#5B4BE8;--a-custom:#F97316;--a-cloud:#0EA5E9;--a-support:#10B981;--a-intg:#8B5CF6;
+  --a-retail:#F97316;--a-rail:#0EA5E9;--a-route:#10B981;
+  --a-articles:#5B4BE8;--a-article-retail:#F97316;--a-article-cloud:#0EA5E9;
+  --a-article-rail:#0EA5E9;--a-article-mtc:#10B981;
+  --a-careers:#E0526B;--a-legal:#475569;--a-why:#0D9488;--a-tutorials:#4F46E5;--a-app:#0A0A12;
+  --accent:#00C48C;--amber:#D98A0B;--rose:#E0526B;
+  --radius:14px;--radius-lg:20px;
+  --shadow-sm:0 1px 2px rgba(15,15,30,.04);
+  --shadow-md:0 8px 24px -8px rgba(20,20,40,.08),0 2px 6px rgba(20,20,40,.03);
+  --shadow-lg:0 24px 60px -20px rgba(20,20,50,.18),0 8px 20px rgba(20,20,40,.06);
+  --shadow-brand:0 12px 32px -8px rgba(91,75,232,.35);
+  --font-sans:'Inter','Noto Sans Tamil',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,monospace;
+  --container:1200px;
+}
+[data-theme="dark"]{
+  --bg:#07080F;--surface:#0F1119;--surface-2:#161824;--surface-3:#1D1F2E;
+  --ink:#F4F5FA;--ink-2:#D8DAE6;--muted:#8B8BA3;--faint:#5A5A78;
+  --line:rgba(255,255,255,.06);--line-2:rgba(255,255,255,.12);
+  --brand:#6366F1;--brand-2:#818CF8;--brand-soft:rgba(99,102,241,.15);--brand-ink:#A5B4FC;
+  --slate-soft:rgba(241,245,249,.06);
+  --shadow-md:0 8px 24px -8px rgba(0,0,0,.4),0 2px 6px rgba(0,0,0,.2);
+  --shadow-lg:0 24px 60px -20px rgba(0,0,0,.5),0 8px 20px rgba(0,0,0,.3);
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden;transition:background .3s ease, color .3s ease}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input{font:inherit;border:none;outline:none;background:none;color:inherit}
+::selection{background:var(--slate);color:#fff}
+[data-lang="ta"] body{font-family:'Noto Sans Tamil','Inter',sans-serif;line-height:1.7}
+.container{width:100%;max-width:var(--container);margin:0 auto;padding:0 24px}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 0;transition:background .25s ease, backdrop-filter .25s ease, border-color .25s ease, padding .25s ease;border-bottom:1px solid transparent}
+.nav.scrolled{background:color-mix(in srgb, var(--bg) 85%, transparent);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom-color:var(--line);padding:10px 0}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.02em}
+.brand-mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--brand-2));display:grid;place-items:center;color:#fff;box-shadow:0 6px 16px -4px rgba(91,75,232,.45);position:relative}
+.brand-mark::after{content:"";position:absolute;inset:0;border-radius:10px;background:linear-gradient(135deg,rgba(255,255,255,.35),transparent 55%);pointer-events:none}
+.brand-name{font-size:17px}
+.nav-meta{font-family:var(--font-mono);font-size:11.5px;color:var(--faint);padding:6px 12px;border-radius:9px;background:var(--slate-soft);border:1px solid var(--line);letter-spacing:.02em}
+.nav-controls{display:flex;align-items:center;gap:6px}
+.control-btn{width:36px;height:36px;border-radius:9px;display:grid;place-items:center;color:var(--muted);background:var(--surface);border:1px solid var(--line);transition:.15s}
+.control-btn:hover{color:var(--ink);border-color:var(--line-2)}
+.control-btn svg{width:16px;height:16px}
+.lang-btn{width:auto;padding:0 11px;font-size:12px;font-weight:700;letter-spacing:.02em;gap:5px}
+.lang-btn .lang-active{color:var(--ink)}
+.lang-btn .lang-inactive{color:var(--faint)}
+[data-theme="light"] .icon-moon{display:block}
+[data-theme="light"] .icon-sun{display:none}
+[data-theme="dark"] .icon-moon{display:none}
+[data-theme="dark"] .icon-sun{display:block}
+@media(max-width:720px){.nav-meta{display:none}}
+
+/* HERO */
+.page-hero{position:relative;padding:132px 0 56px;overflow:hidden;isolation:isolate}
+.page-hero::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(1000px 500px at 50% -10%, rgba(15,23,42,.08), transparent 70%),radial-gradient(700px 400px at 90% 15%, rgba(71,85,105,.06), transparent 60%)}
+.page-hero::after{content:"";position:absolute;inset:0;z-index:-1;opacity:.5;background-image:linear-gradient(to right, rgba(15,23,42,.05) 1px, transparent 1px),linear-gradient(to bottom, rgba(15,23,42,.05) 1px, transparent 1px);background-size:56px 56px;mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);-webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%)}
+.page-hero-inner{max-width:720px;margin:0 auto;text-align:center}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--slate-2);background:var(--slate-soft);padding:6px 13px;border-radius:99px;margin-bottom:22px;border:1px solid rgba(15,23,42,.08)}
+.eyebrow .dot{width:5px;height:5px;border-radius:50%;background:var(--slate);box-shadow:0 0 8px var(--slate)}
+.page-hero h1{font-size:clamp(34px,5.2vw,54px);font-weight:700;letter-spacing:-.032em;line-height:1.06;margin-bottom:18px}
+.page-hero p{font-size:16.5px;line-height:1.6;color:var(--muted);max-width:560px;margin:0 auto}
+.hero-stats{display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap;margin-top:44px;padding-top:32px;border-top:1px solid var(--line);max-width:720px;margin-left:auto;margin-right:auto}
+.hero-stat{text-align:center}
+.hero-stat .num{font-size:28px;font-weight:700;letter-spacing:-.028em;line-height:1;font-feature-settings:"tnum"}
+.hero-stat .lbl{font-size:11.5px;font-weight:500;color:var(--faint);margin-top:8px;letter-spacing:.02em;white-space:nowrap}
+@media(max-width:600px){.hero-stats{gap:22px}.hero-stat .num{font-size:22px}}
+
+/* SECTIONS */
+.section{max-width:var(--container);margin:0 auto;padding:0 24px 96px}
+.section-head{max-width:680px;margin-bottom:40px}
+.section-head h2{font-size:clamp(24px,3.2vw,34px);font-weight:700;letter-spacing:-.028em;line-height:1.15;margin-bottom:12px}
+.section-head h2 em{font-style:normal;color:var(--slate-2);background:linear-gradient(180deg,transparent 65%, rgba(15,23,42,.08) 65%);padding:0 4px}
+.section-head p{font-size:15.5px;line-height:1.65;color:var(--muted)}
+.section-label{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:14px}
+.section-label::before{content:"";width:3px;height:12px;border-radius:2px;background:var(--slate)}
+
+/* SITE TREE */
+.tree-wrap{display:flex;flex-direction:column;gap:14px}
+.tree-group{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;transition:.25s}
+.tree-group:hover{border-color:var(--line-2);box-shadow:var(--shadow-sm)}
+.tree-head{padding:22px 26px;display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line);background:var(--surface-2);cursor:pointer;user-select:none;transition:.15s}
+.tree-head:hover{background:var(--surface-3)}
+.tree-head-left{display:flex;align-items:center;gap:14px;min-width:0;flex:1}
+.tree-icon{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-size:17px;flex-shrink:0;position:relative}
+.tree-icon::after{content:"";position:absolute;inset:0;border-radius:11px;background:linear-gradient(135deg,rgba(255,255,255,.4),transparent 55%);pointer-events:none}
+.tree-meta{min-width:0}
+.tree-title{font-size:15.5px;font-weight:650;letter-spacing:-.012em;color:var(--ink);line-height:1.3}
+.tree-url{font-family:var(--font-mono);font-size:11.5px;color:var(--faint);margin-top:3px;letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tree-head-right{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.tree-count{font-family:var(--font-mono);font-size:11.5px;font-weight:600;color:var(--faint);padding:4px 10px;border-radius:7px;background:var(--surface-3);letter-spacing:.02em}
+.tree-chevron{width:22px;height:22px;display:grid;place-items:center;color:var(--faint);transition:transform .25s cubic-bezier(.2,.8,.2,1);flex-shrink:0}
+.tree-group.open .tree-chevron{transform:rotate(180deg)}
+.tree-body{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.2,.8,.2,1);background:var(--surface)}
+.tree-group.open .tree-body{max-height:2000px}
+.tree-pages{padding:12px 0}
+.tree-page{display:flex;align-items:center;gap:12px;padding:12px 26px;font-size:14px;color:var(--ink-2);transition:.15s;border-left:3px solid transparent}
+.tree-page:hover{background:var(--surface-2);border-left-color:var(--slate)}
+.tree-page .page-num{font-family:var(--font-mono);font-size:11px;color:var(--faint);min-width:22px;flex-shrink:0;letter-spacing:.02em}
+.tree-page .page-name{flex:1;min-width:0;font-weight:500;letter-spacing:-.005em}
+.tree-page .page-url{font-family:var(--font-mono);font-size:11.5px;color:var(--faint);letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:340px}
+.tree-page .page-accent{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+.tree-page .page-badge{font-family:var(--font-mono);font-size:10px;font-weight:600;padding:2px 7px;border-radius:5px;letter-spacing:.04em;text-transform:uppercase;background:var(--surface-3);color:var(--slate-2);flex-shrink:0}
+.tree-page .page-badge.legal{background:rgba(71,85,105,.1);color:#334155}
+.tree-page .page-badge.auth{background:rgba(217,138,11,.12);color:#8B5A00}
+@media(max-width:720px){
+  .tree-head{padding:18px 20px}
+  .tree-page{padding:11px 20px;font-size:13.5px;gap:10px}
+  .tree-page .page-url{display:none}
+  .tree-page .page-num{min-width:18px}
+  .tree-count{font-size:10.5px;padding:3px 8px}
+}
+
+/* NAV COLUMNS */
+.nav-columns{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:900px){.nav-columns{grid-template-columns:1fr}}
+.nav-col{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:26px 24px 22px}
+.nav-col-head{display:flex;align-items:center;gap:10px;padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:16px}
+.nav-col-icon{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;background:var(--slate-soft);color:var(--slate-2);font-size:15px}
+.nav-col-title{font-size:14.5px;font-weight:650;letter-spacing:-.01em;color:var(--ink)}
+.nav-col-sub{font-family:var(--font-mono);font-size:10.5px;color:var(--faint);margin-top:1px}
+.nav-list{display:flex;flex-direction:column;gap:2px}
+.nav-link-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;font-size:13.5px;color:var(--ink-2);transition:.15s}
+.nav-link-item:hover{background:var(--surface-2);color:var(--ink)}
+.nav-link-item .lnk-mark{width:5px;height:5px;border-radius:50%;background:var(--faint);flex-shrink:0}
+.nav-link-item .lnk-sub{margin-left:auto;font-family:var(--font-mono);font-size:10.5px;color:var(--faint);letter-spacing:.02em}
+.nav-link-item b{font-weight:600}
+
+/* ACCENTS */
+.accent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.accent-item{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;align-items:center;gap:14px;transition:.18s}
+.accent-item:hover{border-color:var(--line-2);box-shadow:var(--shadow-sm);transform:translateY(-2px)}
+.accent-swatch{width:36px;height:36px;border-radius:10px;flex-shrink:0;position:relative;box-shadow:0 4px 10px -2px rgba(15,15,30,.15), inset 0 1px 0 rgba(255,255,255,.3)}
+.accent-body{min-width:0;flex:1}
+.accent-name{font-size:13px;font-weight:600;color:var(--ink);line-height:1.2;letter-spacing:-.005em}
+.accent-hex{font-family:var(--font-mono);font-size:11px;color:var(--faint);margin-top:3px;letter-spacing:.02em;text-transform:uppercase}
+
+/* CHECKLIST */
+.checklist-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media(max-width:720px){.checklist-grid{grid-template-columns:1fr}}
+.checklist-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:24px 26px}
+.checklist-card-head{display:flex;align-items:center;gap:11px;padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:16px}
+.checklist-icon{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;background:var(--slate-soft);color:var(--slate-2);font-size:15px;flex-shrink:0}
+.checklist-title{font-size:14.5px;font-weight:650;color:var(--ink);letter-spacing:-.008em}
+.checklist-body{display:flex;flex-direction:column;gap:11px}
+.checklist-item{display:flex;align-items:flex-start;gap:11px;font-size:13.5px;line-height:1.6;color:var(--ink-2)}
+.checklist-item .box{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--line-2);flex-shrink:0;margin-top:3px;display:grid;place-items:center}
+.checklist-item b{color:var(--ink);font-weight:600}
+.checklist-item code{font-family:var(--font-mono);font-size:12px;background:var(--slate-soft);padding:2px 6px;border-radius:5px;color:var(--slate-2);letter-spacing:.01em}
+
+/* FILES TABLE */
+.files-table{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden}
+.files-table .ft-head{padding:16px 24px;background:var(--surface-2);border-bottom:1px solid var(--line);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);display:flex;align-items:center;gap:10px}
+.files-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.files-scroll::-webkit-scrollbar{height:8px}
+.files-scroll::-webkit-scrollbar-thumb{background:var(--line);border-radius:8px}
+.files-scroll table{width:100%;min-width:720px;border-collapse:collapse;font-size:13.5px}
+.files-scroll thead th{padding:14px 24px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);background:var(--surface-2);border-bottom:1px solid var(--line)}
+.files-scroll tbody tr{border-bottom:1px solid var(--line);transition:.15s}
+.files-scroll tbody tr:hover{background:var(--surface-2)}
+.files-scroll tbody tr:last-child{border-bottom:none}
+.files-scroll tbody td{padding:14px 24px;vertical-align:top;color:var(--ink-2)}
+.files-scroll tbody td:first-child{font-family:var(--font-mono);font-size:12.5px;color:var(--ink);letter-spacing:.01em;font-weight:500;white-space:nowrap}
+.files-scroll tbody td:nth-child(2){font-size:13.5px;color:var(--muted)}
+.files-scroll tbody td:last-child{text-align:right;white-space:nowrap}
+.files-scroll .accent-dot{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:8px;vertical-align:middle}
+
+/* FLOW */
+.flow-diagram{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:36px 28px;overflow-x:auto}
+.flow-diagram::-webkit-scrollbar{height:8px}
+.flow-diagram::-webkit-scrollbar-thumb{background:var(--line);border-radius:8px}
+.flow-row{display:flex;justify-content:center;align-items:center;gap:16px;margin-bottom:12px;min-width:max-content}
+.flow-row:last-child{margin-bottom:0}
+.flow-node{padding:11px 18px;border-radius:10px;font-size:12.5px;font-weight:600;letter-spacing:-.005em;background:var(--slate-soft);color:var(--slate-2);border:1.5px solid rgba(15,23,42,.1);white-space:nowrap;position:relative}
+.flow-node.primary{background:var(--slate);color:#fff;border-color:var(--slate);box-shadow:0 8px 20px -8px rgba(15,23,42,.5)}
+.flow-node.section{background:var(--surface);border-color:var(--line);color:var(--ink);font-weight:650}
+.flow-node.sub{font-size:11.5px;padding:8px 13px;background:var(--surface-2);color:var(--muted);font-weight:500}
+.flow-arrow{color:var(--faint);flex-shrink:0;display:grid;place-items:center}
+.flow-col{display:flex;flex-direction:column;gap:8px;align-items:center}
+
+/* FOOTER */
+.footer{background:#0B0B16;color:rgba(255,255,255,.7);padding:64px 0 28px;margin-top:48px}
+.footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.08)}
+.footer-brand{display:flex;align-items:center;gap:10px;color:#fff;margin-bottom:14px}
+.footer-brand .brand-mark{box-shadow:none}
+.footer-brand .brand-name{font-size:16px}
+.footer-about{font-size:13.5px;line-height:1.65;max-width:320px;color:rgba(255,255,255,.55)}
+.footer-social{display:flex;gap:10px;margin-top:18px}
+.social-btn{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.75);transition:.2s}
+.social-btn:hover{background:var(--brand);color:#fff;transform:translateY(-2px);border-color:var(--brand)}
+.footer h5{font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:16px}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13.5px;color:rgba(255,255,255,.7);transition:.15s;display:inline-block}
+.footer-links a:hover{color:#fff;transform:translateX(3px)}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:26px;gap:16px;flex-wrap:wrap;font-size:12.5px;color:rgba(255,255,255,.4)}
+.footer-bottom .made{display:flex;align-items:center;gap:8px}
+@media(max-width:820px){.footer-grid{grid-template-columns:1fr 1fr;gap:32px}.footer-grid > div:first-child{grid-column:1/-1}.footer-bottom{flex-direction:column;text-align:center}}
+
+/* MOBILE */
+@media(max-width:720px){
+  .page-hero{padding:112px 0 40px}
+  .page-hero h1{font-size:clamp(28px,8vw,38px)}
+  .section{padding:0 18px 64px}
+  .section-head{margin-bottom:28px}
+  .section-head h2{font-size:clamp(22px,6vw,28px)}
+  .section-head p{font-size:14.5px}
+  .nav-col{padding:20px 20px 18px}
+  .accent-grid{grid-template-columns:1fr}
+  .checklist-card{padding:20px 20px}
+  .files-table .ft-head{padding:12px 18px;font-size:10px}
+  .files-scroll thead th,.files-scroll tbody td{padding:11px 18px}
+  .flow-diagram{padding:24px 18px}
+  .flow-node{font-size:11px;padding:9px 14px}
+  .flow-node.sub{font-size:10.5px;padding:6px 11px}
+  .container{padding:0 18px}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="#" class="brand">
+      <span class="brand-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="3" fill="#fff" stroke="none"/>
+        </svg>
+      </span>
+      <span class="brand-name">HashVeno</span>
+    </a>
+
+    <div class="nav-meta" data-i18n="navmeta">Site Map v1.0 · 26 SEP 2026</div>
+
+    <div class="nav-controls">
+      <button class="control-btn lang-btn" id="langToggle" aria-label="Language">
+        <span class="lang-active" id="langActive">EN</span>
+        <span class="lang-inactive">/</span>
+        <span class="lang-inactive" id="langInactive">த</span>
+      </button>
+      <button class="control-btn" id="themeToggle" aria-label="Theme">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <div class="container">
+    <div class="page-hero-inner">
+      <div class="eyebrow"><span class="dot"></span> <span data-i18n="hero.eyebrow">Developer Reference</span></div>
+
+      <h1 data-i18n="hero.h1">Site Map &amp; Navigation</h1>
+
+      <p data-i18n="hero.lead">
+        Complete reference for hosting, deploying, and maintaining the HashVeno
+        website. Every page, every URL, every accent color — in one place.
+      </p>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="num">23</div>
+          <div class="lbl" data-i18n="hero.stat1">Total pages</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">9</div>
+          <div class="lbl" data-i18n="hero.stat2">Sections</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">11</div>
+          <div class="lbl" data-i18n="hero.stat3">Accent colors</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">100%</div>
+          <div class="lbl" data-i18n="hero.stat4">Mobile-optimized</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- SITE TREE -->
+<section class="section">
+  <div class="section-head">
+    <div class="section-label" data-i18n="tree.label">01 · Site Architecture</div>
+    <h2><span data-i18n="tree.h2a">Every page,</span> <em data-i18n="tree.h2b">organized by section.</em></h2>
+    <p data-i18n="tree.lead">Click any section to expand it. Each page shows its URL slug and its section accent color.</p>
+  </div>
+
+  <div class="tree-wrap">
+
+    <!-- Home & Company -->
+    <div class="tree-group open">
+      <div class="tree-head" data-toggle>
+        <div class="tree-head-left">
+          <div class="tree-icon" style="background:var(--brand-soft);color:var(--brand-ink)">🏠</div>
+          <div class="tree-meta">
+            <div class="tree-title" data-i18n="tree.g1.title">Home &amp; Company</div>
+            <div class="tree-url">/</div>
+          </div>
+        </div>
+        <div class="tree-head-right">
+          <span class="tree-count" data-i18n="tree.g1.count">2 pages</span>
+          <span class="tree-chevron">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </span>
+        </div>
+      </div>
+      <div class="tree-body">
+        <div class="tree-pages">
+          <a href="#" class="tree-page">
+            <span class="page-num">01</span>
+            <span class="page-name" data-i18n="tree.g1.p1">Landing page</span>
+            <span class="page-url">/</span>
+            <span class="page-accent" style="background:var(--a-landing)"></span>
+          </a>
+          <a href="#" class="tree-page">
+            <span class="page-num">02</span>
+            <span class="page-name" data-i18n="tree.g1.p2">Why Choose Us</span>
+            <span class="page-url">/why-hashveno</span>
+            <span class="page-accent" style="background:var(--a-why)"></span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Services -->
+    <div class="tree-group">
+      <div class="tree-head" data-toggle>
+        <div class="tree-head-left">
+          <div class="tree-icon" style="background:#EFECFF;color:#3D2FC9">⚙️</div>
+          <div class="tree-meta">
+            <div class="tree-title" data-i18n="tree.g2.title">Services</div>
+            <div class="tree-url">/services</div>
+          </div>
+        </div>
+        <div class="tree-head-right">
+          <span class="tree-count" data-i18n="tree.g2.count">5 pages</span>
+          <span class="tree-chevron">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </span>
+        </div>
+      </div>
+      <div class="tree-body">
+        <div class="tree-pages">
+          <a href="#" class="tree-page">
+            <span class="page-num">03</span>
+            <span class="page-name" data-i18n="tree.g2.p1">Services index</span>
+            <span class="page-url">/services</span>
+            <span class="page-accent" style="background:var(--brand)"></span>
+          </a>
+          <a href="#" class="tree-page">
+            <span class="page-num">04</span>
+            <span class="page-name" data-i18n="tree.g2.p2">Custom Software Development</span>
+            <span class="page-url">/services/custom-software</span>
+            <span class="page-accent" style="background:var(--a-custom)"></span>
+          </a>
+          <a href="#" class="tree-page">
+            <span class="page-num">05</span>
+            <span class="page-name" data-i18n="tree.g2.p3">Cloud-Based Applications</span>
+            <span class="page-url">/services/cloud-applications</span>
+            <span class="page-accent" style="background:var(--a-cloud)"></span>
+          </a>
+          <a href="#" class="tree-page">
+            <span class="page-num">06</span>
+            <span class="page-name" data-i18n="tree.g2.p4">Support &amp; Maintenance</span>
+            <span class="page-url">/services/support-maintenance</span>
+            <span class="page-accent" style="background:var(--a-support)"></span>
+          </a>
+          <a href="#" class="tree-page">
+            <span class="page-num">07</span>
+            <span class="page-name" data-i18n="tree.g2.p5">Integration Services</span>
+            <span class="page-url">/services/integrations</span>
+            <span class="page-accent" style="background:var(--a-intg)"></span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Products -->
+    <div class="tree-group">
+      <div class="tree-head" data-toggle>
+        <div class="tree-head-left">
+          <div class="tree-icon" style="background:#FFEDD5;color:#9A3412">📦</div>
+          <div class="tree-meta">
+            <div class="tree-title" data-i18n="tree.g3.title">Products</div>
+            <div class="tree-url">/products</div>
+          </div>
+        </div>
+        <div class="tree-head-right">
+          <span class="tree-count" data-i18n="tree.g3.count">4 pages</span>
+          <span class="tree-chevron">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </span>
+        </div>
+      </div>
+      <div class="tree-body">
+        <div class="tree-pages">
+          <a href="#" class="tree-page">
+            <span class="page-num">08</span>
+            <span class="page-name" data-i18n="tree.g3.p1">Products index</span>
+            <span class="page-url">/products</span>
+            <span class="page-accent" style="background:var(--brand)"></span>
+          </a>
+          <a href="#" class="tree-page">
+            <span class="page-num">09</span>
+            <span class="page-name">HashVeno Retail</span>
+            <span class="page-url">/products/retail</span>
+            <span class="page-accent" style="background:var(--a-retail)"></span>
+          </a>
+          <a href="#" class="tree-page">
+            <span class="page-num">10</span>
+            <span class="page-name">HashRail</span>
+            <span class="page-url">/products/rail</span>
+            <span class="page-accent" style="background:var(--a-rail)"></span>
+          </a>
+          <a href="#" class="tree-page">
+            <span class="page-num">11</span>
+            <span class="page-name">HashRoute</span>
+            <span class="page-url">/products/route</span>
+            <span class="page-accent" style="background:var(--a-route)"></span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Articles -->
+    <div class="tree-group">
+      <div class="tree-head" data-toggle>
+        <div class="tree-head-left">
+          <div class="tree-icon" style="background:#FEF3C7;color:#92400E">📝</div>
+          <div class="tree-meta">
+            <div class="tree-title" data-i18n="tree.g4.title">Articles</div>
+            <div class="tree-url">/articles</div>
+          </div>
+        </div>
+        <div class="tree-head-right">
+          <span class="tree-count" data-i18n="tree.g4.count">5 pages</span>
+          <span class="tree-chevron">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </span>
+        </div>
+      </div>
+      <div class="tree-body">
+        <div class="tree-pages">
+          <a href="#" class="tree-page">
+            <span class="page-num">12</span>
+            <span class="page-name" data-i18n="tree.g4.p1">Articles index</span>
+            <span class="page-url">/articles</span>
+            <span class="page-accent" style="background:var(--a-articles)"></span>
+          </a>
+          <a href="#" class="tree-page">
+            <span class="page-num">13</span>
+            <span class="page-name" data-i18n="tree.g4.p2">Is Your Shop Management Holding You Back?</span>
+            <span class="page-url">/articles/shop-management</span>
+            <span class="page-accent" style="background:var(--a-article-retail)"></span>
+          </a>
+          <a href="#" class="tree-page">
+            <span class="page-num">14</span>
+            <span class="page-name" data-i18n="tree.g4.p3">Future-Proof Retail with Cloud and Automation</span>
+            <span class="page-url">/articles/cloud-retail</span>
+            <span class="page-accent" style="background:var(--a-article-cloud)"></span>
+          </a>
+          <a href="#" class="tree-page">
+            <span class="page-num">15</span>
+            <span class="page-name" data-i18n="tree.g4.p4">Rising Unauthorized Travel in Indian Railways</span>
+            <span class="page-url">/articles/railways-unauthorized</span>
+            <span class="page-accent" style="background:var(--a-article-rail)"></span>
+          </a>
+          <a href="#" class="tree-page">
+            <span class="page-num">16</span>
+            <span class="page-name" data-i18n="tree.g4.p5">Overcrowding &amp; Fare Evasion in MTC Buses</span>
+            <span class="page-url">/articles/mtc-overcrowding</span>
+            <span class="page-accent" style="background:var(--a-article-mtc)"></span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tutorials -->
+    <div class="tree-group">
+      <div class="tree-head" data-toggle>
+        <div class="tree-head-left">
+          <div class="tree-icon" style="background:#E0E7FF;color:#3730A3">🎓</div>
+          <div class="tree-meta">
+            <div class="tree-title" data-i18n="tree.g5.title">Tutorials</div>
+            <div class="tree-url">/tutorials</div>
+          </div>
+        </div>
+        <div class="tree-head-right">
+          <span class="tree-count" data-i18n="tree.g5.count">1 page</span>
+          <span class="tree-chevron">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </span>
+        </div>
+      </div>
+      <div class="tree-body">
+        <div class="tree-pages">
+          <a href="#" class="tree-page">
+            <span class="page-num">17</span>
+            <span class="page-name" data-i18n="tree.g5.p1">Tutorials index</span>
+            <span class="page-url">/tutorials</span>
+            <span class="page-accent" style="background:var(--a-tutorials)"></span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Company -->
+    <div class="tree-group">
+      <div class="tree-head" data-toggle>
+        <div class="tree-head-left">
+          <div class="tree-icon" style="background:#F1F5F9;color:#334155">🏢</div>
+          <div class="tree-meta">
+            <div class="tree-title" data-i18n="tree.g6.title">Company Pages</div>
+            <div class="tree-url">/about · /careers · /contact</div>
+          </div>
+        </div>
+        <div class="tree-head-right">
+          <span class="tree-count" data-i18n="tree.g6.count">3 pages</span>
+          <span class="tree-chevron">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </span>
+        </div>
+      </div>
+      <div class="tree-body">
+        <div class="tree-pages">
+          <a href="#" class="tree-page">
+            <span class="page-num">18</span>
+            <span class="page-name" data-i18n="tree.g6.p1">About</span>
+            <span class="page-url">/about</span>
+            <span class="page-accent" style="background:var(--brand)"></span>
+          </a>
+          <a href="#" class="tree-page">
+            <span class="page-num">19</span>
+            <span class="page-name" data-i18n="tree.g6.p2">Careers</span>
+            <span class="page-url">/careers</span>
+            <span class="page-accent" style="background:var(--a-careers)"></span>
+          </a>
+          <a href="#" class="tree-page">
+            <span class="page-num">20</span>
+            <span class="page-name" data-i18n="tree.g6.p3">Contact</span>
+            <span class="page-url">/contact</span>
+            <span class="page-accent" style="background:var(--brand)"></span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Legal -->
+    <div class="tree-group">
+      <div class="tree-head" data-toggle>
+        <div class="tree-head-left">
+          <div class="tree-icon" style="background:#F1F5F9;color:#1E293B">⚖️</div>
+          <div class="tree-meta">
+            <div class="tree-title" data-i18n="tree.g7.title">Legal</div>
+            <div class="tree-url">/terms · /privacy</div>
+          </div>
+        </div>
+        <div class="tree-head-right">
+          <span class="tree-count" data-i18n="tree.g7.count">2 pages</span>
+          <span class="tree-chevron">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </span>
+        </div>
+      </div>
+      <div class="tree-body">
+        <div class="tree-pages">
+          <a href="#" class="tree-page">
+            <span class="page-num">21</span>
+            <span class="page-name" data-i18n="tree.g7.p1">Terms &amp; Conditions</span>
+            <span class="page-url">/terms</span>
+            <span class="page-accent" style="background:var(--a-legal)"></span>
+            <span class="page-badge legal" data-i18n="tree.badge.legal">Legal</span>
+          </a>
+          <a href="#" class="tree-page">
+            <span class="page-num">22</span>
+            <span class="page-name" data-i18n="tree.g7.p2">Privacy Policy</span>
+            <span class="page-url">/privacy</span>
+            <span class="page-accent" style="background:var(--a-legal)"></span>
+            <span class="page-badge legal" data-i18n="tree.badge.legal">Legal</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- App -->
+    <div class="tree-group">
+      <div class="tree-head" data-toggle>
+        <div class="tree-head-left">
+          <div class="tree-icon" style="background:#E8E8F0;color:#0A0A12">🔐</div>
+          <div class="tree-meta">
+            <div class="tree-title" data-i18n="tree.g8.title">Application (Behind Auth)</div>
+            <div class="tree-url">/app</div>
+          </div>
+        </div>
+        <div class="tree-head-right">
+          <span class="tree-count" data-i18n="tree.g8.count">1 page</span>
+          <span class="tree-chevron">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </span>
+        </div>
+      </div>
+      <div class="tree-body">
+        <div class="tree-pages">
+          <a href="#" class="tree-page">
+            <span class="page-num">23</span>
+            <span class="page-name" data-i18n="tree.g8.p1">Retail Dashboard (admin)</span>
+            <span class="page-url">/app/dashboard</span>
+            <span class="page-accent" style="background:var(--a-app)"></span>
+            <span class="page-badge auth" data-i18n="tree.badge.auth">Auth</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- NAVIGATION STRUCTURE -->
+<section class="section">
+  <div class="section-head">
+    <div class="section-label" data-i18n="navstruct.label">02 · Navigation Structure</div>
+    <h2><span data-i18n="navstruct.h2a">What goes where in</span> <em data-i18n="navstruct.h2b">the nav system.</em></h2>
+    <p data-i18n="navstruct.lead">Three navigation surfaces repeat across every page: top nav, mobile menu, and footer.</p>
+  </div>
+
+  <div class="nav-columns">
+    <div class="nav-col">
+      <div class="nav-col-head">
+        <div class="nav-col-icon">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </div>
+        <div>
+          <div class="nav-col-title" data-i18n="navstruct.top.title">Top Navigation</div>
+          <div class="nav-col-sub" data-i18n="navstruct.top.sub">Desktop · fixed</div>
+        </div>
+      </div>
+      <div class="nav-list">
+        <div class="nav-link-item"><span class="lnk-mark"></span><span data-i18n="navstruct.services">Services</span><span class="lnk-sub">/services</span></div>
+        <div class="nav-link-item"><span class="lnk-mark"></span><span data-i18n="navstruct.products">Products</span><span class="lnk-sub">/products</span></div>
+        <div class="nav-link-item"><span class="lnk-mark"></span><span data-i18n="navstruct.articles">Articles</span><span class="lnk-sub">/articles</span></div>
+        <div class="nav-link-item"><span class="lnk-mark"></span><span data-i18n="navstruct.tutorials">Tutorials</span><span class="lnk-sub">/tutorials</span></div>
+        <div class="nav-link-item"><span class="lnk-mark"></span><span data-i18n="navstruct.about">About</span><span class="lnk-sub">/about</span></div>
+      </div>
+    </div>
+
+    <div class="nav-col">
+      <div class="nav-col-head">
+        <div class="nav-col-icon">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 18h2"/></svg>
+        </div>
+        <div>
+          <div class="nav-col-title" data-i18n="navstruct.mob.title">Mobile Menu</div>
+          <div class="nav-col-sub" data-i18n="navstruct.mob.sub">Hamburger · below 900px</div>
+        </div>
+      </div>
+      <div class="nav-list">
+        <div class="nav-link-item"><span class="lnk-mark"></span><span data-i18n="navstruct.services">Services</span><span class="lnk-sub">/services</span></div>
+        <div class="nav-link-item"><span class="lnk-mark"></span><span data-i18n="navstruct.products">Products</span><span class="lnk-sub">/products</span></div>
+        <div class="nav-link-item"><span class="lnk-mark"></span><span data-i18n="navstruct.articles">Articles</span><span class="lnk-sub">/articles</span></div>
+        <div class="nav-link-item"><span class="lnk-mark"></span><span data-i18n="navstruct.careers">Careers</span><span class="lnk-sub">/careers</span></div>
+        <div class="nav-link-item"><span class="lnk-mark"></span><span data-i18n="navstruct.contact">Contact</span><span class="lnk-sub">/contact</span></div>
+      </div>
+    </div>
+
+    <div class="nav-col">
+      <div class="nav-col-head">
+        <div class="nav-col-icon">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="15" width="18" height="6" rx="1"/><path d="M3 15h18M8 15V9M16 15V9"/></svg>
+        </div>
+        <div>
+          <div class="nav-col-title" data-i18n="navstruct.foot.title">Footer Columns</div>
+          <div class="nav-col-sub" data-i18n="navstruct.foot.sub">4 columns · every page</div>
+        </div>
+      </div>
+      <div class="nav-list">
+        <div class="nav-link-item"><span class="lnk-mark"></span><span><b data-i18n="navstruct.col1">Col 1:</b> <span data-i18n="navstruct.col1sub">Brand + social</span></span></div>
+        <div class="nav-link-item"><span class="lnk-mark"></span><span><b data-i18n="navstruct.col2">Col 2:</b> <span data-i18n="navstruct.col2sub">Services (4)</span></span></div>
+        <div class="nav-link-item"><span class="lnk-mark"></span><span><b data-i18n="navstruct.col3">Col 3:</b> <span data-i18n="navstruct.col3sub">Products (4)</span></span></div>
+        <div class="nav-link-item"><span class="lnk-mark"></span><span><b data-i18n="navstruct.col4">Col 4:</b> <span data-i18n="navstruct.col4sub">Company (5)</span></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACCENT SYSTEM -->
+<section class="section">
+  <div class="section-head">
+    <div class="section-label" data-i18n="accents.label">03 · Accent Color System</div>
+    <h2><span data-i18n="accents.h2a">Eleven accents.</span> <em data-i18n="accents.h2b">One per section.</em></h2>
+    <p data-i18n="accents.lead">Each section uses a distinct accent color to create visual identity and memorable wayfinding.</p>
+  </div>
+
+  <div class="accent-grid">
+    <div class="accent-item"><div class="accent-swatch" style="background:#5B4BE8"></div><div class="accent-body"><div class="accent-name" data-i18n="accents.1">Brand Purple</div><div class="accent-hex">#5B4BE8</div></div></div>
+    <div class="accent-item"><div class="accent-swatch" style="background:#F97316"></div><div class="accent-body"><div class="accent-name" data-i18n="accents.2">Custom Software</div><div class="accent-hex">#F97316</div></div></div>
+    <div class="accent-item"><div class="accent-swatch" style="background:#0EA5E9"></div><div class="accent-body"><div class="accent-name" data-i18n="accents.3">Cloud / Rail</div><div class="accent-hex">#0EA5E9</div></div></div>
+    <div class="accent-item"><div class="accent-swatch" style="background:#10B981"></div><div class="accent-body"><div class="accent-name" data-i18n="accents.4">Support / Transit</div><div class="accent-hex">#10B981</div></div></div>
+    <div class="accent-item"><div class="accent-swatch" style="background:#8B5CF6"></div><div class="accent-body"><div class="accent-name" data-i18n="accents.5">Integrations</div><div class="accent-hex">#8B5CF6</div></div></div>
+    <div class="accent-item"><div class="accent-swatch" style="background:#E0526B"></div><div class="accent-body"><div class="accent-name" data-i18n="accents.6">Careers</div><div class="accent-hex">#E0526B</div></div></div>
+    <div class="accent-item"><div class="accent-swatch" style="background:#0D9488"></div><div class="accent-body"><div class="accent-name" data-i18n="accents.7">Why Choose Us</div><div class="accent-hex">#0D9488</div></div></div>
+    <div class="accent-item"><div class="accent-swatch" style="background:#4F46E5"></div><div class="accent-body"><div class="accent-name" data-i18n="accents.8">Tutorials</div><div class="accent-hex">#4F46E5</div></div></div>
+    <div class="accent-item"><div class="accent-swatch" style="background:#475569"></div><div class="accent-body"><div class="accent-name" data-i18n="accents.9">Legal Pages</div><div class="accent-hex">#475569</div></div></div>
+    <div class="accent-item"><div class="accent-swatch" style="background:#D98A0B"></div><div class="accent-body"><div class="accent-name" data-i18n="accents.10">Warning / Alert</div><div class="accent-hex">#D98A0B</div></div></div>
+    <div class="accent-item"><div class="accent-swatch" style="background:#00C48C"></div><div class="accent-body"><div class="accent-name" data-i18n="accents.11">Success / Live</div><div class="accent-hex">#00C48C</div></div></div>
+  </div>
+</section>
+
+<!-- USER FLOW -->
+<section class="section">
+  <div class="section-head">
+    <div class="section-label" data-i18n="flow.label">04 · User Flow</div>
+    <h2><span data-i18n="flow.h2a">How visitors</span> <em data-i18n="flow.h2b">move through the site.</em></h2>
+    <p data-i18n="flow.lead">A simplified view of the primary navigation paths from landing to conversion.</p>
+  </div>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-node primary" data-i18n="flow.home">Home /</div>
+    </div>
+    <div class="flow-row">
+      <div class="flow-arrow">
+        <svg width="14" height="20" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v16M5 12l7 7 7-7"/></svg>
+      </div>
+    </div>
+    <div class="flow-row">
+      <div class="flow-col">
+        <div class="flow-node section" data-i18n="flow.services">Services</div>
+        <div class="flow-arrow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v16M5 12l7 7 7-7"/></svg>
+        </div>
+        <div class="flow-node sub">Custom Software</div>
+        <div class="flow-node sub">Cloud</div>
+        <div class="flow-node sub">Support</div>
+        <div class="flow-node sub">Integrations</div>
+      </div>
+      <div class="flow-col">
+        <div class="flow-node section" data-i18n="flow.products">Products</div>
+        <div class="flow-arrow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v16M5 12l7 7 7-7"/></svg>
+        </div>
+        <div class="flow-node sub">HashVeno Retail</div>
+        <div class="flow-node sub">HashRail</div>
+        <div class="flow-node sub">HashRoute</div>
+      </div>
+      <div class="flow-col">
+        <div class="flow-node section" data-i18n="flow.articles">Articles</div>
+        <div class="flow-arrow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v16M5 12l7 7 7-7"/></svg>
+        </div>
+        <div class="flow-node sub" data-i18n="flow.articlesSub">4 articles</div>
+      </div>
+      <div class="flow-col">
+        <div class="flow-node section" data-i18n="flow.tutorials">Tutorials</div>
+        <div class="flow-arrow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v16M5 12l7 7 7-7"/></svg>
+        </div>
+        <div class="flow-node sub" data-i18n="flow.tutorialsSub">Video library</div>
+      </div>
+    </div>
+    <div class="flow-row">
+      <div class="flow-arrow">
+        <svg width="14" height="20" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v16M5 12l7 7 7-7"/></svg>
+      </div>
+    </div>
+    <div class="flow-row">
+      <div class="flow-node section" data-i18n="flow.why">Why Choose Us</div>
+      <div class="flow-arrow">
+        <svg width="18" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+      </div>
+      <div class="flow-node primary" data-i18n="flow.contact">Contact</div>
+      <div class="flow-arrow">
+        <svg width="18" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+      </div>
+      <div class="flow-node section" data-i18n="flow.demo">Demo / Discovery</div>
+    </div>
+  </div>
+</section>
+
+<!-- HOSTING CHECKLIST -->
+<section class="section">
+  <div class="section-head">
+    <div class="section-label" data-i18n="checklist.label">05 · Hosting Checklist</div>
+    <h2><span data-i18n="checklist.h2a">Before you</span> <em data-i18n="checklist.h2b">put it live.</em></h2>
+    <p data-i18n="checklist.lead">Everything to verify and configure before pointing your domain at the server.</p>
+  </div>
+
+  <div class="checklist-grid">
+    <div class="checklist-card">
+      <div class="checklist-card-head">
+        <div class="checklist-icon">📧</div>
+        <div class="checklist-title" data-i18n="checklist.email.title">Email Addresses to Set Up</div>
+      </div>
+      <div class="checklist-body">
+        <div class="checklist-item"><span class="box"></span><span><code>hello@hashveno.com</code> — <span data-i18n="checklist.email.1">general inquiries</span></span></div>
+        <div class="checklist-item"><span class="box"></span><span><code>careers@hashveno.com</code> — <span data-i18n="checklist.email.2">job applications</span></span></div>
+        <div class="checklist-item"><span class="box"></span><span><code>legal@hashveno.com</code> — <span data-i18n="checklist.email.3">legal notices</span></span></div>
+        <div class="checklist-item"><span class="box"></span><span><code>privacy@hashveno.com</code> — <span data-i18n="checklist.email.4">data requests</span></span></div>
+        <div class="checklist-item"><span class="box"></span><span><code>tutorials@hashveno.com</code> — <span data-i18n="checklist.email.5">tutorial requests</span></span></div>
+        <div class="checklist-item"><span class="box"></span><span><code>support@hashveno.com</code> — <span data-i18n="checklist.email.6">existing clients</span></span></div>
+      </div>
+    </div>
+
+    <div class="checklist-card">
+      <div class="checklist-card-head">
+        <div class="checklist-icon">🔗</div>
+        <div class="checklist-title" data-i18n="checklist.forms.title">Form Endpoints to Wire Up</div>
+      </div>
+      <div class="checklist-body">
+        <div class="checklist-item"><span class="box"></span><span><b data-i18n="checklist.forms.1">Contact form</b> — <span data-i18n="checklist.forms.1sub">/contact page → email or CRM</span></span></div>
+        <div class="checklist-item"><span class="box"></span><span><b data-i18n="checklist.forms.2">Newsletter signup</b> — <span data-i18n="checklist.forms.2sub">Articles + Landing → ESP</span></span></div>
+        <div class="checklist-item"><span class="box"></span><span><b data-i18n="checklist.forms.3">Careers applications</b> — <span data-i18n="checklist.forms.3sub">/careers → resumes inbox</span></span></div>
+        <div class="checklist-item"><span class="box"></span><span><b data-i18n="checklist.forms.4">Tutorial requests</b> — <span data-i18n="checklist.forms.4sub">/tutorials → content team inbox</span></span></div>
+      </div>
+    </div>
+
+    <div class="checklist-card">
+      <div class="checklist-card-head">
+        <div class="checklist-icon">🌐</div>
+        <div class="checklist-title" data-i18n="checklist.dns.title">DNS &amp; Domain</div>
+      </div>
+      <div class="checklist-body">
+        <div class="checklist-item"><span class="box"></span><span><span data-i18n="checklist.dns.1">A record for</span> <code>hashveno.com</code> → <span data-i18n="checklist.dns.1sub">server IP</span></span></div>
+        <div class="checklist-item"><span class="box"></span><span><span data-i18n="checklist.dns.2">CNAME for</span> <code>www</code> → hashveno.com</span></div>
+        <div class="checklist-item"><span class="box"></span><span><span data-i18n="checklist.dns.3">SSL certificate (Let's Encrypt or Cloudflare)</span></span></div>
+        <div class="checklist-item"><span class="box"></span><span><span data-i18n="checklist.dns.4">MX records for email delivery</span></span></div>
+        <div class="checklist-item"><span class="box"></span><span><span data-i18n="checklist.dns.5">SPF, DKIM, DMARC records</span></span></div>
+      </div>
+    </div>
+
+    <div class="checklist-card">
+      <div class="checklist-card-head">
+        <div class="checklist-icon">✓</div>
+        <div class="checklist-title" data-i18n="checklist.verify.title">Pre-Launch Verification</div>
+      </div>
+      <div class="checklist-body">
+        <div class="checklist-item"><span class="box"></span><span data-i18n="checklist.verify.1">Test every nav link (top nav, mobile, footer)</span></div>
+        <div class="checklist-item"><span class="box"></span><span data-i18n="checklist.verify.2">Verify forms submit correctly end-to-end</span></div>
+        <div class="checklist-item"><span class="box"></span><span data-i18n="checklist.verify.3">Remove internal review callouts from legal pages</span></div>
+        <div class="checklist-item"><span class="box"></span><span data-i18n="checklist.verify.4">Replace placeholder testimonials with real ones</span></div>
+        <div class="checklist-item"><span class="box"></span><span data-i18n="checklist.verify.5">Update open roles on Careers page</span></div>
+        <div class="checklist-item"><span class="box"></span><span data-i18n="checklist.verify.6">Test on mobile (iOS Safari, Android Chrome)</span></div>
+        <div class="checklist-item"><span class="box"></span><span data-i18n="checklist.verify.7">Verify favicon appears on all pages</span></div>
+        <div class="checklist-item"><span class="box"></span><span data-i18n="checklist.verify.8">Legal pages reviewed by lawyer</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FILE NAMING -->
+<section class="section">
+  <div class="section-head">
+    <div class="section-label" data-i18n="files.label">06 · File Naming Reference</div>
+    <h2><span data-i18n="files.h2a">Suggested</span> <em data-i18n="files.h2b">file structure.</em></h2>
+    <p data-i18n="files.lead">Recommended filenames and paths for hosting on any static server.</p>
+  </div>
+
+  <div class="files-table">
+    <div class="ft-head">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>
+      <span data-i18n="files.head">Server directory structure</span>
+    </div>
+    <div class="files-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th data-i18n="files.col1">File path</th>
+            <th data-i18n="files.col2">Page</th>
+            <th data-i18n="files.col3">Accent</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>/index.html</td><td data-i18n="files.p1">Landing page</td><td><span class="accent-dot" style="background:#5B4BE8"></span>Purple</td></tr>
+          <tr><td>/why-hashveno.html</td><td data-i18n="files.p2">Why Choose Us</td><td><span class="accent-dot" style="background:#0D9488"></span>Teal</td></tr>
+          <tr><td>/services/index.html</td><td data-i18n="files.p3">Services index</td><td><span class="accent-dot" style="background:#5B4BE8"></span>Purple</td></tr>
+          <tr><td>/services/custom-software.html</td><td data-i18n="files.p4">Custom Software</td><td><span class="accent-dot" style="background:#F97316"></span>Amber</td></tr>
+          <tr><td>/services/cloud-applications.html</td><td data-i18n="files.p5">Cloud</td><td><span class="accent-dot" style="background:#0EA5E9"></span>Sky</td></tr>
+          <tr><td>/services/support-maintenance.html</td><td data-i18n="files.p6">Support &amp; Maintenance</td><td><span class="accent-dot" style="background:#10B981"></span>Emerald</td></tr>
+          <tr><td>/services/integrations.html</td><td data-i18n="files.p7">Integrations</td><td><span class="accent-dot" style="background:#8B5CF6"></span>Violet</td></tr>
+          <tr><td>/products/index.html</td><td data-i18n="files.p8">Products index</td><td><span class="accent-dot" style="background:#5B4BE8"></span>Purple</td></tr>
+          <tr><td>/products/retail.html</td><td data-i18n="files.p9">HashVeno Retail</td><td><span class="accent-dot" style="background:#F97316"></span>Amber</td></tr>
+          <tr><td>/products/rail.html</td><td data-i18n="files.p10">HashRail</td><td><span class="accent-dot" style="background:#0EA5E9"></span>Sky</td></tr>
+          <tr><td>/products/route.html</td><td data-i18n="files.p11">HashRoute</td><td><span class="accent-dot" style="background:#10B981"></span>Emerald</td></tr>
+          <tr><td>/articles/index.html</td><td data-i18n="files.p12">Articles index</td><td><span class="accent-dot" style="background:#5B4BE8"></span>Purple</td></tr>
+          <tr><td>/articles/shop-management.html</td><td data-i18n="files.p13">Article: Shop Management</td><td><span class="accent-dot" style="background:#F97316"></span>Amber</td></tr>
+          <tr><td>/articles/cloud-retail.html</td><td data-i18n="files.p14">Article: Cloud Retail</td><td><span class="accent-dot" style="background:#0EA5E9"></span>Sky</td></tr>
+          <tr><td>/articles/railways-unauthorized.html</td><td data-i18n="files.p15">Article: Railways</td><td><span class="accent-dot" style="background:#0EA5E9"></span>Rail Blue</td></tr>
+          <tr><td>/articles/mtc-overcrowding.html</td><td data-i18n="files.p16">Article: MTC Buses</td><td><span class="accent-dot" style="background:#10B981"></span>Emerald</td></tr>
+          <tr><td>/tutorials/index.html</td><td data-i18n="files.p17">Tutorials index</td><td><span class="accent-dot" style="background:#4F46E5"></span>Indigo</td></tr>
+          <tr><td>/about.html</td><td data-i18n="files.p18">About</td><td><span class="accent-dot" style="background:#5B4BE8"></span>Purple</td></tr>
+          <tr><td>/careers.html</td><td data-i18n="files.p19">Careers</td><td><span class="accent-dot" style="background:#E0526B"></span>Rose</td></tr>
+          <tr><td>/contact.html</td><td data-i18n="files.p20">Contact</td><td><span class="accent-dot" style="background:#5B4BE8"></span>Purple</td></tr>
+          <tr><td>/terms.html</td><td data-i18n="files.p21">Terms &amp; Conditions</td><td><span class="accent-dot" style="background:#475569"></span>Slate</td></tr>
+          <tr><td>/privacy.html</td><td data-i18n="files.p22">Privacy Policy</td><td><span class="accent-dot" style="background:#475569"></span>Slate</td></tr>
+          <tr><td>/app/dashboard.html</td><td data-i18n="files.p23">Retail Dashboard (auth)</td><td><span class="accent-dot" style="background:#0A0A12"></span>Dark</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <span class="brand-mark">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="3" fill="#fff" stroke="none"/>
+            </svg>
+          </span>
+          <span class="brand-name">HashVeno</span>
+        </div>
+        <p class="footer-about" data-i18n="footer.about">
+          IT product &amp; service provider helping businesses grow through
+          smart technology solutions. Built and operated from Chennai, India.
+        </p>
+        <div class="footer-social">
+          <a href="#" class="social-btn" aria-label="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="LinkedIn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="Twitter">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.2 2H21l-6.6 7.5L22 22h-6.8l-5.3-7-6.1 7H1l7-8L2 2h6.9l4.8 6.4L18.2 2zm-2.4 18h1.6L7.8 3.9H6l9.8 16.1z"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="YouTube">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="6" width="18" height="12" rx="3"/><path d="M11 10l4 2-4 2v-4z" fill="currentColor"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h5 data-i18n="footer.services">Services</h5>
+        <div class="footer-links">
+          <a href="#" data-i18n="services.s1.title">Custom Software</a>
+          <a href="#" data-i18n="services.s2.title">Cloud Applications</a>
+          <a href="#" data-i18n="services.s3.title">Support &amp; Maintenance</a>
+          <a href="#" data-i18n="services.s4.title">Integrations</a>
+        </div>
+      </div>
+
+      <div>
+        <h5 data-i18n="footer.products">Products</h5>
+        <div class="footer-links">
+          <a href="#">HashVeno Retail</a>
+          <a href="#">HashRail</a>
+          <a href="#">HashRoute</a>
+          <a href="#" data-i18n="navstruct.tutorials">Tutorials</a>
+        </div>
+      </div>
+
+      <div>
+        <h5 data-i18n="footer.company">Company</h5>
+        <div class="footer-links">
+          <a href="#" data-i18n="navstruct.articles">Articles</a>
+          <a href="#" data-i18n="navstruct.careers">Careers</a>
+          <a href="#" data-i18n="footer.terms">Terms</a>
+          <a href="#" data-i18n="footer.privacy">Privacy</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2026 HashVeno. <span data-i18n="footer.rights">All rights reserved.</span></div>
+      <div class="made">
+        <span>🇮🇳</span>
+        <span data-i18n="footer.made">made in India · Chennai</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const translations = {
+  en: {
+    'navmeta': 'Site Map v1.0 · 26 SEP 2026',
+    'hero.eyebrow': 'Developer Reference',
+    'hero.h1': 'Site Map & Navigation',
+    'hero.lead': 'Complete reference for hosting, deploying, and maintaining the HashVeno website. Every page, every URL, every accent color — in one place.',
+    'hero.stat1': 'Total pages','hero.stat2': 'Sections','hero.stat3': 'Accent colors','hero.stat4': 'Mobile-optimized',
+
+    'tree.label': '01 · Site Architecture',
+    'tree.h2a': 'Every page,','tree.h2b': 'organized by section.',
+    'tree.lead': 'Click any section to expand it. Each page shows its URL slug and its section accent color.',
+    'tree.g1.title': 'Home & Company','tree.g1.count': '2 pages',
+    'tree.g1.p1': 'Landing page','tree.g1.p2': 'Why Choose Us',
+    'tree.g2.title': 'Services','tree.g2.count': '5 pages',
+    'tree.g2.p1': 'Services index','tree.g2.p2': 'Custom Software Development','tree.g2.p3': 'Cloud-Based Applications','tree.g2.p4': 'Support & Maintenance','tree.g2.p5': 'Integration Services',
+    'tree.g3.title': 'Products','tree.g3.count': '4 pages',
+    'tree.g3.p1': 'Products index',
+    'tree.g4.title': 'Articles','tree.g4.count': '5 pages',
+    'tree.g4.p1': 'Articles index',
+    'tree.g4.p2': 'Is Your Shop Management Holding You Back?',
+    'tree.g4.p3': 'Future-Proof Retail with Cloud and Automation',
+    'tree.g4.p4': 'Rising Unauthorized Travel in Indian Railways',
+    'tree.g4.p5': 'Overcrowding & Fare Evasion in MTC Buses',
+    'tree.g5.title': 'Tutorials','tree.g5.count': '1 page','tree.g5.p1': 'Tutorials index',
+    'tree.g6.title': 'Company Pages','tree.g6.count': '3 pages',
+    'tree.g6.p1': 'About','tree.g6.p2': 'Careers','tree.g6.p3': 'Contact',
+    'tree.g7.title': 'Legal','tree.g7.count': '2 pages',
+    'tree.g7.p1': 'Terms & Conditions','tree.g7.p2': 'Privacy Policy',
+    'tree.badge.legal': 'Legal','tree.badge.auth': 'Auth',
+    'tree.g8.title': 'Application (Behind Auth)','tree.g8.count': '1 page','tree.g8.p1': 'Retail Dashboard (admin)',
+
+    'navstruct.label': '02 · Navigation Structure',
+    'navstruct.h2a': 'What goes where in','navstruct.h2b': 'the nav system.',
+    'navstruct.lead': 'Three navigation surfaces repeat across every page: top nav, mobile menu, and footer.',
+    'navstruct.top.title': 'Top Navigation','navstruct.top.sub': 'Desktop · fixed',
+    'navstruct.mob.title': 'Mobile Menu','navstruct.mob.sub': 'Hamburger · below 900px',
+    'navstruct.foot.title': 'Footer Columns','navstruct.foot.sub': '4 columns · every page',
+    'navstruct.services': 'Services','navstruct.products': 'Products','navstruct.articles': 'Articles',
+    'navstruct.tutorials': 'Tutorials','navstruct.about': 'About','navstruct.careers': 'Careers','navstruct.contact': 'Contact',
+    'navstruct.col1': 'Col 1:','navstruct.col1sub': 'Brand + social',
+    'navstruct.col2': 'Col 2:','navstruct.col2sub': 'Services (4)',
+    'navstruct.col3': 'Col 3:','navstruct.col3sub': 'Products (4)',
+    'navstruct.col4': 'Col 4:','navstruct.col4sub': 'Company (5)',
+
+    'accents.label': '03 · Accent Color System',
+    'accents.h2a': 'Eleven accents.','accents.h2b': 'One per section.',
+    'accents.lead': 'Each section uses a distinct accent color to create visual identity and memorable wayfinding.',
+    'accents.1': 'Brand Purple','accents.2': 'Custom Software','accents.3': 'Cloud / Rail',
+    'accents.4': 'Support / Transit','accents.5': 'Integrations','accents.6': 'Careers',
+    'accents.7': 'Why Choose Us','accents.8': 'Tutorials','accents.9': 'Legal Pages',
+    'accents.10': 'Warning / Alert','accents.11': 'Success / Live',
+
+    'flow.label': '04 · User Flow',
+    'flow.h2a': 'How visitors','flow.h2b': 'move through the site.',
+    'flow.lead': 'A simplified view of the primary navigation paths from landing to conversion.',
+    'flow.home': 'Home /','flow.services': 'Services','flow.products': 'Products',
+    'flow.articles': 'Articles','flow.articlesSub': '4 articles','flow.tutorials': 'Tutorials','flow.tutorialsSub': 'Video library',
+    'flow.why': 'Why Choose Us','flow.contact': 'Contact','flow.demo': 'Demo / Discovery',
+
+    'checklist.label': '05 · Hosting Checklist',
+    'checklist.h2a': 'Before you','checklist.h2b': 'put it live.',
+    'checklist.lead': 'Everything to verify and configure before pointing your domain at the server.',
+    'checklist.email.title': 'Email Addresses to Set Up',
+    'checklist.email.1': 'general inquiries','checklist.email.2': 'job applications',
+    'checklist.email.3': 'legal notices','checklist.email.4': 'data requests',
+    'checklist.email.5': 'tutorial requests','checklist.email.6': 'existing clients',
+    'checklist.forms.title': 'Form Endpoints to Wire Up',
+    'checklist.forms.1': 'Contact form','checklist.forms.1sub': '/contact page → email or CRM',
+    'checklist.forms.2': 'Newsletter signup','checklist.forms.2sub': 'Articles + Landing → ESP',
+    'checklist.forms.3': 'Careers applications','checklist.forms.3sub': '/careers → resumes inbox',
+    'checklist.forms.4': 'Tutorial requests','checklist.forms.4sub': '/tutorials → content team inbox',
+    'checklist.dns.title': 'DNS & Domain',
+    'checklist.dns.1': 'A record for','checklist.dns.1sub': 'server IP',
+    'checklist.dns.2': 'CNAME for','checklist.dns.3': "SSL certificate (Let's Encrypt or Cloudflare)",
+    'checklist.dns.4': 'MX records for email delivery','checklist.dns.5': 'SPF, DKIM, DMARC records',
+    'checklist.verify.title': 'Pre-Launch Verification',
+    'checklist.verify.1': 'Test every nav link (top nav, mobile, footer)',
+    'checklist.verify.2': 'Verify forms submit correctly end-to-end',
+    'checklist.verify.3': 'Remove internal review callouts from legal pages',
+    'checklist.verify.4': 'Replace placeholder testimonials with real ones',
+    'checklist.verify.5': 'Update open roles on Careers page',
+    'checklist.verify.6': 'Test on mobile (iOS Safari, Android Chrome)',
+    'checklist.verify.7': 'Verify favicon appears on all pages',
+    'checklist.verify.8': 'Legal pages reviewed by lawyer',
+
+    'files.label': '06 · File Naming Reference',
+    'files.h2a': 'Suggested','files.h2b': 'file structure.',
+    'files.lead': 'Recommended filenames and paths for hosting on any static server.',
+    'files.head': 'Server directory structure',
+    'files.col1': 'File path','files.col2': 'Page','files.col3': 'Accent',
+    'files.p1': 'Landing page','files.p2': 'Why Choose Us','files.p3': 'Services index',
+    'files.p4': 'Custom Software','files.p5': 'Cloud','files.p6': 'Support & Maintenance',
+    'files.p7': 'Integrations','files.p8': 'Products index','files.p9': 'HashVeno Retail',
+    'files.p10': 'HashRail','files.p11': 'HashRoute','files.p12': 'Articles index',
+    'files.p13': 'Article: Shop Management','files.p14': 'Article: Cloud Retail',
+    'files.p15': 'Article: Railways','files.p16': 'Article: MTC Buses',
+    'files.p17': 'Tutorials index','files.p18': 'About','files.p19': 'Careers',
+    'files.p20': 'Contact','files.p21': 'Terms & Conditions','files.p22': 'Privacy Policy',
+    'files.p23': 'Retail Dashboard (auth)',
+
+    'services.s1.title': 'Custom Software','services.s2.title': 'Cloud Applications',
+    'services.s3.title': 'Support & Maintenance','services.s4.title': 'Integrations',
+    'footer.about': 'IT product & service provider helping businesses grow through smart technology solutions. Built and operated from Chennai, India.',
+    'footer.services': 'Services','footer.products': 'Products','footer.company': 'Company',
+    'footer.terms': 'Terms','footer.privacy': 'Privacy',
+    'footer.rights': 'All rights reserved.','footer.made': 'made in India · Chennai'
+  },
+
+  ta: {
+    'navmeta': 'தள வரைபடம் v1.0 · 26 SEP 2026',
+    'hero.eyebrow': 'டெவலப்பர் குறிப்பு',
+    'hero.h1': 'தள வரைபடம் & வழிசெலுத்தல்',
+    'hero.lead': 'HashVeno வலைத்தளத்தை ஹோஸ்ட் செய்வதற்கும், வரிசைப்படுத்துவதற்கும், பராமரிப்பதற்கும் முழுமையான குறிப்பு. ஒவ்வொரு பக்கம், ஒவ்வொரு URL, ஒவ்வொரு அச்சு நிறம் — ஒரே இடத்தில்.',
+    'hero.stat1': 'மொத்த பக்கங்கள்','hero.stat2': 'பிரிவுகள்','hero.stat3': 'அச்சு நிறங்கள்','hero.stat4': 'மொபைல்-உகந்த',
+
+    'tree.label': '01 · தள கட்டமைப்பு',
+    'tree.h2a': 'ஒவ்வொரு பக்கமும்,','tree.h2b': 'பிரிவு வாரியாக ஒழுங்கமைக்கப்பட்டுள்ளது.',
+    'tree.lead': 'விரிவாக்க எந்தப் பிரிவையும் கிளிக் செய்யவும். ஒவ்வொரு பக்கமும் அதன் URL ஸ்லக் மற்றும் அதன் பிரிவு அச்சு நிறத்தைக் காட்டுகிறது.',
+    'tree.g1.title': 'முகப்பு & நிறுவனம்','tree.g1.count': '2 பக்கங்கள்',
+    'tree.g1.p1': 'முகப்பு பக்கம்','tree.g1.p2': 'எங்களை ஏன் தேர்வு செய்ய வேண்டும்',
+    'tree.g2.title': 'சேவைகள்','tree.g2.count': '5 பக்கங்கள்',
+    'tree.g2.p1': 'சேவைகள் குறியீடு','tree.g2.p2': 'விருப்ப மென்பொருள் உருவாக்கம்','tree.g2.p3': 'கிளவுட் அடிப்படையிலான பயன்பாடுகள்','tree.g2.p4': 'ஆதரவு & பராமரிப்பு','tree.g2.p5': 'ஒருங்கிணைப்பு சேவைகள்',
+    'tree.g3.title': 'தயாரிப்புகள்','tree.g3.count': '4 பக்கங்கள்',
+    'tree.g3.p1': 'தயாரிப்புகள் குறியீடு',
+    'tree.g4.title': 'கட்டுரைகள்','tree.g4.count': '5 பக்கங்கள்',
+    'tree.g4.p1': 'கட்டுரைகள் குறியீடு',
+    'tree.g4.p2': 'உங்கள் கடை மேலாண்மை உங்களை பின்னுக்கு இழுக்கிறதா?',
+    'tree.g4.p3': 'கிளவுட் மற்றும் தானியங்கியுடன் எதிர்கால-ஆய்வு சில்லறை',
+    'tree.g4.p4': 'இந்திய ரயில்வேயில் அங்கீகரிக்கப்படாத பயணம் அதிகரிக்கிறது',
+    'tree.g4.p5': 'MTC பேருந்துகளில் கூட்டம் & கட்டண ஏமாற்று',
+    'tree.g5.title': 'பயிற்சிகள்','tree.g5.count': '1 பக்கம்','tree.g5.p1': 'பயிற்சிகள் குறியீடு',
+    'tree.g6.title': 'நிறுவன பக்கங்கள்','tree.g6.count': '3 பக்கங்கள்',
+    'tree.g6.p1': 'எங்களை பற்றி','tree.g6.p2': 'வேலை வாய்ப்புகள்','tree.g6.p3': 'தொடர்பு',
+    'tree.g7.title': 'சட்டப்பூர்வம்','tree.g7.count': '2 பக்கங்கள்',
+    'tree.g7.p1': 'விதிமுறைகள் & நிபந்தனைகள்','tree.g7.p2': 'தனியுரிமைக் கொள்கை',
+    'tree.badge.legal': 'சட்டம்','tree.badge.auth': 'அங்கீகாரம்',
+    'tree.g8.title': 'பயன்பாடு (அங்கீகாரத்திற்குப் பின்னால்)','tree.g8.count': '1 பக்கம்','tree.g8.p1': 'சில்லறை டாஷ்போர்டு (நிர்வாகி)',
+
+    'navstruct.label': '02 · வழிசெலுத்தல் கட்டமைப்பு',
+    'navstruct.h2a': 'வழிசெலுத்தல் அமைப்பில்','navstruct.h2b': 'என்ன எங்கே செல்கிறது.',
+    'navstruct.lead': 'மூன்று வழிசெலுத்தல் மேற்பரப்புகள் ஒவ்வொரு பக்கத்திலும் மீண்டும் வருகின்றன: மேல் வழிசெலுத்தல், மொபைல் மெனு மற்றும் அடிக்குறிப்பு.',
+    'navstruct.top.title': 'மேல் வழிசெலுத்தல்','navstruct.top.sub': 'டெஸ்க்டாப் · சரி செய்யப்பட்டது',
+    'navstruct.mob.title': 'மொபைல் மெனு','navstruct.mob.sub': 'ஹேம்பர்கர் · 900px கீழே',
+    'navstruct.foot.title': 'அடிக்குறிப்பு நெடுவரிசைகள்','navstruct.foot.sub': '4 நெடுவரிசைகள் · ஒவ்வொரு பக்கம்',
+    'navstruct.services': 'சேவைகள்','navstruct.products': 'தயாரிப்புகள்','navstruct.articles': 'கட்டுரைகள்',
+    'navstruct.tutorials': 'பயிற்சிகள்','navstruct.about': 'எங்களை பற்றி','navstruct.careers': 'வேலை வாய்ப்புகள்','navstruct.contact': 'தொடர்பு',
+    'navstruct.col1': 'நெடு 1:','navstruct.col1sub': 'பிராண்ட் + சமூகம்',
+    'navstruct.col2': 'நெடு 2:','navstruct.col2sub': 'சேவைகள் (4)',
+    'navstruct.col3': 'நெடு 3:','navstruct.col3sub': 'தயாரிப்புகள் (4)',
+    'navstruct.col4': 'நெடு 4:','navstruct.col4sub': 'நிறுவனம் (5)',
+
+    'accents.label': '03 · அச்சு நிற அமைப்பு',
+    'accents.h2a': 'பதினொரு அச்சுகள்.','accents.h2b': 'ஒரு பிரிவுக்கு ஒன்று.',
+    'accents.lead': 'ஒவ்வொரு பிரிவும் காட்சி அடையாளம் மற்றும் மறக்கமுடியாத வழிகாட்டலுக்கு ஒரு தனித்துவமான அச்சு நிறத்தைப் பயன்படுத்துகிறது.',
+    'accents.1': 'பிராண்ட் ஊதா','accents.2': 'விருப்ப மென்பொருள்','accents.3': 'கிளவுட் / ரயில்',
+    'accents.4': 'ஆதரவு / போக்குவரத்து','accents.5': 'ஒருங்கிணைப்புகள்','accents.6': 'வேலை வாய்ப்புகள்',
+    'accents.7': 'எங்களை ஏன் தேர்வு','accents.8': 'பயிற்சிகள்','accents.9': 'சட்டப் பக்கங்கள்',
+    'accents.10': 'எச்சரிக்கை','accents.11': 'வெற்றி / நேரடி',
+
+    'flow.label': '04 · பயனர் ஓட்டம்',
+    'flow.h2a': 'பார்வையாளர்கள் எவ்வாறு','flow.h2b': 'தளத்தின் வழியாக நகர்கிறார்கள்.',
+    'flow.lead': 'முகப்பிலிருந்து மாற்றம் வரையிலான முதன்மை வழிசெலுத்தல் பாதைகளின் எளிமைப்படுத்தப்பட்ட பார்வை.',
+    'flow.home': 'முகப்பு /','flow.services': 'சேவைகள்','flow.products': 'தயாரிப்புகள்',
+    'flow.articles': 'கட்டுரைகள்','flow.articlesSub': '4 கட்டுரைகள்','flow.tutorials': 'பயிற்சிகள்','flow.tutorialsSub': 'வீடியோ நூலகம்',
+    'flow.why': 'எங்களை ஏன் தேர்வு','flow.contact': 'தொடர்பு','flow.demo': 'டெமோ / கண்டுபிடிப்பு',
+
+    'checklist.label': '05 · ஹோஸ்டிங் சரிபார்ப்பு பட்டியல்',
+    'checklist.h2a': 'நேரடியாகச் செல்வதற்கு','checklist.h2b': 'முன்.',
+    'checklist.lead': 'உங்கள் டொமைனை சேவையகத்திற்கு சுட்டுவதற்கு முன் சரிபார்க்க மற்றும் கட்டமைக்க வேண்டிய அனைத்தும்.',
+    'checklist.email.title': 'அமைக்க வேண்டிய மின்னஞ்சல் முகவரிகள்',
+    'checklist.email.1': 'பொது விசாரணைகள்','checklist.email.2': 'வேலை விண்ணப்பங்கள்',
+    'checklist.email.3': 'சட்ட அறிவிப்புகள்','checklist.email.4': 'தரவு கோரிக்கைகள்',
+    'checklist.email.5': 'பயிற்சி கோரிக்கைகள்','checklist.email.6': 'தற்போதைய வாடிக்கையாளர்கள்',
+    'checklist.forms.title': 'இணைக்க வேண்டிய படிவ முடிவுநிலைகள்',
+    'checklist.forms.1': 'தொடர்பு படிவம்','checklist.forms.1sub': '/contact பக்கம் → மின்னஞ்சல் அல்லது CRM',
+    'checklist.forms.2': 'செய்திமடல் பதிவு','checklist.forms.2sub': 'கட்டுரைகள் + முகப்பு → ESP',
+    'checklist.forms.3': 'வேலை விண்ணப்பங்கள்','checklist.forms.3sub': '/careers → விண்ணப்ப inbox',
+    'checklist.forms.4': 'பயிற்சி கோரிக்கைகள்','checklist.forms.4sub': '/tutorials → உள்ளடக்க குழு inbox',
+    'checklist.dns.title': 'DNS & டொமைன்',
+    'checklist.dns.1': 'A பதிவு','checklist.dns.1sub': 'சேவையக IP',
+    'checklist.dns.2': 'CNAME','checklist.dns.3': "SSL சான்றிதழ் (Let's Encrypt அல்லது Cloudflare)",
+    'checklist.dns.4': 'மின்னஞ்சல் விநியோகத்திற்கான MX பதிவுகள்','checklist.dns.5': 'SPF, DKIM, DMARC பதிவுகள்',
+    'checklist.verify.title': 'வெளியீட்டுக்கு முன் சரிபார்ப்பு',
+    'checklist.verify.1': 'ஒவ்வொரு nav இணைப்பையும் சோதிக்கவும் (மேல் nav, மொபைல், அடிக்குறிப்பு)',
+    'checklist.verify.2': 'படிவங்கள் முழுமையாக சரியாக சமர்ப்பிக்கப்படுகின்றன என்பதைச் சரிபார்க்கவும்',
+    'checklist.verify.3': 'சட்டப் பக்கங்களிலிருந்து உள் மதிப்பாய்வு அழைப்புகளை அகற்றவும்',
+    'checklist.verify.4': 'முன்மாதிரி சான்றுகளை உண்மையானவற்றுடன் மாற்றவும்',
+    'checklist.verify.5': 'வேலை வாய்ப்புகள் பக்கத்தில் திறந்த பங்குகளைப் புதுப்பிக்கவும்',
+    'checklist.verify.6': 'மொபைலில் சோதிக்கவும் (iOS Safari, Android Chrome)',
+    'checklist.verify.7': 'எல்லா பக்கங்களிலும் favicon தோன்றுகிறதா என்பதைச் சரிபார்க்கவும்',
+    'checklist.verify.8': 'வழக்கறிஞரால் சட்டப் பக்கங்கள் மதிப்பாய்வு செய்யப்பட்டன',
+
+    'files.label': '06 · கோப்பு பெயரிடல் குறிப்பு',
+    'files.h2a': 'பரிந்துரைக்கப்பட்ட','files.h2b': 'கோப்பு கட்டமைப்பு.',
+    'files.lead': 'எந்த நிலையான சேவையகத்திலும் ஹோஸ்ட் செய்வதற்கான பரிந்துரைக்கப்பட்ட கோப்பு பெயர்கள் மற்றும் பாதைகள்.',
+    'files.head': 'சேவையக அடைவு கட்டமைப்பு',
+    'files.col1': 'கோப்பு பாதை','files.col2': 'பக்கம்','files.col3': 'அச்சு',
+    'files.p1': 'முகப்பு பக்கம்','files.p2': 'எங்களை ஏன் தேர்வு','files.p3': 'சேவைகள் குறியீடு',
+    'files.p4': 'விருப்ப மென்பொருள்','files.p5': 'கிளவுட்','files.p6': 'ஆதரவு & பராமரிப்பு',
+    'files.p7': 'ஒருங்கிணைப்புகள்','files.p8': 'தயாரிப்புகள் குறியீடு','files.p9': 'HashVeno Retail',
+    'files.p10': 'HashRail','files.p11': 'HashRoute','files.p12': 'கட்டுரைகள் குறியீடு',
+    'files.p13': 'கட்டுரை: கடை மேலாண்மை','files.p14': 'கட்டுரை: கிளவுட் சில்லறை',
+    'files.p15': 'கட்டுரை: ரயில்வே','files.p16': 'கட்டுரை: MTC பேருந்துகள்',
+    'files.p17': 'பயிற்சிகள் குறியீடு','files.p18': 'எங்களை பற்றி','files.p19': 'வேலை வாய்ப்புகள்',
+    'files.p20': 'தொடர்பு','files.p21': 'விதிமுறைகள் & நிபந்தனைகள்','files.p22': 'தனியுரிமைக் கொள்கை',
+    'files.p23': 'சில்லறை டாஷ்போர்டு (அங்கீகாரம்)',
+
+    'services.s1.title': 'விருப்ப மென்பொருள்','services.s2.title': 'கிளவுட் பயன்பாடுகள்',
+    'services.s3.title': 'ஆதரவு & பராமரிப்பு','services.s4.title': 'ஒருங்கிணைப்புகள்',
+    'footer.about': 'வணிகங்கள் ஸ்மார்ட் தொழில்நுட்ப தீர்வுகள் மூலம் வளர உதவும் IT தயாரிப்பு & சேவை வழங்குநர். சென்னை, இந்தியாவில் கட்டப்பட்டு இயக்கப்படுகிறது.',
+    'footer.services': 'சேவைகள்','footer.products': 'தயாரிப்புகள்','footer.company': 'நிறுவனம்',
+    'footer.terms': 'விதிமுறைகள்','footer.privacy': 'தனியுரிமை',
+    'footer.rights': 'அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை.','footer.made': 'இந்தியாவில் தயாரிக்கப்பட்டது · சென்னை'
+  }
+};
+
+/* THEME */
+const themeToggle = document.getElementById('themeToggle');
+const root = document.documentElement;
+const savedTheme = localStorage.getItem('hv-theme');
+if (savedTheme) root.setAttribute('data-theme', savedTheme);
+themeToggle.addEventListener('click', () => {
+  const current = root.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  root.setAttribute('data-theme', next);
+  localStorage.setItem('hv-theme', next);
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', next === 'dark' ? '#07080F' : '#F7F7FB');
+});
+
+/* LANGUAGE */
+const langToggle = document.getElementById('langToggle');
+const langActive = document.getElementById('langActive');
+const langInactive = document.getElementById('langInactive');
+let currentLang = localStorage.getItem('hv-lang') || 'en';
+
+function applyLanguage(lang){
+  const dict = translations[lang] || translations.en;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (dict[key] !== undefined) el.textContent = dict[key];
+  });
+  document.documentElement.lang = lang;
+  document.documentElement.setAttribute('data-lang', lang);
+  if (lang === 'ta') {
+    langActive.textContent = 'த';
+    langInactive.textContent = 'EN';
+  } else {
+    langActive.textContent = 'EN';
+    langInactive.textContent = 'த';
+  }
+  localStorage.setItem('hv-lang', lang);
+  currentLang = lang;
+}
+langToggle.addEventListener('click', () => {
+  applyLanguage(currentLang === 'en' ? 'ta' : 'en');
+});
+applyLanguage(currentLang);
+
+/* NAV */
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 12);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+/* TREE TOGGLE */
+document.querySelectorAll('[data-toggle]').forEach(head => {
+  head.addEventListener('click', () => {
+    const group = head.closest('.tree-group');
+    group.classList.toggle('open');
+  });
+});
+</script>
+</body>
+</html>

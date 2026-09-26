@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Articles — HashVeno</title>
+<meta name="description" content="Essays on building software for Indian businesses — retail, cloud, and transit. Practical lessons from the field, no marketing fluff." />
+<meta name="theme-color" content="#0A0A12" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   DESIGN TOKENS
+============================================================ */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F7FB;
+  --surface:#FFFFFF;
+  --ink:#0A0A12;
+  --ink-2:#252532;
+  --muted:#63637A;
+  --faint:#9B9BAA;
+  --line:#E8E8F0;
+  --line-soft:#F1F1F7;
+
+  --brand:#5B4BE8;
+  --brand-2:#8B7BFF;
+  --brand-soft:#EFECFF;
+  --brand-ink:#3D2FC9;
+
+  --retail:#F97316;
+  --retail-soft:#FFEDD5;
+  --retail-ink:#9A3412;
+
+  --cloud:#0EA5E9;
+  --cloud-soft:#E0F2FE;
+  --cloud-ink:#075985;
+
+  --transport:#10B981;
+  --transport-soft:#D1FAE5;
+  --transport-ink:#047857;
+
+  --accent:#00C48C;
+  --amber:#D98A0B;
+  --rose:#E0526B;
+
+  --radius:14px;
+  --radius-lg:20px;
+  --shadow-sm:0 1px 2px rgba(15,15,30,.04);
+  --shadow-md:0 8px 24px -8px rgba(20,20,40,.08),0 2px 6px rgba(20,20,40,.03);
+  --shadow-lg:0 24px 60px -20px rgba(20,20,50,.18),0 8px 20px rgba(20,20,40,.06);
+  --shadow-brand:0 12px 32px -8px rgba(91,75,232,.35);
+
+  --font-sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --font-serif:'Lora',Georgia,serif;
+  --font-mono:'JetBrains Mono',ui-monospace,monospace;
+
+  --container:1200px;
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--font-sans);background:var(--bg);color:var(--ink);
+  line-height:1.55;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
+}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input{font:inherit;border:none;outline:none;background:none;color:inherit}
+::selection{background:var(--brand);color:#fff}
+
+.container{width:100%;max-width:var(--container);margin:0 auto;padding:0 24px}
+
+/* ============================================================
+   NAV
+============================================================ */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 0;
+  transition:background .25s ease, backdrop-filter .25s ease, border-color .25s ease, padding .25s ease;
+  border-bottom:1px solid transparent;
+}
+.nav.scrolled{
+  background:rgba(247,247,251,.85);
+  backdrop-filter:saturate(180%) blur(20px);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-bottom-color:var(--line);padding:10px 0;
+}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.02em}
+.brand-mark{
+  width:34px;height:34px;border-radius:10px;
+  background:linear-gradient(135deg,var(--brand),var(--brand-2));
+  display:grid;place-items:center;color:#fff;
+  box-shadow:0 6px 16px -4px rgba(91,75,232,.45);position:relative;
+}
+.brand-mark::after{
+  content:"";position:absolute;inset:0;border-radius:10px;
+  background:linear-gradient(135deg,rgba(255,255,255,.35),transparent 55%);pointer-events:none;
+}
+.brand-name{font-size:17px}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-link{
+  font-size:14px;font-weight:500;color:var(--muted);
+  padding:8px 14px;border-radius:9px;transition:.15s;
+}
+.nav-link:hover{color:var(--ink);background:rgba(255,255,255,.7)}
+.nav-link.active{color:var(--brand-ink);background:var(--brand-soft)}
+.nav-cta{display:flex;align-items:center;gap:8px}
+.nav-toggle{
+  display:none;width:40px;height:40px;border-radius:10px;
+  align-items:center;justify-content:center;
+  border:1px solid var(--line);background:var(--surface);
+}
+@media(max-width:900px){
+  .nav-links{display:none}
+  .nav-toggle{display:flex}
+  .nav-cta .btn{display:none}
+}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-size:14.5px;font-weight:600;letter-spacing:-.005em;
+  padding:11px 20px;border-radius:11px;
+  transition:transform .15s ease, box-shadow .18s ease, background .15s ease, color .15s ease;
+  white-space:nowrap;cursor:pointer;
+}
+.btn-primary{background:var(--brand);color:#fff;box-shadow:var(--shadow-brand)}
+.btn-primary:hover{background:#4E3FD4;transform:translateY(-1px);box-shadow:0 16px 36px -10px rgba(91,75,232,.5)}
+.btn svg{transition:transform .18s}
+.btn:hover svg{transform:translateX(2px)}
+
+.mobile-menu{
+  position:fixed;inset:56px 0 auto 0;z-index:99;
+  background:var(--surface);border-bottom:1px solid var(--line);
+  padding:12px 24px 20px;transform:translateY(-8px);opacity:0;pointer-events:none;
+  transition:.22s ease;box-shadow:var(--shadow-lg);
+}
+.mobile-menu.open{transform:none;opacity:1;pointer-events:auto}
+.mobile-menu a{display:block;padding:13px 4px;font-size:15px;font-weight:500;border-bottom:1px solid var(--line-soft)}
+.mobile-menu a:last-child{border:none}
+
+/* ============================================================
+   PAGE HEADER
+============================================================ */
+.page-hero{
+  position:relative;
+  padding:140px 0 56px;
+  overflow:hidden;
+  isolation:isolate;
+}
+.page-hero::before{
+  content:"";position:absolute;inset:0;z-index:-1;
+  background:
+    radial-gradient(1200px 500px at 50% -10%, rgba(91,75,232,.12), transparent 70%),
+    radial-gradient(700px 400px at 90% 15%, rgba(139,123,255,.08), transparent 60%);
+}
+.page-hero::after{
+  content:"";position:absolute;inset:0;z-index:-1;opacity:.5;
+  background-image:
+    linear-gradient(to right, rgba(91,75,232,.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(91,75,232,.05) 1px, transparent 1px);
+  background-size:56px 56px;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+}
+
+.page-hero-inner{max-width:720px;margin:0 auto;text-align:center}
+
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--brand-ink);background:var(--brand-soft);
+  padding:6px 13px;border-radius:99px;margin-bottom:22px;
+}
+.eyebrow .dot{width:5px;height:5px;border-radius:50%;background:var(--brand);box-shadow:0 0 8px var(--brand)}
+
+.page-hero h1{
+  font-family:var(--font-serif);
+  font-size:clamp(38px,6vw,64px);
+  font-weight:600;
+  letter-spacing:-.03em;
+  line-height:1.06;
+  color:var(--ink);
+  margin-bottom:18px;
+}
+.page-hero h1 em{
+  font-style:normal;
+  background:linear-gradient(100deg,var(--brand),var(--brand-2) 55%,#C7B6FF);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.page-hero p{
+  font-size:17px;line-height:1.6;color:var(--muted);
+  max-width:520px;margin:0 auto;
+}
+
+/* ============================================================
+   FILTER BAR
+============================================================ */
+.filters{
+  max-width:var(--container);
+  margin:0 auto;
+  padding:0 24px 40px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  flex-wrap:wrap;
+}
+.filter-tabs{
+  display:flex;gap:6px;flex-wrap:wrap;
+}
+.filter-btn{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:13px;font-weight:600;
+  padding:9px 16px;border-radius:10px;
+  color:var(--muted);background:var(--surface);
+  border:1px solid var(--line);
+  transition:.18s;
+}
+.filter-btn:hover{color:var(--ink);border-color:#D6D6E2}
+.filter-btn.active{
+  color:#fff;background:var(--ink);border-color:var(--ink);
+}
+.filter-btn .count{
+  font-family:var(--font-mono);
+  font-size:11px;font-weight:600;
+  padding:1px 6px;border-radius:5px;
+  background:rgba(0,0,0,.06);color:var(--faint);
+  transition:.18s;
+}
+.filter-btn.active .count{background:rgba(255,255,255,.16);color:rgba(255,255,255,.85)}
+
+.results-count{
+  font-size:13px;color:var(--faint);
+  font-family:var(--font-mono);
+}
+.results-count b{color:var(--ink-2);font-weight:600}
+
+/* ============================================================
+   FEATURED ARTICLE
+============================================================ */
+.featured-wrap{
+  max-width:var(--container);
+  margin:0 auto;
+  padding:0 24px 56px;
+}
+.featured{
+  position:relative;
+  display:grid;
+  grid-template-columns:1.1fr 1fr;
+  gap:0;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  transition:transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s, border-color .3s;
+}
+.featured:hover{
+  transform:translateY(-3px);
+  box-shadow:var(--shadow-lg);
+  border-color:#DEDEEA;
+}
+
+.featured-visual{
+  position:relative;
+  min-height:400px;
+  padding:44px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  background:
+    radial-gradient(400px 300px at 50% 50%, rgba(255,255,255,.9), transparent 70%),
+    linear-gradient(135deg,#EDE9FE,#DDD6FE 50%,#E0F2FE);
+}
+.featured-visual::before{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,.5) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,.5) 1px, transparent 1px);
+  background-size:32px 32px;
+  mask-image:radial-gradient(circle at 50% 50%,#000,transparent 75%);
+  -webkit-mask-image:radial-gradient(circle at 50% 50%,#000,transparent 75%);
+  opacity:.55;
+}
+
+.fv-badge{
+  position:absolute;top:20px;left:20px;z-index:2;
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:#fff;background:var(--brand);
+  padding:6px 12px;border-radius:99px;
+  box-shadow:0 6px 16px -6px rgba(91,75,232,.6);
+}
+
+.featured-mock{
+  position:relative;z-index:1;width:100%;max-width:340px;
+  background:#fff;border-radius:14px;
+  box-shadow:0 30px 60px -20px rgba(20,20,50,.3), 0 10px 24px -10px rgba(20,20,40,.12);
+  overflow:hidden;
+}
+.fm-head{
+  padding:11px 14px;display:flex;align-items:center;gap:7px;
+  border-bottom:1px solid var(--line-soft);background:#FBFBFE;
+}
+.fm-head .dot{width:9px;height:9px;border-radius:50%}
+.fm-head .fm-title{
+  font-size:11px;font-weight:600;color:var(--faint);
+  margin-left:6px;letter-spacing:.02em;font-family:var(--font-mono);
+}
+.fm-body{padding:16px}
+.fm-stat{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:6px 0;font-size:11px;
+  border-bottom:1px solid var(--line-soft);
+}
+.fm-stat:last-child{border-bottom:none}
+.fm-stat .lbl{color:var(--muted)}
+.fm-stat .val{
+  font-weight:700;color:var(--ink);font-family:var(--font-mono);
+  font-size:11.5px;font-feature-settings:"tnum";
+}
+.fm-stat .val.up{color:var(--accent)}
+.fm-bars{
+  display:flex;gap:3px;height:44px;align-items:flex-end;margin-top:12px;
+}
+.fm-bars span{
+  flex:1;background:linear-gradient(180deg,rgba(91,75,232,.55),rgba(91,75,232,.2));
+  border-radius:3px 3px 1px 1px;min-height:4px;
+}
+.fm-bars span:nth-child(1){height:45%}
+.fm-bars span:nth-child(2){height:65%}
+.fm-bars span:nth-child(3){height:52%}
+.fm-bars span:nth-child(4){height:78%}
+.fm-bars span:nth-child(5){height:88%}
+.fm-bars span:nth-child(6){height:62%}
+.fm-bars span:nth-child(7){height:90%}
+.fm-bars span:nth-child(8){height:70%}
+
+.featured-content{
+  padding:52px 48px;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.featured-cat{
+  display:inline-flex;align-items:center;gap:6px;
+  align-self:flex-start;
+  font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:5px 10px;border-radius:6px;margin-bottom:20px;
+}
+.featured-cat.retail{color:var(--retail-ink);background:var(--retail-soft)}
+
+.featured-content h2{
+  font-family:var(--font-serif);
+  font-size:clamp(26px,2.8vw,36px);
+  font-weight:600;
+  letter-spacing:-.025em;
+  line-height:1.16;
+  color:var(--ink);
+  margin-bottom:16px;
+}
+.featured-content p{
+  font-size:15.5px;line-height:1.65;color:var(--muted);
+  margin-bottom:26px;
+}
+.featured-meta{
+  display:flex;align-items:center;gap:12px;
+  padding-top:22px;
+  border-top:1px solid var(--line);
+  flex-wrap:wrap;
+}
+.fm-author{display:flex;align-items:center;gap:10px}
+.fm-av{
+  width:36px;height:36px;border-radius:10px;
+  display:grid;place-items:center;color:#fff;font-size:12px;font-weight:700;
+  background:linear-gradient(135deg,var(--brand),var(--brand-2));
+  flex-shrink:0;
+}
+.fm-author-info .name{font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.2}
+.fm-author-info .role{font-size:11px;color:var(--faint);margin-top:1px}
+
+.featured-meta .dot-sep{width:4px;height:4px;border-radius:50%;background:var(--faint)}
+.featured-meta .meta-item{
+  font-size:11.5px;color:var(--faint);
+  font-family:var(--font-mono);
+  display:flex;align-items:center;gap:5px;
+}
+
+.featured-cta{
+  display:inline-flex;align-items:center;gap:8px;
+  margin-top:22px;
+  font-size:14px;font-weight:600;
+  color:var(--brand);
+  align-self:flex-start;
+  transition:gap .2s;
+}
+.featured:hover .featured-cta{gap:12px}
+
+@media(max-width:960px){
+  .featured{grid-template-columns:1fr}
+  .featured-visual{min-height:280px;padding:32px}
+  .featured-content{padding:36px 30px}
+}
+@media(max-width:600px){
+  .featured-content{padding:28px 22px}
+  .featured-visual{padding:24px}
+}
+
+/* ============================================================
+   ARTICLE GRID
+============================================================ */
+.grid-wrap{
+  max-width:var(--container);
+  margin:0 auto;
+  padding:0 24px 96px;
+}
+.articles-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+
+.article-card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  transition:transform .28s cubic-bezier(.2,.8,.2,1), box-shadow .28s, border-color .28s;
+  text-align:left;
+  cursor:pointer;
+}
+.article-card:hover{
+  transform:translateY(-4px);
+  box-shadow:var(--shadow-lg);
+  border-color:#DEDEEA;
+}
+
+.ac-visual{
+  position:relative;
+  aspect-ratio:16/10;
+  overflow:hidden;
+  display:grid;
+  place-items:center;
+  padding:24px;
+}
+.ac-visual.retail{background:linear-gradient(135deg,#FFEDD5,#FED7AA 55%,#FEF3C7)}
+.ac-visual.cloud{background:linear-gradient(135deg,#E0F2FE,#BAE6FD 55%,#DBEAFE)}
+.ac-visual.transport{background:linear-gradient(135deg,#D1FAE5,#A7F3D0 55%,#E0F2FE)}
+
+.ac-visual::before{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,.5) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,.5) 1px, transparent 1px);
+  background-size:24px 24px;
+  mask-image:radial-gradient(circle at 50% 50%,#000,transparent 75%);
+  -webkit-mask-image:radial-gradient(circle at 50% 50%,#000,transparent 75%);
+  opacity:.5;
+}
+
+.ac-mock{
+  position:relative;z-index:1;
+  width:100%;max-width:200px;
+  background:#fff;border-radius:10px;
+  padding:12px;
+  box-shadow:0 16px 32px -12px rgba(20,20,50,.25), 0 4px 12px -4px rgba(20,20,40,.08);
+}
+.ac-mock .bar{
+  height:5px;border-radius:3px;
+  background:var(--line-soft);margin-bottom:6px;
+}
+.ac-mock .bar.w40{width:40%}
+.ac-mock .bar.w70{width:70%}
+.ac-mock .bar.accent{background:var(--brand-soft)}
+.ac-mock .block{
+  height:22px;border-radius:5px;
+  background:linear-gradient(135deg,var(--brand-soft),#fff);
+  border:1px solid rgba(91,75,232,.15);
+  margin-bottom:7px;
+}
+
+.ac-body{
+  padding:22px 22px 20px;
+  display:flex;flex-direction:column;flex:1;
+}
+.ac-cat{
+  display:inline-flex;align-items:center;gap:6px;
+  align-self:flex-start;
+  font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:4px 9px;border-radius:6px;margin-bottom:14px;
+}
+.ac-cat.retail{color:var(--retail-ink);background:var(--retail-soft)}
+.ac-cat.cloud{color:var(--cloud-ink);background:var(--cloud-soft)}
+.ac-cat.transport{color:var(--transport-ink);background:var(--transport-soft)}
+
+.article-card h3{
+  font-family:var(--font-serif);
+  font-size:19px;font-weight:600;
+  letter-spacing:-.02em;
+  line-height:1.3;
+  color:var(--ink);
+  margin-bottom:10px;
+}
+.article-card .excerpt{
+  font-size:13.8px;line-height:1.6;color:var(--muted);
+  flex:1;
+  margin-bottom:20px;
+}
+.ac-meta{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:16px;
+  border-top:1px solid var(--line-soft);
+  font-size:11.5px;color:var(--faint);
+  font-family:var(--font-mono);
+  letter-spacing:.01em;
+}
+.ac-meta .read{display:flex;align-items:center;gap:5px}
+
+@media(max-width:960px){
+  .articles-grid{grid-template-columns:1fr 1fr;gap:16px}
+}
+@media(max-width:620px){
+  .articles-grid{grid-template-columns:1fr}
+}
+
+/* ============================================================
+   EMPTY STATE
+============================================================ */
+.empty-state{
+  display:none;
+  padding:64px 24px;
+  text-align:center;
+  grid-column:1/-1;
+}
+.empty-state.show{display:block}
+.empty-state .icon{
+  font-size:36px;margin-bottom:16px;opacity:.4;
+}
+.empty-state h3{
+  font-family:var(--font-serif);
+  font-size:22px;font-weight:600;
+  letter-spacing:-.02em;color:var(--ink);
+  margin-bottom:8px;
+}
+.empty-state p{
+  font-size:14.5px;color:var(--muted);
+  max-width:400px;margin:0 auto 20px;
+}
+.empty-state button{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:13.5px;font-weight:600;
+  color:var(--brand);
+  padding:9px 18px;border-radius:10px;
+  background:var(--brand-soft);
+  transition:.15s;
+}
+.empty-state button:hover{background:var(--brand);color:#fff}
+
+/* ============================================================
+   NEWSLETTER
+============================================================ */
+.newsletter-wrap{
+  max-width:var(--container);
+  margin:0 auto 96px;
+  padding:0 24px;
+}
+.newsletter{
+  background:linear-gradient(135deg,#0F0F1E 0%,#1A1A33 60%,#252550 100%);
+  border-radius:28px;
+  padding:56px 52px;
+  color:#fff;
+  position:relative;
+  overflow:hidden;
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  gap:48px;
+  align-items:center;
+}
+.newsletter::before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(700px 350px at 90% 20%, rgba(139,123,255,.4), transparent 60%),
+    radial-gradient(500px 350px at 10% 90%, rgba(0,196,140,.15), transparent 60%);
+  pointer-events:none;
+}
+.newsletter::after{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size:44px 44px;
+  mask-image:radial-gradient(ellipse at 30% 50%,#000,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse at 30% 50%,#000,transparent 75%);
+  pointer-events:none;
+}
+.newsletter > *{position:relative;z-index:1}
+
+.nl-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(199,182,255,.95);
+  padding:6px 13px;border-radius:99px;
+  background:rgba(139,123,255,.15);
+  border:1px solid rgba(139,123,255,.25);
+  margin-bottom:18px;
+}
+.nl-badge .dot{
+  width:5px;height:5px;border-radius:50%;
+  background:rgba(199,182,255,.95);
+}
+
+.newsletter h2{
+  font-family:var(--font-serif);
+  font-size:clamp(26px,3vw,36px);
+  font-weight:600;
+  letter-spacing:-.025em;
+  line-height:1.18;
+  margin-bottom:14px;
+}
+.newsletter h2 em{
+  font-style:normal;
+  background:linear-gradient(100deg,#C7B6FF,#8B7BFF 60%,#00C48C);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.newsletter p{
+  font-size:15px;line-height:1.65;color:rgba(255,255,255,.68);
+  max-width:460px;
+}
+
+.newsletter-form{
+  display:flex;flex-direction:column;gap:12px;
+}
+.newsletter-row{
+  display:flex;gap:8px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:14px;
+  padding:6px 6px 6px 18px;
+  transition:.2s;
+}
+.newsletter-row:focus-within{
+  background:rgba(255,255,255,.09);
+  border-color:rgba(199,182,255,.4);
+  box-shadow:0 0 0 4px rgba(139,123,255,.15);
+}
+.newsletter-row input{
+  flex:1;font-size:14.5px;color:#fff;min-width:0;
+}
+.newsletter-row input::placeholder{color:rgba(255,255,255,.4)}
+.newsletter-row button{
+  background:#fff;color:#0F0F1E;
+  font-size:13.5px;font-weight:600;
+  padding:12px 22px;border-radius:10px;
+  transition:.15s;white-space:nowrap;
+}
+.newsletter-row button:hover{background:#F2F2F8;transform:translateY(-1px)}
+
+.newsletter-note{
+  font-size:12px;color:rgba(255,255,255,.45);
+  display:flex;align-items:center;gap:7px;
+  padding-left:4px;
+}
+
+.nl-stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+  margin-top:24px;
+  padding-top:24px;
+  border-top:1px solid rgba(255,255,255,.1);
+}
+.nl-stat .num{
+  font-family:var(--font-serif);
+  font-size:24px;font-weight:600;
+  letter-spacing:-.02em;
+  background:linear-gradient(180deg,#fff 30%,#C7B6FF);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  line-height:1;
+}
+.nl-stat .lbl{
+  font-size:11px;font-weight:500;
+  color:rgba(255,255,255,.5);
+  margin-top:6px;
+  letter-spacing:.02em;
+}
+
+@media(max-width:820px){
+  .newsletter{grid-template-columns:1fr;gap:32px;padding:40px 28px;border-radius:22px}
+  .newsletter-row{flex-direction:column;padding:10px;gap:8px}
+  .newsletter-row input{padding:6px 10px;font-size:15px}
+  .newsletter-row button{padding:13px;font-size:14px;border-radius:9px}
+  .nl-stats{grid-template-columns:1fr 1fr;gap:14px}
+}
+@media(max-width:400px){
+  .nl-stats{grid-template-columns:1fr}
+}
+
+/* ============================================================
+   FOOTER
+============================================================ */
+.footer{background:#0B0B16;color:rgba(255,255,255,.7);padding:64px 0 28px}
+.footer-grid{
+  display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px;
+  padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.08);
+}
+.footer-brand{display:flex;align-items:center;gap:10px;color:#fff;margin-bottom:14px}
+.footer-brand .brand-mark{box-shadow:none}
+.footer-brand .brand-name{font-size:16px}
+.footer-about{font-size:13.5px;line-height:1.65;max-width:320px;color:rgba(255,255,255,.55)}
+.footer-social{display:flex;gap:10px;margin-top:18px}
+.social-btn{
+  width:38px;height:38px;border-radius:11px;display:grid;place-items:center;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
+  color:rgba(255,255,255,.75);transition:.2s;
+}
+.social-btn:hover{background:var(--brand);color:#fff;transform:translateY(-2px);border-color:var(--brand)}
+.footer h5{
+  font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  color:rgba(255,255,255,.5);margin-bottom:16px;
+}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13.5px;color:rgba(255,255,255,.7);transition:.15s;display:inline-block}
+.footer-links a:hover{color:#fff;transform:translateX(3px)}
+.footer-bottom{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:26px;gap:16px;flex-wrap:wrap;
+  font-size:12.5px;color:rgba(255,255,255,.4);
+}
+.footer-bottom .made{display:flex;align-items:center;gap:8px}
+.footer-bottom .made span.flag{font-size:15px}
+@media(max-width:820px){
+  .footer-grid{grid-template-columns:1fr 1fr;gap:32px}
+  .footer-grid > div:first-child{grid-column:1/-1}
+  .footer-bottom{flex-direction:column;text-align:center}
+}
+
+/* ============================================================
+   MOBILE
+============================================================ */
+@media(max-width:720px){
+  .page-hero{padding:112px 0 40px}
+  .page-hero h1{font-size:clamp(32px,9vw,44px)}
+  .page-hero p{font-size:15px}
+
+  .filters{padding:0 18px 28px;gap:12px}
+  .filter-tabs{width:100%;overflow-x:auto;padding-bottom:4px;flex-wrap:nowrap;scrollbar-width:none}
+  .filter-tabs::-webkit-scrollbar{display:none}
+  .filter-btn{white-space:nowrap;font-size:12.5px;padding:8px 14px}
+  .results-count{font-size:12px}
+
+  .featured-wrap{padding:0 18px 40px}
+  .featured-visual{min-height:220px;padding:20px}
+  .featured-content{padding:26px 22px}
+  .featured-content h2{font-size:24px}
+  .featured-content p{font-size:14.5px}
+  .featured-cta{font-size:13.5px}
+
+  .grid-wrap{padding:0 18px 64px}
+  .articles-grid{gap:14px}
+
+  .article-card h3{font-size:18px}
+  .article-card .excerpt{font-size:13.5px}
+
+  .newsletter-wrap{padding:0 18px;margin-bottom:64px}
+  .container{padding:0 18px}
+  .footer{padding:48px 0 22px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="#" class="brand">
+      <span class="brand-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="3" fill="#fff" stroke="none"/>
+        </svg>
+      </span>
+      <span class="brand-name">HashVeno</span>
+    </a>
+
+    <div class="nav-links">
+      <a class="nav-link" href="#">Services</a>
+      <a class="nav-link" href="#">Products</a>
+      <a class="nav-link active" href="#">Articles</a>
+      <a class="nav-link" href="#">Careers</a>
+      <a class="nav-link" href="#contact">Contact</a>
+    </div>
+
+    <div class="nav-cta">
+      <a href="#contact" class="btn btn-primary">
+        Get in touch
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M4 7h16M4 12h16M4 17h16"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#">Services</a>
+  <a href="#">Products</a>
+  <a href="#">Articles</a>
+  <a href="#">Careers</a>
+  <a href="#contact">Contact</a>
+</div>
+
+<!-- PAGE HERO -->
+<header class="page-hero">
+  <div class="container">
+    <div class="page-hero-inner">
+      <div class="eyebrow"><span class="dot"></span> The HashVeno Journal</div>
+      <h1>Ideas from the <em>field.</em></h1>
+      <p>
+        Essays on building software for Indian businesses — retail, cloud, and
+        transit. Practical lessons, no marketing fluff.
+      </p>
+    </div>
+  </div>
+</header>
+
+<!-- FILTERS -->
+<div class="filters">
+  <div class="filter-tabs" id="filterTabs">
+    <button class="filter-btn active" data-filter="all">
+      All articles <span class="count">4</span>
+    </button>
+    <button class="filter-btn" data-filter="retail">
+      Retail <span class="count">1</span>
+    </button>
+    <button class="filter-btn" data-filter="cloud">
+      Cloud <span class="count">1</span>
+    </button>
+    <button class="filter-btn" data-filter="transport">
+      Transport <span class="count">2</span>
+    </button>
+  </div>
+  <div class="results-count" id="resultsCount">
+    Showing <b>4</b> of 4 articles
+  </div>
+</div>
+
+<!-- FEATURED ARTICLE -->
+<section class="featured-wrap">
+  <a href="#" class="featured" data-category="retail">
+    <div class="featured-visual">
+      <div class="fv-badge">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 6.3 6.4.5-4.9 4.4 1.5 6.3L12 17.2 6.4 20.5l1.5-6.3L3 9.8l6.4-.5L12 3z"/></svg>
+        Featured
+      </div>
+      <div class="featured-mock">
+        <div class="fm-head">
+          <span class="dot" style="background:#FF5F57"></span>
+          <span class="dot" style="background:#FEBC2E"></span>
+          <span class="dot" style="background:#28C840"></span>
+          <span class="fm-title">retail / dashboard</span>
+        </div>
+        <div class="fm-body">
+          <div class="fm-stat"><span class="lbl">Revenue today</span><span class="val">$3,482</span></div>
+          <div class="fm-stat"><span class="lbl">Orders</span><span class="val">214</span></div>
+          <div class="fm-stat"><span class="lbl">Avg. basket</span><span class="val up">$16.27</span></div>
+          <div class="fm-bars">
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="featured-content">
+      <span class="featured-cat retail">
+        <span style="width:5px;height:5px;border-radius:50%;background:currentColor"></span>
+        Retail
+      </span>
+      <h2>Is Your Shop Management Holding You Back?</h2>
+      <p>
+        Legacy tools slowly drain your store's efficiency. Here's how modern shop
+        management moves beyond inventory tracking into real-time analytics,
+        customer intelligence, and margin you can actually see.
+      </p>
+      <div class="featured-meta">
+        <div class="fm-author">
+          <div class="fm-av">RK</div>
+          <div class="fm-author-info">
+            <div class="name">Ramesh Kumar</div>
+            <div class="role">Head of Retail Practice</div>
+          </div>
+        </div>
+        <span class="dot-sep"></span>
+        <span class="meta-item">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          8 min
+        </span>
+        <span class="meta-item">Feb 12, 2026</span>
+      </div>
+      <span class="featured-cta">
+        Read article
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+      </span>
+    </div>
+  </a>
+</section>
+
+<!-- ARTICLE GRID -->
+<section class="grid-wrap">
+  <div class="articles-grid" id="articlesGrid">
+
+    <!-- Cloud article -->
+    <a href="#" class="article-card" data-category="cloud">
+      <div class="ac-visual cloud">
+        <div class="ac-mock">
+          <div class="bar w40 accent"></div>
+          <div class="block"></div>
+          <div class="bar w70"></div>
+          <div class="bar w40"></div>
+        </div>
+      </div>
+      <div class="ac-body">
+        <span class="ac-cat cloud">Cloud</span>
+        <h3>Future-Proof Retail with Cloud and Automation</h3>
+        <p class="excerpt">
+          Small changes today lead to big competitive advantages tomorrow.
+          Integrating cloud POS, automated billing, and smart dashboards can
+          elevate your entire retail game.
+        </p>
+        <div class="ac-meta">
+          <span>Mar 04, 2026</span>
+          <span class="read">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            9 min
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Railways article -->
+    <a href="#" class="article-card" data-category="transport">
+      <div class="ac-visual transport">
+        <div class="ac-mock">
+          <div class="bar w70 accent"></div>
+          <div class="block"></div>
+          <div class="bar w40"></div>
+          <div class="bar w70"></div>
+        </div>
+      </div>
+      <div class="ac-body">
+        <span class="ac-cat transport">Transport</span>
+        <h3>Rising Unauthorized Travel in Indian Railways</h3>
+        <p class="excerpt">
+          Indian Railways faces increasing numbers of passengers traveling
+          without valid tickets — causing revenue loss and overcrowding.
+          Real-time monitoring can help detect it early.
+        </p>
+        <div class="ac-meta">
+          <span>Mar 18, 2026</span>
+          <span class="read">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            8 min
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- MTC buses article -->
+    <a href="#" class="article-card" data-category="transport">
+      <div class="ac-visual transport">
+        <div class="ac-mock">
+          <div class="bar w40 accent"></div>
+          <div class="block"></div>
+          <div class="bar w70"></div>
+          <div class="bar w40"></div>
+        </div>
+      </div>
+      <div class="ac-body">
+        <span class="ac-cat transport">Transport</span>
+        <h3>Overcrowding &amp; Fare Evasion in MTC Buses</h3>
+        <p class="excerpt">
+          MTC buses struggle with unauthorized passengers and overcrowding —
+          leading to revenue loss and delays. Smart fleet tracking enables
+          better passenger management.
+        </p>
+        <div class="ac-meta">
+          <span>Mar 22, 2026</span>
+          <span class="read">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            5 min
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Empty state -->
+    <div class="empty-state" id="emptyState">
+      <div class="icon">📭</div>
+      <h3>Nothing here yet</h3>
+      <p>We haven't published articles in this category. Check back soon, or explore all our writing.</p>
+      <button id="emptyReset">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+        Show all articles
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter-wrap" id="contact">
+  <div class="newsletter">
+    <div>
+      <div class="nl-badge"><span class="dot"></span> Monthly Newsletter</div>
+      <h2>Engineering notes, <em>delivered monthly.</em></h2>
+      <p>
+        Short essays on building software for Indian businesses — retail, cloud,
+        and transit. One email per month. No spam, no marketing, unsubscribe
+        anytime.
+      </p>
+    </div>
+
+    <form class="newsletter-form" onsubmit="event.preventDefault(); this.reset(); alert('Thanks — check your inbox to confirm.');">
+      <div class="newsletter-row">
+        <input type="email" placeholder="you@company.com" required />
+        <button type="submit">Subscribe</button>
+      </div>
+      <div class="newsletter-note">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+        We never share your email. Ever.
+      </div>
+
+      <div class="nl-stats">
+        <div class="nl-stat">
+          <div class="num">1,200+</div>
+          <div class="lbl">Subscribers</div>
+        </div>
+        <div class="nl-stat">
+          <div class="num">Monthly</div>
+          <div class="lbl">Cadence</div>
+        </div>
+        <div class="nl-stat">
+          <div class="num">0%</div>
+          <div class="lbl">Marketing fluff</div>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <span class="brand-mark">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="3" fill="#fff" stroke="none"/>
+            </svg>
+          </span>
+          <span class="brand-name">HashVeno</span>
+        </div>
+        <p class="footer-about">
+          IT product &amp; service provider helping businesses grow through
+          smart technology solutions. Built and operated from Chennai, India.
+        </p>
+        <div class="footer-social">
+          <a href="#" class="social-btn" aria-label="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="LinkedIn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="Facebook">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M15 3h-3a4 4 0 0 0-4 4v3H5v4h3v7h4v-7h3l1-4h-4V7a1 1 0 0 1 1-1h3V3z"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="YouTube">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="6" width="18" height="12" rx="3"/><path d="M11 10l4 2-4 2v-4z" fill="currentColor"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h5>Services</h5>
+        <div class="footer-links">
+          <a href="#">Custom Software</a>
+          <a href="#">Cloud Applications</a>
+          <a href="#">Support &amp; Maintenance</a>
+          <a href="#">Integrations</a>
+        </div>
+      </div>
+
+      <div>
+        <h5>Products</h5>
+        <div class="footer-links">
+          <a href="#">HashVeno Retail</a>
+          <a href="#">HashRail</a>
+          <a href="#">HashRoute</a>
+          <a href="#">Tutorials</a>
+        </div>
+      </div>
+
+      <div>
+        <h5>Company</h5>
+        <div class="footer-links">
+          <a href="#">Articles</a>
+          <a href="#">Careers</a>
+          <a href="#">Terms</a>
+          <a href="#">Privacy</a>
+          <a href="#">Why Choose Us?</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2026 HashVeno. All rights reserved.</div>
+      <div class="made">
+        <span class="flag">🇮🇳</span>
+        made in India · Chennai
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* NAV SCROLL */
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 12);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+/* MOBILE MENU */
+const navToggle = document.getElementById('navToggle');
+const mobileMenu = document.getElementById('mobileMenu');
+navToggle.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+mobileMenu.querySelectorAll('a').forEach(a =>
+  a.addEventListener('click', () => mobileMenu.classList.remove('open'))
+);
+
+/* ============================================================
+   FILTER LOGIC
+============================================================ */
+const filterBtns = document.querySelectorAll('.filter-btn');
+const allCards = document.querySelectorAll('.article-card');
+const featured = document.querySelector('.featured');
+const featuredWrap = document.querySelector('.featured-wrap');
+const articlesGrid = document.getElementById('articlesGrid');
+const emptyState = document.getElementById('emptyState');
+const resultsCount = document.getElementById('resultsCount');
+
+function applyFilter(filter){
+  let visibleCards = 0;
+
+  // Handle featured article — hide when filter is not 'all' or 'retail'
+  const featuredCat = featured.dataset.category;
+  if (filter === 'all' || filter === featuredCat){
+    featuredWrap.style.display = '';
+  } else {
+    featuredWrap.style.display = 'none';
+  }
+
+  // Handle grid cards
+  allCards.forEach(card => {
+    const cat = card.dataset.category;
+    const show = (filter === 'all' || filter === cat);
+    card.style.display = show ? '' : 'none';
+    if (show) visibleCards++;
+  });
+
+  // Count includes featured if visible
+  const featuredVisible = featuredWrap.style.display !== 'none';
+  const totalVisible = visibleCards + (featuredVisible ? 1 : 0);
+
+  // Show/hide empty state
+  if (totalVisible === 0){
+    emptyState.classList.add('show');
+  } else {
+    emptyState.classList.remove('show');
+  }
+
+  // Update count
+  resultsCount.innerHTML = `Showing <b>${totalVisible}</b> of 4 articles`;
+
+  // Update active button
+  filterBtns.forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.filter === filter);
+  });
+}
+
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => applyFilter(btn.dataset.filter));
+});
+
+/* Empty state reset */
+document.getElementById('emptyReset').addEventListener('click', () => applyFilter('all'));
+
+/* Optional: URL hash-based filtering (#cloud, #retail, etc.) */
+if (window.location.hash){
+  const hash = window.location.hash.slice(1);
+  if (['retail', 'cloud', 'transport'].includes(hash)){
+    applyFilter(hash);
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Analytics Dashboard — HashVeno</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07080F;--surface:#0F1119;--surface-2:#161824;--surface-3:#1D1F2E;
+  --ink:#F4F5FA;--muted:#8B8BA3;--faint:#5A5A78;
+  --line:rgba(255,255,255,.06);--line-2:rgba(255,255,255,.1);
+  --accent:#6366F1;--accent-2:#818CF8;--accent-soft:rgba(99,102,241,.15);
+  --green:#10B981;--green-soft:rgba(16,185,129,.12);
+  --amber:#F59E0B;--amber-soft:rgba(245,158,11,.12);
+  --rose:#EF4444;--rose-soft:rgba(239,68,68,.12);
+  --cyan:#06B6D4;--violet:#8B5CF6;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+}
+html,body{height:100%}
+body{
+  font-family:var(--font);background:var(--bg);color:var(--ink);
+  -webkit-font-smoothing:antialiased;font-size:14px;line-height:1.5;
+  display:grid;grid-template-columns:224px 1fr;min-height:100vh;
+}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:8px}
+::-webkit-scrollbar-track{background:transparent}
+code{font-family:var(--mono);font-size:12px;background:var(--surface-2);padding:2px 6px;border-radius:5px}
+
+/* ============ SIDEBAR ============ */
+aside{
+  background:var(--surface);border-right:1px solid var(--line);
+  padding:18px 12px;display:flex;flex-direction:column;
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+}
+.brand{
+  display:flex;align-items:center;gap:10px;
+  padding:6px 10px 20px;margin-bottom:8px;
+  border-bottom:1px solid var(--line);
+}
+.brand-mark{
+  width:32px;height:32px;border-radius:9px;
+  background:linear-gradient(135deg,#6366F1,#8B5CF6);
+  display:grid;place-items:center;color:#fff;font-size:12px;font-weight:700;
+  letter-spacing:-.02em;
+}
+.brand-name{font-size:14.5px;font-weight:700;letter-spacing:-.02em}
+.brand-sub{font-size:10.5px;color:var(--faint);font-family:var(--mono);margin-top:1px}
+
+.nav-group{margin-bottom:10px}
+.nav-label{
+  font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--faint);padding:8px 10px 4px;
+}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 10px;border-radius:8px;
+  font-size:13px;font-weight:500;color:var(--muted);
+  cursor:pointer;transition:.15s;
+}
+.nav-item:hover{background:rgba(255,255,255,.04);color:var(--ink)}
+.nav-item.active{background:var(--accent-soft);color:var(--accent-2);font-weight:600}
+.nav-item svg{width:16px;height:16px;flex-shrink:0;opacity:.75}
+.nav-item.active svg{opacity:1}
+
+.live-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 0 3px rgba(16,185,129,.18);animation:pulse 2s infinite;
+  margin-left:auto;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(.85)}}
+
+/* ============ MAIN ============ */
+main{overflow-y:auto;height:100vh}
+
+.topbar{
+  position:sticky;top:0;z-index:10;
+  background:rgba(7,8,15,.85);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--line);
+  padding:16px 28px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:16px;flex-wrap:wrap;
+}
+.topbar h1{font-size:17px;font-weight:700;letter-spacing:-.02em}
+.topbar .sub{font-size:11.5px;color:var(--faint);font-family:var(--mono);margin-top:2px}
+
+.range-picker{
+  display:flex;gap:2px;background:var(--surface);
+  padding:3px;border-radius:9px;border:1px solid var(--line);
+}
+.range-picker button{
+  padding:6px 12px;border-radius:6px;
+  color:var(--muted);font-size:12.5px;font-weight:500;transition:.15s;
+}
+.range-picker button:hover{color:var(--ink)}
+.range-picker button.active{background:var(--accent);color:#fff;font-weight:600}
+
+.content{padding:24px 28px 60px;max-width:1600px}
+
+.view{display:none;animation:fade .2s ease}
+.view.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+/* ============ LAYOUT ============ */
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:18px}
+.grid{display:grid;gap:14px}
+.grid-2{grid-template-columns:1fr 1fr}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+
+@media(max-width:1200px){
+  .kpis{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:800px){
+  body{grid-template-columns:1fr}
+  aside{display:none}
+  .kpis{grid-template-columns:1fr 1fr}
+  .grid-2,.grid-3{grid-template-columns:1fr}
+  .content{padding:16px}
+  .topbar{padding:14px 16px}
+}
+
+/* ============ CARDS ============ */
+.card{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:14px;padding:20px 22px;
+}
+.card-head{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  margin-bottom:18px;gap:12px;flex-wrap:wrap;
+}
+.card-title{font-size:13.5px;font-weight:650;letter-spacing:-.005em}
+.card-sub{font-size:11px;color:var(--faint);font-family:var(--mono);margin-top:3px}
+
+.kpi{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:14px;padding:18px 20px;transition:.2s;
+}
+.kpi:hover{border-color:var(--line-2)}
+.kpi .lbl{
+  font-size:10.5px;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--faint);margin-bottom:10px;
+}
+.kpi .val{
+  font-size:28px;font-weight:700;letter-spacing:-.03em;
+  font-feature-settings:"tnum";line-height:1;
+}
+.kpi .sub{font-size:11.5px;color:var(--muted);margin-top:8px}
+.kpi.live .val{color:var(--green)}
+
+/* ============ CHART ============ */
+.chart{
+  display:flex;align-items:flex-end;gap:4px;height:200px;
+  padding:14px 0 28px;position:relative;
+}
+.chart-bar{
+  flex:1;background:linear-gradient(180deg,var(--accent-2),var(--accent));
+  border-radius:3px 3px 2px 2px;min-height:3px;position:relative;
+  transition:.3s;cursor:pointer;
+}
+.chart-bar:hover{filter:brightness(1.3);transform:scaleY(1.02);transform-origin:bottom}
+.chart-bar::after{
+  content:attr(data-label);position:absolute;bottom:-22px;left:50%;
+  transform:translateX(-50%);font-family:var(--mono);font-size:9.5px;
+  color:var(--faint);white-space:nowrap;
+}
+
+/* ============ BAR LISTS ============ */
+.bar-row{
+  display:grid;grid-template-columns:minmax(0,1fr) 90px 55px;
+  gap:12px;align-items:center;padding:9px 0;
+  border-bottom:1px solid var(--line);font-size:13px;
+}
+.bar-row:last-child{border-bottom:none}
+.bar-label{
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  color:var(--ink);font-weight:500;
+}
+.bar-track{
+  height:6px;background:var(--surface-2);border-radius:3px;
+  overflow:hidden;
+}
+.bar-fill{
+  height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  border-radius:3px;transition:width .8s cubic-bezier(.2,.8,.2,1);
+}
+.bar-val{
+  font-family:var(--mono);font-size:12px;font-weight:600;
+  color:var(--muted);text-align:right;
+}
+
+/* ============ DEVICE CARDS ============ */
+.device-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.device-card{
+  background:var(--surface-2);border:1px solid var(--line);
+  border-radius:11px;padding:18px 14px;text-align:center;
+  transition:.2s;
+}
+.device-card:hover{border-color:var(--line-2);background:var(--surface-3)}
+.device-card .icon{font-size:22px;margin-bottom:10px}
+.device-card .num{
+  font-size:26px;font-weight:700;letter-spacing:-.025em;
+  line-height:1;font-feature-settings:"tnum";
+}
+.device-card .lbl{font-size:11.5px;color:var(--muted);margin-top:7px;font-weight:500}
+.device-card .pct{font-family:var(--mono);font-size:11px;color:var(--faint);margin-top:4px}
+
+/* ============ TABLES ============ */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{
+  text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--faint);padding:8px 10px;
+  border-bottom:1px solid var(--line);white-space:nowrap;
+}
+thead th.num{text-align:right}
+tbody td{
+  padding:12px 10px;border-bottom:1px solid var(--line);
+  vertical-align:middle;
+}
+tbody tr:last-child td{border-bottom:none}
+tbody tr{transition:.15s}
+tbody tr:hover{background:rgba(255,255,255,.02)}
+td.num{text-align:right;font-family:var(--mono);font-weight:600;font-feature-settings:"tnum";white-space:nowrap}
+td.path{font-family:var(--mono);font-size:12px;color:var(--ink);word-break:break-all;max-width:280px}
+td.mono{font-family:var(--mono);font-size:12px;color:var(--muted)}
+
+.pill{
+  display:inline-block;padding:2px 8px;border-radius:6px;
+  font-size:10.5px;font-weight:700;letter-spacing:.03em;
+  font-family:var(--mono);text-transform:uppercase;white-space:nowrap;
+}
+.pill.device-mobile{background:var(--accent-soft);color:var(--accent-2)}
+.pill.device-desktop{background:var(--green-soft);color:var(--green)}
+.pill.device-tablet{background:var(--amber-soft);color:var(--amber)}
+.pill.bounce{background:var(--rose-soft);color:var(--rose)}
+.pill.engaged{background:var(--green-soft);color:var(--green)}
+.pill.identified{background:rgba(139,92,246,.15);color:#A78BFA}
+.pill.type{background:var(--surface-2);color:var(--muted)}
+
+/* ============ LIVE FEED ============ */
+.live-feed{display:flex;flex-direction:column;max-height:560px;overflow-y:auto;margin:-4px 0}
+.live-item{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:11px 0;border-bottom:1px solid var(--line);
+  font-size:13px;
+}
+.live-item:last-child{border-bottom:none}
+.live-icon{
+  width:28px;height:28px;border-radius:8px;
+  display:grid;place-items:center;font-size:11px;flex-shrink:0;
+  background:var(--surface-2);color:var(--muted);
+}
+.live-icon.pageview{background:var(--accent-soft);color:var(--accent-2)}
+.live-icon.click{background:var(--green-soft);color:var(--green)}
+.live-icon.form_submit{background:rgba(139,92,246,.15);color:#A78BFA}
+.live-icon.outbound{background:var(--amber-soft);color:var(--amber)}
+.live-icon.custom{background:rgba(6,182,212,.15);color:var(--cyan)}
+.live-body{flex:1;min-width:0}
+.live-title{font-weight:500;color:var(--ink);word-break:break-all;font-size:13px}
+.live-meta{font-size:11px;color:var(--faint);font-family:var(--mono);margin-top:3px}
+.live-time{font-family:var(--mono);font-size:11px;color:var(--faint);flex-shrink:0;padding-top:2px}
+
+/* ============ FUNNEL ============ */
+.funnel{display:flex;flex-direction:column;gap:10px}
+.funnel-step{
+  background:var(--surface-2);border:1px solid var(--line);
+  border-radius:11px;padding:18px 20px;position:relative;
+  display:grid;grid-template-columns:42px 1fr auto auto;
+  gap:16px;align-items:center;overflow:hidden;
+}
+.funnel-step::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,var(--accent),var(--accent-2));
+}
+.funnel-step .step-num{
+  font-family:var(--mono);font-size:11px;
+  color:var(--faint);letter-spacing:.06em;
+}
+.funnel-step .step-name{font-weight:600;font-size:14px;letter-spacing:-.005em}
+.funnel-step .step-count{
+  font-family:var(--mono);font-weight:700;font-size:16px;
+  font-feature-settings:"tnum";
+}
+.funnel-step .step-pct{
+  font-family:var(--mono);font-size:12px;color:var(--muted);
+  min-width:56px;text-align:right;
+}
+.funnel-progress{
+  position:absolute;bottom:0;left:0;right:0;height:3px;
+  background:var(--line);overflow:hidden;
+}
+.funnel-progress > div{
+  height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  transition:width .8s cubic-bezier(.2,.8,.2,1);
+}
+
+/* ============ TABS ============ */
+.tabs{
+  display:flex;gap:2px;background:var(--surface-2);
+  padding:3px;border-radius:9px;margin-bottom:16px;width:max-content;
+}
+.tabs button{
+  padding:6px 14px;border-radius:6px;
+  font-size:12.5px;font-weight:500;color:var(--muted);transition:.15s;
+}
+.tabs button.active{background:var(--accent);color:#fff;font-weight:600}
+
+/* ============ EMPTY ============ */
+.empty{
+  text-align:center;padding:48px 20px;color:var(--muted);font-size:13px;
+}
+.empty .icon{font-size:32px;opacity:.4;margin-bottom:12px}
+
+/* ============ MODAL ============ */
+.modal{
+  position:fixed;inset:0;background:rgba(0,0,0,.7);
+  backdrop-filter:blur(4px);z-index:100;
+  display:none;align-items:center;justify-content:center;padding:24px;
+  animation:fade .2s ease;
+}
+.modal.open{display:flex}
+.modal-body{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:16px;max-width:820px;width:100%;
+  max-height:90vh;overflow-y:auto;padding:28px;position:relative;
+  animation:pop .25s cubic-bezier(.2,.8,.2,1);
+}
+@keyframes pop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+.modal-close{
+  position:absolute;top:18px;right:18px;
+  width:32px;height:32px;border-radius:9px;
+  display:grid;place-items:center;
+  font-size:20px;color:var(--muted);
+  cursor:pointer;transition:.15s;
+}
+.modal-close:hover{background:var(--surface-2);color:var(--ink)}
+.modal h2{font-size:19px;font-weight:700;margin-bottom:6px;letter-spacing:-.02em}
+.modal .sub{font-size:11.5px;color:var(--faint);font-family:var(--mono);margin-bottom:22px}
+
+.meta-row{
+  display:flex;gap:10px;flex-wrap:wrap;
+  font-size:12px;color:var(--muted);font-family:var(--mono);
+  margin-bottom:22px;padding-bottom:22px;
+  border-bottom:1px solid var(--line);
+}
+.meta-row span.sep{color:var(--faint)}
+
+/* ============ BADGE DEMO ============ */
+.demo-badge{
+  position:fixed;bottom:20px;right:20px;z-index:50;
+  background:var(--accent);color:#fff;
+  font-size:11px;font-weight:700;letter-spacing:.06em;
+  padding:8px 14px;border-radius:9px;
+  box-shadow:0 10px 30px rgba(99,102,241,.4);
+  text-transform:uppercase;
+  display:flex;align-items:center;gap:7px;
+}
+.demo-badge::before{
+  content:"";width:6px;height:6px;border-radius:50%;background:#fff;
+  animation:pulse 2s infinite;
+}
+</style>
+</head>
+<body>
+
+<aside>
+  <div class="brand">
+    <div class="brand-mark">HV</div>
+    <div>
+      <div class="brand-name">HashVeno</div>
+      <div class="brand-sub">analytics</div>
+    </div>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-label">Overview</div>
+    <div class="nav-item active" data-view="overview">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3v18h18M7 14l4-4 4 4 6-6"/></svg>
+      Dashboard
+    </div>
+    <div class="nav-item" data-view="live">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      Live
+      <span class="live-dot"></span>
+    </div>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-label">Behavior</div>
+    <div class="nav-item" data-view="pages">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+      Pages
+    </div>
+    <div class="nav-item" data-view="events">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      Events
+    </div>
+    <div class="nav-item" data-view="funnels">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h18l-7 9v7l-4 2v-9L3 4z"/></svg>
+      Funnels
+    </div>
+    <div class="nav-item" data-view="forms">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg>
+      Forms
+    </div>
+    <div class="nav-item" data-view="sessions">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
+      Sessions
+    </div>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-label">Audience</div>
+    <div class="nav-item" data-view="sources">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>
+      Sources
+    </div>
+    <div class="nav-item" data-view="geo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      Geography
+    </div>
+    <div class="nav-item" data-view="devices">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8"/></svg>
+      Devices
+    </div>
+    <div class="nav-item" data-view="users">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
+      Identified Users
+    </div>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-label">Data</div>
+    <div class="nav-item" data-view="consent">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+      Consent
+    </div>
+  </div>
+</aside>
+
+<main>
+  <div class="topbar">
+    <div>
+      <h1 id="viewTitle">Dashboard</h1>
+      <div class="sub" id="viewSub">hashveno.com · all events · last 7 days</div>
+    </div>
+    <div class="range-picker" id="rangePicker">
+      <button data-range="24h">24h</button>
+      <button data-range="7d" class="active">7d</button>
+      <button data-range="30d">30d</button>
+      <button data-range="90d">90d</button>
+      <button data-range="all">All</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ============ OVERVIEW ============ -->
+    <div class="view active" id="view-overview">
+      <div class="kpis" id="kpis"></div>
+
+      <div class="card" style="margin-bottom:14px">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Traffic over time</div>
+            <div class="card-sub" id="chartSub">daily visitors · last 7 days</div>
+          </div>
+        </div>
+        <div class="chart" id="chart"></div>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Top pages</div>
+              <div class="card-sub">by unique visitors</div>
+            </div>
+          </div>
+          <div id="topPages"></div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Traffic sources</div>
+              <div class="card-sub">acquisition channels</div>
+            </div>
+          </div>
+          <div id="channels"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ LIVE ============ -->
+    <div class="view" id="view-live">
+      <div class="kpis" id="liveKpis"></div>
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Active now</div>
+              <div class="card-sub">last 5 minutes</div>
+            </div>
+          </div>
+          <div class="table-wrap" id="activeNow"></div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Live feed</div>
+              <div class="card-sub">last 10 minutes</div>
+            </div>
+          </div>
+          <div class="live-feed" id="liveFeed"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ PAGES ============ -->
+    <div class="view" id="view-pages">
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Top pages</div>
+              <div class="card-sub">ranked by visitors</div>
+            </div>
+          </div>
+          <div class="table-wrap" id="pagesTable"></div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Entry &amp; exit pages</div>
+              <div class="card-sub">landing / leaving</div>
+            </div>
+          </div>
+          <div class="tabs" data-tabs="entryexit">
+            <button class="active" data-tab="entries">Entries</button>
+            <button data-tab="exits">Exits</button>
+          </div>
+          <div id="entryExitList"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ EVENTS ============ -->
+    <div class="view" id="view-events">
+      <div class="grid grid-2" style="margin-bottom:14px">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Event types</div>
+              <div class="card-sub">what fires on the site</div>
+            </div>
+          </div>
+          <div id="eventTypes"></div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Top named events</div>
+              <div class="card-sub">custom + system</div>
+            </div>
+          </div>
+          <div class="table-wrap" id="topEvents"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Outbound link clicks</div>
+            <div class="card-sub">external destinations</div>
+          </div>
+        </div>
+        <div class="table-wrap" id="outbound"></div>
+      </div>
+    </div>
+
+    <!-- ============ FUNNELS ============ -->
+    <div class="view" id="view-funnels">
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Primary conversion funnel</div>
+            <div class="card-sub">home → products → contact → form submit</div>
+          </div>
+        </div>
+        <div class="funnel" id="funnel"></div>
+      </div>
+    </div>
+
+    <!-- ============ FORMS ============ -->
+    <div class="view" id="view-forms">
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Form analytics</div>
+            <div class="card-sub">starts, submits, abandonment</div>
+          </div>
+        </div>
+        <div class="table-wrap" id="formsTable"></div>
+      </div>
+    </div>
+
+    <!-- ============ SESSIONS ============ -->
+    <div class="view" id="view-sessions">
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Recent sessions</div>
+            <div class="card-sub">click a row for details</div>
+          </div>
+        </div>
+        <div class="table-wrap" id="sessionsTable"></div>
+      </div>
+    </div>
+
+    <!-- ============ SOURCES ============ -->
+    <div class="view" id="view-sources">
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Top referrers</div>
+              <div class="card-sub">direct hostnames</div>
+            </div>
+          </div>
+          <div id="referrers"></div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Channels</div>
+              <div class="card-sub">grouped by type</div>
+            </div>
+          </div>
+          <div id="channelsFull"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ GEO ============ -->
+    <div class="view" id="view-geo">
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Countries</div>
+              <div class="card-sub">by visitors</div>
+            </div>
+          </div>
+          <div id="countries"></div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Top cities</div>
+              <div class="card-sub">top 20</div>
+            </div>
+          </div>
+          <div class="table-wrap" id="cities"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ DEVICES ============ -->
+    <div class="view" id="view-devices">
+      <div class="card" style="margin-bottom:14px">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Device breakdown</div>
+            <div class="card-sub">by unique visitors</div>
+          </div>
+        </div>
+        <div class="device-grid" id="devices"></div>
+      </div>
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Browsers</div>
+              <div class="card-sub">by visitors</div>
+            </div>
+          </div>
+          <div id="browsers"></div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Operating systems</div>
+              <div class="card-sub">by visitors</div>
+            </div>
+          </div>
+          <div id="os"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ USERS ============ -->
+    <div class="view" id="view-users">
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Identified users</div>
+            <div class="card-sub">Tier 3 · consented</div>
+          </div>
+        </div>
+        <div class="table-wrap" id="usersTable"></div>
+      </div>
+    </div>
+
+    <!-- ============ CONSENT ============ -->
+    <div class="view" id="view-consent">
+      <div class="kpis" id="consentKpis"></div>
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">About consent</div>
+            <div class="card-sub">DPDP compliance status</div>
+          </div>
+        </div>
+        <div style="font-size:13.5px;color:var(--muted);line-height:1.7;max-width:680px">
+          <p style="margin-bottom:14px">Anonymous analytics (Tier 1) runs without consent. Behavioral analytics (Tier 2) and identified-user tracking (Tier 3) require consent via the banner.</p>
+          <p style="margin-bottom:14px">Users who have accepted analytics tracking appear in <strong style="color:var(--ink)">Identified Users</strong>. Each consent record stores the timestamp, IP hash, and which categories were approved.</p>
+          <p>To remove a user's data per DPDP request: send a POST to <code>/api/user/:persistent_id/delete</code> with dashboard credentials. The endpoint purges events, sessions, and identified records.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<div class="modal" id="modal">
+  <div class="modal-body">
+    <div class="modal-close" id="modalClose">×</div>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<div class="demo-badge">Demo data</div>
+
+<script>
+/* ============================================================
+   MOCK DATA — realistic sample data for preview
+   ============================================================ */
+
+const days7 = ['Sep 15', 'Sep 16', 'Sep 17', 'Sep 18', 'Sep 19', 'Sep 20', 'Sep 21'];
+
+const MOCK = {
+  overview: {
+    kpis: {
+      activeNow: 47,
+      visitors: 8429,
+      todayVisitors: 1204,
+      pageviews: 24873,
+      avgDuration: 214000,
+      bounceRate: 38.4
+    },
+    timeseries: [
+      { day: '2026-09-15', visitors: 1042, pageviews: 3084 },
+      { day: '2026-09-16', visitors: 1188, pageviews: 3452 },
+      { day: '2026-09-17', visitors: 1084, pageviews: 3210 },
+      { day: '2026-09-18', visitors: 1290, pageviews: 3874 },
+      { day: '2026-09-19', visitors: 1424, pageviews: 4208 },
+      { day: '2026-09-20', visitors: 1290, pageviews: 3912 },
+      { day: '2026-09-21', visitors: 1111, pageviews: 3133 }
+    ],
+    topPages: [
+      { path: '/products/retail', visitors: 2140, views: 6482 },
+      { path: '/', visitors: 1842, views: 2984 },
+      { path: '/services/custom-software', visitors: 1248, views: 3240 },
+      { path: '/products/rail', visitors: 1104, views: 2812 },
+      { path: '/articles/shop-management', visitors: 892, views: 2104 },
+      { path: '/services/cloud-applications', visitors: 748, views: 1842 },
+      { path: '/products/route', visitors: 684, views: 1518 },
+      { path: '/articles/cloud-retail', visitors: 582, views: 1244 },
+      { path: '/why-hashveno', visitors: 524, views: 1108 },
+      { path: '/contact', visitors: 486, views: 892 }
+    ],
+    channels: [
+      { channel: 'Organic Search', visitors: 3240 },
+      { channel: 'Direct', visitors: 2148 },
+      { channel: 'LinkedIn', visitors: 1284 },
+      { channel: 'Twitter/X', visitors: 648 },
+      { channel: 'GitHub', visitors: 384 },
+      { channel: 'Reddit', visitors: 242 },
+      { channel: 'YouTube', visitors: 186 },
+      { channel: 'WhatsApp', visitors: 148 }
+    ]
+  },
+
+  live: {
+    activeNow: 47,
+    active: [
+      { last_path: '/products/retail', device: 'mobile', last_seen: 8000 },
+      { last_path: '/services/custom-software', device: 'desktop', last_seen: 12000 },
+      { last_path: '/articles/railways-unauthorized', device: 'desktop', last_seen: 24000 },
+      { last_path: '/contact', device: 'mobile', last_seen: 34000 },
+      { last_path: '/', device: 'desktop', last_seen: 45000 },
+      { last_path: '/products/rail', device: 'tablet', last_seen: 58000 },
+      { last_path: '/why-hashveno', device: 'desktop', last_seen: 72000 },
+      { last_path: '/articles/mtc-overcrowding', device: 'mobile', last_seen: 88000 },
+      { last_path: '/services/cloud-applications', device: 'desktop', last_seen: 108000 },
+      { last_path: '/products/route', device: 'mobile', last_seen: 128000 }
+    ],
+    feed: [
+      { ts: 8000, type: 'pageview', title: '/products/retail', meta: 'Chennai, IN · mobile' },
+      { ts: 12000, type: 'click', title: 'cta:book-demo', meta: 'Hero section' },
+      { ts: 18000, type: 'pageview', title: '/contact', meta: 'Bangalore, IN · desktop' },
+      { ts: 24000, type: 'form_start', title: 'contact', meta: 'Started typing' },
+      { ts: 34000, type: 'form_submit', title: 'contact', meta: 'Submitted in 24s' },
+      { ts: 45000, type: 'outbound', title: 'linkedin.com', meta: 'From footer' },
+      { ts: 58000, type: 'pageview', title: '/articles/railways-unauthorized', meta: 'Mumbai, IN · desktop' },
+      { ts: 72000, type: 'scroll', title: 'scroll_75', meta: '/articles/railways-unauthorized' },
+      { ts: 88000, type: 'custom', title: 'video_play', meta: 'Tutorial: HashVeno Retail' },
+      { ts: 108000, type: 'pageview', title: '/services/integrations', meta: 'Hyderabad, IN · desktop' },
+      { ts: 128000, type: 'click', title: 'cta:request-pilot', meta: 'Rail product page' },
+      { ts: 148000, type: 'pageview', title: '/careers', meta: 'Remote, IN · mobile' },
+      { ts: 168000, type: 'form_start', title: 'careers-application', meta: 'Started typing' },
+      { ts: 188000, type: 'pageview', title: '/about', meta: 'Delhi, IN · desktop' },
+      { ts: 208000, type: 'click', title: 'social:github', meta: 'From footer' }
+    ]
+  },
+
+  pages: {
+    pages: [
+      { path: '/products/retail', visitors: 2140, views: 6482, avg_time: 142000 },
+      { path: '/', visitors: 1842, views: 2984, avg_time: 84000 },
+      { path: '/services/custom-software', visitors: 1248, views: 3240, avg_time: 186000 },
+      { path: '/products/rail', visitors: 1104, views: 2812, avg_time: 128000 },
+      { path: '/articles/shop-management', visitors: 892, views: 2104, avg_time: 342000 },
+      { path: '/services/cloud-applications', visitors: 748, views: 1842, avg_time: 164000 },
+      { path: '/products/route', visitors: 684, views: 1518, avg_time: 118000 },
+      { path: '/articles/cloud-retail', visitors: 582, views: 1244, avg_time: 298000 },
+      { path: '/why-hashveno', visitors: 524, views: 1108, avg_time: 214000 },
+      { path: '/contact', visitors: 486, views: 892, avg_time: 118000 },
+      { path: '/services/integrations', visitors: 442, views: 984, avg_time: 176000 },
+      { path: '/articles/railways-unauthorized', visitors: 418, views: 892, avg_time: 284000 },
+      { path: '/articles/mtc-overcrowding', visitors: 384, views: 782, avg_time: 246000 },
+      { path: '/tutorials', visitors: 312, views: 684, avg_time: 208000 },
+      { path: '/about', visitors: 288, views: 512, avg_time: 168000 },
+      { path: '/careers', visitors: 242, views: 428, avg_time: 148000 },
+      { path: '/services/support-maintenance', visitors: 218, views: 486, avg_time: 194000 },
+      { path: '/terms', visitors: 148, views: 208, avg_time: 62000 },
+      { path: '/privacy', visitors: 132, views: 184, avg_time: 58000 }
+    ],
+    entries: [
+      { path: '/', entries: 1842 },
+      { path: '/products/retail', entries: 1240 },
+      { path: '/articles/shop-management', entries: 482 },
+      { path: '/services/custom-software', entries: 384 },
+      { path: '/articles/railways-unauthorized', entries: 284 },
+      { path: '/products/rail', entries: 208 },
+      { path: '/articles/cloud-retail', entries: 184 },
+      { path: '/why-hashveno', entries: 148 }
+    ],
+    exits: [
+      { path: '/contact', exits: 486 },
+      { path: '/products/retail', exits: 428 },
+      { path: '/', exits: 384 },
+      { path: '/articles/shop-management', exits: 342 },
+      { path: '/services/custom-software', exits: 284 },
+      { path: '/why-hashveno', exits: 208 },
+      { path: '/articles/railways-unauthorized', exits: 184 },
+      { path: '/terms', exits: 148 }
+    ]
+  },
+
+  events: {
+    types: [
+      { type: 'pageview', count: 24873 },
+      { type: 'click', count: 8420 },
+      { type: 'scroll', count: 6482 },
+      { type: 'outbound', count: 1284 },
+      { type: 'form_start', count: 848 },
+      { type: 'form_submit', count: 486 },
+      { type: 'form_abandon', count: 362 },
+      { type: 'custom', count: 284 },
+      { type: 'pageleave', count: 18420 }
+    ],
+    topEvents: [
+      { name: 'scroll_50', type: 'scroll', count: 2140, visitors: 1842 },
+      { name: 'scroll_75', type: 'scroll', count: 1624, visitors: 1486 },
+      { name: 'scroll_100', type: 'scroll', count: 892, visitors: 842 },
+      { name: 'cta:book-demo', type: 'click', count: 384, visitors: 348 },
+      { name: 'cta:view-product', type: 'click', count: 342, visitors: 308 },
+      { name: 'video_play', type: 'custom', count: 284, visitors: 248 },
+      { name: 'cta:request-pilot', type: 'click', count: 218, visitors: 198 },
+      { name: 'contact', type: 'form_start', count: 848, visitors: 812 },
+      { name: 'newsletter', type: 'form_submit', count: 342, visitors: 328 },
+      { name: 'contact', type: 'form_submit', count: 486, visitors: 462 }
+    ],
+    outbound: [
+      { url: 'linkedin.com/company/hashveno', clicks: 384 },
+      { url: 'twitter.com/hashveno', clicks: 242 },
+      { url: 'github.com/hashveno', clicks: 218 },
+      { url: 'youtube.com/@hashveno', clicks: 148 },
+      { url: 'wa.me/919000000000', clicks: 84 },
+      { url: 'calendly.com/hashveno', clicks: 62 }
+    ]
+  },
+
+  funnel: [
+    { step: 1, name: 'Visited Home', sessions: 1842 },
+    { step: 2, name: 'Viewed Products', sessions: 748 },
+    { step: 3, name: 'Viewed Contact', sessions: 384 },
+    { step: 4, name: 'Submitted Contact Form', sessions: 142 }
+  ],
+
+  forms: [
+    { form_id: 'contact', starts: 848, submits: 486, abandons: 362 },
+    { form_id: 'newsletter', starts: 512, submits: 342, abandons: 170 },
+    { form_id: 'careers-application', starts: 148, submits: 62, abandons: 86 },
+    { form_id: 'tutorial-request', starts: 84, submits: 48, abandons: 36 }
+  ],
+
+  sessions: [
+    { id: 'a4f3b2c1d8e9f0a1', started_at: Date.now() - 8000, landing_path: '/products/retail', device: 'mobile', city: 'Chennai', country: 'IN', pageview_count: 8, duration_ms: 342000, is_bounce: 0, email: 'rajesh@retailco.in' },
+    { id: 'b2c1d8e9f0a1b3c4', started_at: Date.now() - 34000, landing_path: '/', device: 'desktop', city: 'Bangalore', country: 'IN', pageview_count: 4, duration_ms: 186000, is_bounce: 0, email: null },
+    { id: 'c3d4e5f6a7b8c9d0', started_at: Date.now() - 92000, landing_path: '/articles/railways-unauthorized', device: 'desktop', city: 'Mumbai', country: 'IN', pageview_count: 3, duration_ms: 284000, is_bounce: 0, email: null },
+    { id: 'd4e5f6a7b8c9d0e1', started_at: Date.now() - 148000, landing_path: '/services/custom-software', device: 'desktop', city: 'Hyderabad', country: 'IN', pageview_count: 6, duration_ms: 428000, is_bounce: 0, email: 'priya@techcorp.io' },
+    { id: 'e5f6a7b8c9d0e1f2', started_at: Date.now() - 212000, landing_path: '/products/rail', device: 'tablet', city: 'Delhi', country: 'IN', pageview_count: 5, duration_ms: 246000, is_bounce: 0, email: null },
+    { id: 'f6a7b8c9d0e1f2a3', started_at: Date.now() - 288000, landing_path: '/articles/cloud-retail', device: 'mobile', city: 'Coimbatore', country: 'IN', pageview_count: 2, duration_ms: 68000, is_bounce: 0, email: null },
+    { id: 'a7b8c9d0e1f2a3b4', started_at: Date.now() - 384000, landing_path: '/why-hashveno', device: 'desktop', city: 'Pune', country: 'IN', pageview_count: 7, duration_ms: 512000, is_bounce: 0, email: 'arun@startup.in' },
+    { id: 'b8c9d0e1f2a3b4c5', started_at: Date.now() - 448000, landing_path: '/contact', device: 'mobile', city: 'Chennai', country: 'IN', pageview_count: 1, duration_ms: 34000, is_bounce: 1, email: null },
+    { id: 'c9d0e1f2a3b4c5d6', started_at: Date.now() - 548000, landing_path: '/', device: 'desktop', city: 'Kochi', country: 'IN', pageview_count: 5, duration_ms: 298000, is_bounce: 0, email: null },
+    { id: 'd0e1f2a3b4c5d6e7', started_at: Date.now() - 648000, landing_path: '/careers', device: 'mobile', city: 'Bangalore', country: 'IN', pageview_count: 3, duration_ms: 148000, is_bounce: 0, email: null },
+    { id: 'e1f2a3b4c5d6e7f8', started_at: Date.now() - 748000, landing_path: '/articles/shop-management', device: 'desktop', city: 'Ahmedabad', country: 'IN', pageview_count: 4, duration_ms: 342000, is_bounce: 0, email: null },
+    { id: 'f2a3b4c5d6e7f8a9', started_at: Date.now() - 848000, landing_path: '/services/integrations', device: 'desktop', city: 'Dubai', country: 'AE', pageview_count: 6, duration_ms: 384000, is_bounce: 0, email: 'hassan@retail.ae' }
+  ],
+
+  sources: {
+    referrers: [
+      { source: 'google.com', visitors: 3240 },
+      { source: 'Direct', visitors: 2148 },
+      { source: 'linkedin.com', visitors: 1284 },
+      { source: 'bing.com', visitors: 484 },
+      { source: 'x.com', visitors: 448 },
+      { source: 'github.com', visitors: 384 },
+      { source: 'duckduckgo.com', visitors: 218 },
+      { source: 'reddit.com', visitors: 186 }
+    ],
+    channels: [
+      { channel: 'Organic Search', visitors: 3942 },
+      { channel: 'Direct', visitors: 2148 },
+      { channel: 'LinkedIn', visitors: 1284 },
+      { channel: 'Twitter/X', visitors: 448 },
+      { channel: 'GitHub', visitors: 384 },
+      { channel: 'Reddit', visitors: 186 },
+      { channel: 'YouTube', visitors: 148 },
+      { channel: 'Other', visitors: 124 }
+    ]
+  },
+
+  geo: {
+    countries: [
+      { country: 'IN', visitors: 6482 },
+      { country: 'AE', visitors: 342 },
+      { country: 'US', visitors: 286 },
+      { country: 'SG', visitors: 184 },
+      { country: 'GB', visitors: 148 },
+      { country: 'DE', visitors: 84 },
+      { country: 'AU', visitors: 62 },
+      { country: 'CA', visitors: 42 }
+    ],
+    cities: [
+      { city: 'Chennai', country: 'IN', visitors: 1842 },
+      { city: 'Bangalore', country: 'IN', visitors: 1284 },
+      { city: 'Mumbai', country: 'IN', visitors: 942 },
+      { city: 'Hyderabad', country: 'IN', visitors: 684 },
+      { city: 'Delhi', country: 'IN', visitors: 542 },
+      { city: 'Coimbatore', country: 'IN', visitors: 384 },
+      { city: 'Pune', country: 'IN', visitors: 342 },
+      { city: 'Kochi', country: 'IN', visitors: 218 },
+      { city: 'Dubai', country: 'AE', visitors: 186 },
+      { city: 'Ahmedabad', country: 'IN', visitors: 148 },
+      { city: 'Singapore', country: 'SG', visitors: 142 },
+      { city: 'Madurai', country: 'IN', visitors: 124 }
+    ]
+  },
+
+  devices: {
+    devices: [
+      { device: 'mobile', visitors: 4284 },
+      { device: 'desktop', visitors: 3642 },
+      { device: 'tablet', visitors: 503 }
+    ],
+    browsers: [
+      { browser: 'Chrome', visitors: 4986 },
+      { browser: 'Safari', visitors: 1842 },
+      { browser: 'Edge', visitors: 842 },
+      { browser: 'Firefox', visitors: 486 },
+      { browser: 'Opera', visitors: 184 },
+      { browser: 'Other', visitors: 89 }
+    ],
+    os: [
+      { os: 'Android', visitors: 3842 },
+      { os: 'Windows', visitors: 2246 },
+      { os: 'iOS', visitors: 1484 },
+      { os: 'macOS', visitors: 642 },
+      { os: 'Linux', visitors: 184 },
+      { os: 'Other', visitors: 31 }
+    ]
+  },
+
+  users: [
+    { email: 'rajesh@retailco.in', name: 'Rajesh Kumar', company: 'RetailCo', total_sessions: 12, total_pageviews: 84, first_seen: Date.now() - 86400000 * 24, last_seen: Date.now() - 3600000 },
+    { email: 'priya@techcorp.io', name: 'Priya Sharma', company: 'TechCorp', total_sessions: 8, total_pageviews: 48, first_seen: Date.now() - 86400000 * 18, last_seen: Date.now() - 7200000 },
+    { email: 'arun@startup.in', name: 'Arun Verma', company: 'Startup', total_sessions: 6, total_pageviews: 42, first_seen: Date.now() - 86400000 * 12, last_seen: Date.now() - 43200000 },
+    { email: 'hassan@retail.ae', name: 'Hassan Al Rashid', company: 'RetailAE', total_sessions: 4, total_pageviews: 24, first_seen: Date.now() - 86400000 * 8, last_seen: Date.now() - 86400000 },
+    { email: 'meera@dtcbrand.com', name: 'Meera Krishnan', company: 'DTC Brand', total_sessions: 3, total_pageviews: 18, first_seen: Date.now() - 86400000 * 5, last_seen: Date.now() - 86400000 * 2 }
+  ],
+
+  consent: {
+    total: 4284,
+    analytics_yes: 3428,
+    marketing_yes: 1486
+  }
+};
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => document.querySelectorAll(s);
+
+function fmt(n) {
+  if (n == null || isNaN(n)) return '—';
+  return Number(n).toLocaleString('en-IN');
+}
+
+function fmtDuration(ms) {
+  if (!ms) return '—';
+  const s = Math.round(ms / 1000);
+  if (s < 60) return s + 's';
+  const m = Math.floor(s / 60);
+  const r = s % 60;
+  return m + 'm ' + r + 's';
+}
+
+function fmtPct(n) {
+  if (n == null || isNaN(n)) return '0.0%';
+  return Number(n).toFixed(1) + '%';
+}
+
+function timeAgo(ts) {
+  const s = Math.round((Date.now() - ts) / 1000);
+  if (s < 60) return s + 's ago';
+  if (s < 3600) return Math.floor(s / 60) + 'm ago';
+  if (s < 86400) return Math.floor(s / 3600) + 'h ago';
+  return Math.floor(s / 86400) + 'd ago';
+}
+
+function escapeHtml(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+
+function flagEmoji(code) {
+  if (!code || code.length !== 2) return '🌐';
+  const cp = code.toUpperCase().split('').map(c => 0x1F1E6 + c.charCodeAt(0) - 65);
+  return String.fromCodePoint(...cp);
+}
+
+function emptyState(msg = 'No data for this period') {
+  return `<div class="empty"><div class="icon">📊</div>${msg}</div>`;
+}
+
+/* ============================================================
+   RENDER UTILITIES
+   ============================================================ */
+
+function renderBarList(elId, rows, keyField, valueField, opts = {}) {
+  const el = document.getElementById(elId);
+  if (!rows || rows.length === 0) { el.innerHTML = emptyState(); return; }
+  const max = Math.max(...rows.map(r => r[valueField]), 1);
+  el.innerHTML = rows.map(r => {
+    let label = r[keyField] || 'Unknown';
+    if (opts.transform) label = opts.transform(label, r);
+    const pctOfMax = (r[valueField] / max) * 100;
+    return `
+      <div class="bar-row">
+        <div class="bar-label" title="${escapeHtml(label)}">${escapeHtml(label)}</div>
+        <div class="bar-track"><div class="bar-fill" style="width:${pctOfMax}%"></div></div>
+        <div class="bar-val">${fmt(r[valueField])}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+/* ============================================================
+   VIEW RENDERERS
+   ============================================================ */
+
+function renderOverview() {
+  const { kpis, timeseries, topPages, channels } = MOCK.overview;
+
+  $('#kpis').innerHTML = `
+    <div class="kpi live">
+      <div class="lbl">Active Now</div>
+      <div class="val">${kpis.activeNow}</div>
+      <div class="sub">in last 5 minutes</div>
+    </div>
+    <div class="kpi">
+      <div class="lbl">Visitors</div>
+      <div class="val">${fmt(kpis.visitors)}</div>
+      <div class="sub">${fmt(kpis.todayVisitors)} today</div>
+    </div>
+    <div class="kpi">
+      <div class="lbl">Pageviews</div>
+      <div class="val">${fmt(kpis.pageviews)}</div>
+      <div class="sub">${(kpis.pageviews / kpis.visitors).toFixed(2)} per visitor</div>
+    </div>
+    <div class="kpi">
+      <div class="lbl">Avg Session</div>
+      <div class="val">${fmtDuration(kpis.avgDuration)}</div>
+      <div class="sub">${fmtPct(kpis.bounceRate)} bounce rate</div>
+    </div>
+    <div class="kpi">
+      <div class="lbl">Top Device</div>
+      <div class="val">Mobile</div>
+      <div class="sub">4,284 visitors · 50.8%</div>
+    </div>
+  `;
+
+  const chart = document.getElementById('chart');
+  const max = Math.max(...timeseries.map(t => t.visitors));
+  chart.innerHTML = timeseries.map(t => {
+    const h = Math.max((t.visitors / max) * 100, 4);
+    const label = days7[timeseries.indexOf(t)] || t.day.slice(5);
+    return `<div class="chart-bar" style="height:${h}%" data-label="${label}" title="${t.visitors} visitors"></div>`;
+  }).join('');
+
+  renderBarList('topPages', topPages.slice(0, 10), 'path', 'visitors');
+  renderBarList('channels', channels, 'channel', 'visitors');
+}
+
+function renderLive() {
+  const { activeNow, active, feed } = MOCK.live;
+
+  $('#liveKpis').innerHTML = `
+    <div class="kpi live">
+      <div class="lbl">Active Sessions</div>
+      <div class="val">${activeNow}</div>
+      <div class="sub">last 5 minutes</div>
+    </div>
+  `;
+
+  $('#activeNow').innerHTML = `
+    <table>
+      <thead><tr><th>Path</th><th>Device</th><th class="num">Last seen</th></tr></thead>
+      <tbody>
+        ${active.map(s => `
+          <tr>
+            <td class="path">${escapeHtml(s.last_path)}</td>
+            <td><span class="pill device-${s.device}">${s.device}</span></td>
+            <td class="num">${timeAgo(Date.now() - s.last_seen)}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+
+  const icons = {
+    pageview: '👁', click: '👆', form_submit: '✓',
+    form_start: '✎', outbound: '↗', scroll: '↓', custom: '★'
+  };
+  $('#liveFeed').innerHTML = feed.map(e => `
+    <div class="live-item">
+      <div class="live-icon ${e.type}">${icons[e.type] || '•'}</div>
+      <div class="live-body">
+        <div class="live-title">${escapeHtml(e.title)}</div>
+        <div class="live-meta">${escapeHtml(e.meta)}</div>
+      </div>
+      <div class="live-time">${timeAgo(Date.now() - e.ts)}</div>
+    </div>
+  `).join('');
+}
+
+let entryExitTab = 'entries';
+function renderPages() {
+  const { pages, entries, exits } = MOCK.pages;
+
+  $('#pagesTable').innerHTML = `
+    <table>
+      <thead><tr><th>Path</th><th class="num">Views</th><th class="num">Visitors</th><th class="num">Avg time</th></tr></thead>
+      <tbody>
+        ${pages.map(p => `
+          <tr>
+            <td class="path">${escapeHtml(p.path)}</td>
+            <td class="num">${fmt(p.views)}</td>
+            <td class="num">${fmt(p.visitors)}</td>
+            <td class="num">${fmtDuration(p.avg_time)}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+
+  const list = entryExitTab === 'entries' ? entries : exits;
+  const key = entryExitTab;
+  renderBarList('entryExitList', list, 'path', key);
+}
+
+function renderEvents() {
+  const { types, topEvents, outbound } = MOCK.events;
+
+  renderBarList('eventTypes', types, 'type', 'count');
+
+  $('#topEvents').innerHTML = `
+    <table>
+      <thead><tr><th>Event</th><th>Type</th><th class="num">Count</th><th class="num">Visitors</th></tr></thead>
+      <tbody>
+        ${topEvents.map(e => `
+          <tr>
+            <td class="path">${escapeHtml(e.name)}</td>
+            <td><span class="pill type">${escapeHtml(e.type)}</span></td>
+            <td class="num">${fmt(e.count)}</td>
+            <td class="num">${fmt(e.visitors)}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+
+  $('#outbound').innerHTML = `
+    <table>
+      <thead><tr><th>Destination</th><th class="num">Clicks</th></tr></thead>
+      <tbody>
+        ${outbound.map(o => `
+          <tr>
+            <td class="path">${escapeHtml(o.url)}</td>
+            <td class="num">${fmt(o.clicks)}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+function renderFunnels() {
+  const funnel = MOCK.funnel;
+  const firstCount = funnel[0].sessions;
+  $('#funnel').innerHTML = funnel.map((s, i) => {
+    const pctFromFirst = (s.sessions / firstCount) * 100;
+    return `
+      <div class="funnel-step">
+        <div class="step-num">${String(s.step).padStart(2, '0')}</div>
+        <div class="step-name">${escapeHtml(s.name)}</div>
+        <div class="step-count">${fmt(s.sessions)}</div>
+        <div class="step-pct">${pctFromFirst.toFixed(1)}%</div>
+        <div class="funnel-progress"><div style="width:${pctFromFirst}%"></div></div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderForms() {
+  const forms = MOCK.forms;
+  $('#formsTable').innerHTML = `
+    <table>
+      <thead><tr><th>Form</th><th class="num">Starts</th><th class="num">Submits</th><th class="num">Abandons</th><th class="num">Conversion</th></tr></thead>
+      <tbody>
+        ${forms.map(f => {
+          const conv = f.starts > 0 ? ((f.submits / f.starts) * 100).toFixed(1) : '0.0';
+          return `
+            <tr>
+              <td class="path">${escapeHtml(f.form_id)}</td>
+              <td class="num">${fmt(f.starts)}</td>
+              <td class="num">${fmt(f.submits)}</td>
+              <td class="num">${fmt(f.abandons)}</td>
+              <td class="num" style="color:var(--green)">${conv}%</td>
+            </tr>
+          `;
+        }).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+function renderSessions() {
+  const sessions = MOCK.sessions;
+  $('#sessionsTable').innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th>Started</th>
+          <th>Landing</th>
+          <th>Device</th>
+          <th>Location</th>
+          <th class="num">Pages</th>
+          <th class="num">Duration</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${sessions.map(s => `
+          <tr data-session="${s.id}" style="cursor:pointer">
+            <td class="mono">${timeAgo(s.started_at)}</td>
+            <td class="path">${escapeHtml(s.landing_path)}</td>
+            <td><span class="pill device-${s.device}">${s.device}</span></td>
+            <td class="mono">${escapeHtml(s.city)}, ${escapeHtml(s.country)}</td>
+            <td class="num">${s.pageview_count}</td>
+            <td class="num">${fmtDuration(s.duration_ms)}</td>
+            <td>
+              ${s.is_bounce ? '<span class="pill bounce">Bounce</span>' : '<span class="pill engaged">Engaged</span>'}
+              ${s.email ? ' <span class="pill identified">' + escapeHtml(s.email.split('@')[0]) + '</span>' : ''}
+            </td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+
+  $$('#sessionsTable tbody tr').forEach(tr => {
+    tr.addEventListener('click', () => openSession(tr.dataset.session));
+  });
+}
+
+function openSession(id) {
+  const s = MOCK.sessions.find(x => x.id === id);
+  if (!s) return;
+
+  const events = [
+    { ts: s.started_at, type: 'pageview', title: s.landing_path, meta: 'entry' },
+    { ts: s.started_at + 12000, type: 'scroll', title: 'scroll_50', meta: '' },
+    { ts: s.started_at + 24000, type: 'scroll', title: 'scroll_75', meta: '' },
+    { ts: s.started_at + 38000, type: 'click', title: 'cta:book-demo', meta: 'hero' },
+    { ts: s.started_at + 52000, type: 'pageview', title: '/contact', meta: '' },
+    { ts: s.started_at + 68000, type: 'form_start', title: 'contact', meta: 'started typing' },
+    { ts: s.started_at + 92000, type: 'form_submit', title: 'contact', meta: 'submitted in 24s' },
+    { ts: s.started_at + 128000, type: 'outbound', title: 'linkedin.com/company/hashveno', meta: '' }
+  ];
+
+  const icons = {
+    pageview: '👁', click: '👆', form_submit: '✓', form_start: '✎',
+    outbound: '↗', scroll: '↓', custom: '★'
+  };
+
+  $('#modalContent').innerHTML = `
+    <h2>Session details</h2>
+    <div class="sub">${escapeHtml(s.id)} · ${new Date(s.started_at).toLocaleString()}</div>
+
+    <div class="kpis" style="grid-template-columns:repeat(3,1fr);margin-bottom:20px">
+      <div class="kpi">
+        <div class="lbl">Duration</div>
+        <div class="val" style="font-size:22px">${fmtDuration(s.duration_ms)}</div>
+      </div>
+      <div class="kpi">
+        <div class="lbl">Pageviews</div>
+        <div class="val" style="font-size:22px">${s.pageview_count}</div>
+      </div>
+      <div class="kpi">
+        <div class="lbl">Events</div>
+        <div class="val" style="font-size:22px">${events.length}</div>
+      </div>
+    </div>
+
+    <div class="meta-row">
+      <span class="pill device-${s.device}">${s.device}</span>
+      <span class="sep">·</span>
+      <span>Chrome 128</span>
+      <span class="sep">·</span>
+      <span>${escapeHtml(s.city)}, ${escapeHtml(s.country)}</span>
+      <span class="sep">·</span>
+      <span>google.com</span>
+      ${s.email ? '<span class="sep">·</span><span class="pill identified">' + escapeHtml(s.email) + '</span>' : ''}
+    </div>
+
+    <div class="card-title" style="margin-bottom:14px">Timeline</div>
+    <div class="live-feed">
+      ${events.map(e => `
+        <div class="live-item">
+          <div class="live-icon ${e.type}">${icons[e.type] || '•'}</div>
+          <div class="live-body">
+            <div class="live-title">${escapeHtml(e.title)}</div>
+            <div class="live-meta">${e.type}${e.meta ? ' · ' + escapeHtml(e.meta) : ''}</div>
+          </div>
+          <div class="live-time">${new Date(e.ts).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+
+  $('#modal').classList.add('open');
+}
+
+function renderSources() {
+  renderBarList('referrers', MOCK.sources.referrers, 'source', 'visitors');
+  renderBarList('channelsFull', MOCK.sources.channels, 'channel', 'visitors');
+}
+
+function renderGeo() {
+  renderBarList('countries', MOCK.geo.countries, 'country', 'visitors', {
+    transform: (c) => flagEmoji(c) + ' ' + c
+  });
+
+  $('#cities').innerHTML = `
+    <table>
+      <thead><tr><th>City</th><th>Country</th><th class="num">Visitors</th></tr></thead>
+      <tbody>
+        ${MOCK.geo.cities.map(c => `
+          <tr>
+            <td>${escapeHtml(c.city)}</td>
+            <td class="mono">${flagEmoji(c.country)} ${escapeHtml(c.country)}</td>
+            <td class="num">${fmt(c.visitors)}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+function renderDevices() {
+  const { devices, browsers, os } = MOCK.devices;
+  const icons = { desktop: '💻', mobile: '📱', tablet: '📲' };
+  const total = devices.reduce((s, d) => s + d.visitors, 0);
+
+  $('#devices').innerHTML = devices.map(d => `
+    <div class="device-card">
+      <div class="icon">${icons[d.device] || '❓'}</div>
+      <div class="num">${fmt(d.visitors)}</div>
+      <div class="lbl">${d.device}</div>
+      <div class="pct">${fmtPct((d.visitors / total) * 100)}</div>
+    </div>
+  `).join('');
+
+  renderBarList('browsers', browsers, 'browser', 'visitors');
+  renderBarList('os', os, 'os', 'visitors');
+}
+
+function renderUsers() {
+  const users = MOCK.users;
+  $('#usersTable').innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Name</th>
+          <th>Company</th>
+          <th class="num">Sessions</th>
+          <th class="num">Pageviews</th>
+          <th>First seen</th>
+          <th>Last seen</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${users.map(u => `
+          <tr>
+            <td class="mono">${escapeHtml(u.email)}</td>
+            <td>${escapeHtml(u.name)}</td>
+            <td>${escapeHtml(u.company)}</td>
+            <td class="num">${u.total_sessions}</td>
+            <td class="num">${u.total_pageviews}</td>
+            <td class="mono">${new Date(u.first_seen).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}</td>
+            <td class="mono">${timeAgo(u.last_seen)}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+function renderConsent() {
+  const { total, analytics_yes, marketing_yes } = MOCK.consent;
+  $('#consentKpis').innerHTML = `
+    <div class="kpi">
+      <div class="lbl">Total Consent Records</div>
+      <div class="val">${fmt(total)}</div>
+      <div class="sub">in last 7 days</div>
+    </div>
+    <div class="kpi">
+      <div class="lbl">Analytics Opt-in</div>
+      <div class="val">${fmt(analytics_yes)}</div>
+      <div class="sub">${fmtPct((analytics_yes / total) * 100)} of records</div>
+    </div>
+    <div class="kpi">
+      <div class="lbl">Marketing Opt-in</div>
+      <div class="val">${fmt(marketing_yes)}</div>
+      <div class="sub">${fmtPct((marketing_yes / total) * 100)} of records</div>
+    </div>
+  `;
+}
+
+/* ============================================================
+   ROUTER
+   ============================================================ */
+
+const VIEW_TITLES = {
+  overview: ['Dashboard', 'all events'],
+  live: ['Live', 'real-time activity'],
+  pages: ['Pages', 'page-level performance'],
+  events: ['Events', 'clicks, scrolls, custom'],
+  funnels: ['Funnels', 'conversion paths'],
+  forms: ['Forms', 'starts & submissions'],
+  sessions: ['Sessions', 'visitor journeys'],
+  sources: ['Sources', 'acquisition'],
+  geo: ['Geography', 'countries & cities'],
+  devices: ['Devices', 'device & browser'],
+  users: ['Identified Users', 'consented Tier 3'],
+  consent: ['Consent', 'DPDP compliance']
+};
+
+let state = { view: 'overview', range: '7d' };
+
+function render() {
+  const [title, sub] = VIEW_TITLES[state.view];
+  $('#viewTitle').textContent = title;
+  $('#viewSub').textContent = `hashveno.com · ${sub} · ${state.range}`;
+
+  $$('.view').forEach(v => v.classList.remove('active'));
+  const viewEl = document.getElementById('view-' + state.view);
+  if (viewEl) viewEl.classList.add('active');
+
+  switch (state.view) {
+    case 'overview': return renderOverview();
+    case 'live': return renderLive();
+    case 'pages': return renderPages();
+    case 'events': return renderEvents();
+    case 'funnels': return renderFunnels();
+    case 'forms': return renderForms();
+    case 'sessions': return renderSessions();
+    case 'sources': return renderSources();
+    case 'geo': return renderGeo();
+    case 'devices': return renderDevices();
+    case 'users': return renderUsers();
+    case 'consent': return renderConsent();
+  }
+}
+
+/* ============================================================
+   EVENT LISTENERS
+   ============================================================ */
+
+$$('.nav-item').forEach(item => {
+  if (!item.dataset.view) return;
+  item.addEventListener('click', () => {
+    $$('.nav-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+    state.view = item.dataset.view;
+    render();
+  });
+});
+
+$$('#rangePicker button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    $$('#rangePicker button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.range = btn.dataset.range;
+    render();
+  });
+});
+
+$$('[data-tabs]').forEach(tabs => {
+  tabs.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabs.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      entryExitTab = btn.dataset.tab;
+      renderPages();
+    });
+  });
+});
+
+$('#modalClose').addEventListener('click', () => {
+  $('#modal').classList.remove('open');
+});
+$('#modal').addEventListener('click', (e) => {
+  if (e.target.id === 'modal') $('#modal').classList.remove('open');
+});
+
+// Live feed auto-updates
+setInterval(() => {
+  if (state.view === 'live') {
+    // Simulate new event
+    const newEvent = {
+      ts: 2000,
+      type: 'pageview',
+      title: '/products/retail',
+      meta: 'Chennai, IN · mobile'
+    };
+    MOCK.live.feed.unshift(newEvent);
+    if (MOCK.live.feed.length > 15) MOCK.live.feed.pop();
+    renderLive();
+  }
+}, 8000);
+
+// Initial render
+render();
+</script>
+
+</body>
+</html>

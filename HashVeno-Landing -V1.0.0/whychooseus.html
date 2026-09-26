@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Why Choose Us — HashVeno</title>
+<meta name="description" content="A founder-led software team in Chennai — we run what we build, no handoffs, fixed price. Here's honestly where we win, and where we're not the right fit." />
+<meta name="theme-color" content="#0A0A12" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   DESIGN TOKENS
+============================================================ */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F7FB;
+  --surface:#FFFFFF;
+  --ink:#0A0A12;
+  --ink-2:#252532;
+  --muted:#63637A;
+  --faint:#9B9BAA;
+  --line:#E8E8F0;
+  --line-soft:#F1F1F7;
+
+  --brand:#5B4BE8;
+  --brand-2:#8B7BFF;
+  --brand-soft:#EFECFF;
+  --brand-ink:#3D2FC9;
+
+  --why:#0D9488;
+  --why-2:#14B8A6;
+  --why-soft:#CCFBF1;
+  --why-ink:#115E59;
+
+  --accent:#00C48C;
+  --amber:#D98A0B;
+  --rose:#E0526B;
+
+  --radius:14px;
+  --radius-lg:20px;
+  --shadow-sm:0 1px 2px rgba(15,15,30,.04);
+  --shadow-md:0 8px 24px -8px rgba(20,20,40,.08),0 2px 6px rgba(20,20,40,.03);
+  --shadow-lg:0 24px 60px -20px rgba(20,20,50,.18),0 8px 20px rgba(20,20,40,.06);
+  --shadow-brand:0 12px 32px -8px rgba(91,75,232,.35);
+  --shadow-why:0 12px 32px -8px rgba(13,148,136,.35);
+
+  --font-sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --font-serif:'Lora',Georgia,serif;
+  --font-mono:'JetBrains Mono',ui-monospace,monospace;
+
+  --container:1200px;
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--font-sans);background:var(--bg);color:var(--ink);
+  line-height:1.55;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
+}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input{font:inherit;border:none;outline:none;background:none;color:inherit}
+::selection{background:var(--why);color:#fff}
+
+.container{width:100%;max-width:var(--container);margin:0 auto;padding:0 24px}
+
+/* ============================================================
+   NAV
+============================================================ */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 0;
+  transition:background .25s ease, backdrop-filter .25s ease, border-color .25s ease, padding .25s ease;
+  border-bottom:1px solid transparent;
+}
+.nav.scrolled{
+  background:rgba(247,247,251,.85);
+  backdrop-filter:saturate(180%) blur(20px);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-bottom-color:var(--line);padding:10px 0;
+}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.02em}
+.brand-mark{
+  width:34px;height:34px;border-radius:10px;
+  background:linear-gradient(135deg,var(--brand),var(--brand-2));
+  display:grid;place-items:center;color:#fff;
+  box-shadow:0 6px 16px -4px rgba(91,75,232,.45);position:relative;
+}
+.brand-mark::after{
+  content:"";position:absolute;inset:0;border-radius:10px;
+  background:linear-gradient(135deg,rgba(255,255,255,.35),transparent 55%);pointer-events:none;
+}
+.brand-name{font-size:17px}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-link{
+  font-size:14px;font-weight:500;color:var(--muted);
+  padding:8px 14px;border-radius:9px;transition:.15s;
+}
+.nav-link:hover{color:var(--ink);background:rgba(255,255,255,.7)}
+.nav-link.active{color:var(--why-ink);background:var(--why-soft)}
+.nav-cta{display:flex;align-items:center;gap:8px}
+.nav-toggle{
+  display:none;width:40px;height:40px;border-radius:10px;
+  align-items:center;justify-content:center;
+  border:1px solid var(--line);background:var(--surface);
+}
+@media(max-width:900px){
+  .nav-links{display:none}
+  .nav-toggle{display:flex}
+  .nav-cta .btn{display:none}
+}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-size:14.5px;font-weight:600;letter-spacing:-.005em;
+  padding:11px 20px;border-radius:11px;
+  transition:transform .15s ease, box-shadow .18s ease, background .15s ease, color .15s ease;
+  white-space:nowrap;cursor:pointer;
+}
+.btn-primary{background:var(--brand);color:#fff;box-shadow:var(--shadow-brand)}
+.btn-primary:hover{background:#4E3FD4;transform:translateY(-1px);box-shadow:0 16px 36px -10px rgba(91,75,232,.5)}
+.btn-why{background:var(--why);color:#fff;box-shadow:var(--shadow-why)}
+.btn-why:hover{background:#0F766E;transform:translateY(-1px);box-shadow:0 16px 36px -10px rgba(13,148,136,.5)}
+.btn-secondary{background:var(--surface);color:var(--ink);border:1px solid var(--line)}
+.btn-secondary:hover{background:#fff;border-color:#D6D6E2;transform:translateY(-1px)}
+.btn svg{transition:transform .18s}
+.btn:hover svg{transform:translateX(2px)}
+.btn-lg{font-size:15.5px;padding:14px 26px;border-radius:13px}
+
+.mobile-menu{
+  position:fixed;inset:56px 0 auto 0;z-index:99;
+  background:var(--surface);border-bottom:1px solid var(--line);
+  padding:12px 24px 20px;transform:translateY(-8px);opacity:0;pointer-events:none;
+  transition:.22s ease;box-shadow:var(--shadow-lg);
+}
+.mobile-menu.open{transform:none;opacity:1;pointer-events:auto}
+.mobile-menu a{display:block;padding:13px 4px;font-size:15px;font-weight:500;border-bottom:1px solid var(--line-soft)}
+.mobile-menu a:last-child{border:none}
+
+/* ============================================================
+   HERO
+============================================================ */
+.hero{
+  position:relative;
+  padding:150px 0 96px;
+  overflow:hidden;
+  isolation:isolate;
+}
+.hero-bg{
+  position:absolute;inset:0;z-index:-1;
+  background:
+    radial-gradient(1000px 500px at 50% -10%, rgba(13,148,136,.13), transparent 70%),
+    radial-gradient(700px 400px at 90% 15%, rgba(20,184,166,.08), transparent 60%);
+}
+.hero-grid{
+  position:absolute;inset:0;z-index:-1;opacity:.5;
+  background-image:
+    linear-gradient(to right, rgba(13,148,136,.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(13,148,136,.05) 1px, transparent 1px);
+  background-size:56px 56px;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+}
+.hero-inner{max-width:880px;margin:0 auto;text-align:center}
+
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--why-ink);background:var(--why-soft);
+  padding:6px 13px;border-radius:99px;margin-bottom:26px;
+}
+.eyebrow .dot{width:5px;height:5px;border-radius:50%;background:var(--why);box-shadow:0 0 8px var(--why)}
+
+.hero h1{
+  font-family:var(--font-serif);
+  font-size:clamp(38px,5.8vw,68px);
+  font-weight:600;
+  letter-spacing:-.032em;
+  line-height:1.06;
+  color:var(--ink);
+  margin-bottom:26px;
+}
+.hero h1 em{
+  font-style:normal;
+  background:linear-gradient(100deg,var(--why),var(--why-2) 55%,#5EEAD4);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero .lede{
+  font-family:var(--font-serif);
+  font-size:clamp(18px,1.9vw,22px);
+  line-height:1.55;
+  color:var(--muted);
+  font-style:italic;
+  max-width:660px;
+  margin:0 auto 36px;
+}
+.hero-cta{
+  display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
+  margin-bottom:48px;
+}
+
+/* hero stats */
+.hero-stats{
+  display:flex;align-items:center;justify-content:center;
+  gap:36px;flex-wrap:wrap;
+  padding-top:40px;
+  border-top:1px solid var(--line);
+  max-width:720px;margin:0 auto;
+}
+.hero-stat{text-align:center}
+.hero-stat .num{
+  font-family:var(--font-serif);
+  font-size:26px;font-weight:600;
+  letter-spacing:-.025em;color:var(--ink);line-height:1;
+}
+.hero-stat .lbl{
+  font-size:11.5px;font-weight:500;color:var(--faint);
+  margin-top:8px;letter-spacing:.02em;
+  white-space:nowrap;
+}
+@media(max-width:640px){
+  .hero-stats{gap:22px}
+  .hero-stat .num{font-size:22px}
+}
+
+/* ============================================================
+   SECTION HEAD
+============================================================ */
+.section-head{
+  max-width:680px;margin-bottom:52px;
+}
+.section-head.center{margin-left:auto;margin-right:auto;text-align:center}
+.section-head h2{
+  font-family:var(--font-serif);
+  font-size:clamp(28px,4vw,44px);
+  font-weight:600;letter-spacing:-.03em;
+  line-height:1.12;margin-bottom:16px;
+}
+.section-head h2 em{
+  font-style:normal;
+  background:linear-gradient(100deg,var(--why),var(--why-2) 60%,#5EEAD4);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.section-head p{
+  font-size:16.5px;line-height:1.65;color:var(--muted);
+}
+
+/* ============================================================
+   COMPARISON TABLE
+============================================================ */
+.comparison-section{
+  max-width:var(--container);
+  margin:0 auto;
+  padding:0 24px 96px;
+}
+.comparison-scroll{
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  border-radius:var(--radius-lg);
+  border:1px solid var(--line);
+  background:var(--surface);
+  box-shadow:var(--shadow-sm);
+  margin-bottom:20px;
+}
+.comparison-scroll::-webkit-scrollbar{height:8px}
+.comparison-scroll::-webkit-scrollbar-thumb{background:var(--line);border-radius:8px}
+
+.comparison-table{
+  width:100%;
+  min-width:880px;
+  border-collapse:collapse;
+  font-size:14px;
+}
+.comparison-table thead th{
+  padding:22px 20px;
+  text-align:left;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--faint);
+  background:#FAFAFD;
+  border-bottom:1px solid var(--line);
+  vertical-align:middle;
+  position:sticky;top:0;z-index:2;
+}
+.comparison-table thead th.hv{
+  color:var(--why-ink);
+  background:var(--why-soft);
+  border-bottom-color:rgba(13,148,136,.25);
+  position:relative;
+}
+.comparison-table thead th.hv .hv-badge{
+  display:block;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.06em;
+  color:#fff;
+  background:var(--why);
+  padding:3px 8px;
+  border-radius:5px;
+  width:max-content;
+  margin-top:6px;
+}
+.comparison-table tbody tr{
+  border-bottom:1px solid var(--line-soft);
+  transition:background .15s;
+}
+.comparison-table tbody tr:hover{background:#FAFAFD}
+.comparison-table tbody tr:last-child{border-bottom:none}
+.comparison-table tbody th{
+  padding:20px;
+  text-align:left;
+  font-size:13.5px;
+  font-weight:600;
+  color:var(--ink);
+  background:var(--surface);
+  border-right:1px solid var(--line-soft);
+  width:180px;
+  vertical-align:top;
+  letter-spacing:-.005em;
+}
+.comparison-table tbody td{
+  padding:20px;
+  vertical-align:top;
+  color:var(--muted);
+  line-height:1.55;
+  font-size:13.5px;
+  border-right:1px solid var(--line-soft);
+}
+.comparison-table tbody td:last-child{border-right:none}
+.comparison-table tbody td.hv{
+  background:rgba(13,148,136,.04);
+  color:var(--ink-2);
+  font-weight:500;
+}
+.comparison-table tbody td.hv strong{
+  color:var(--why-ink);
+  font-weight:650;
+}
+.comparison-table td .cell-mark{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  font-size:12.5px;
+  font-weight:600;
+  padding:3px 8px;
+  border-radius:6px;
+}
+.comparison-table td .cell-mark.good{
+  color:#047857;
+  background:rgba(0,196,140,.1);
+}
+.comparison-table td .cell-mark.warn{
+  color:#92400E;
+  background:rgba(217,138,11,.12);
+}
+.comparison-table td .cell-mark.bad{
+  color:#9F1239;
+  background:rgba(224,82,107,.1);
+}
+.comparison-table td .cell-mark.neutral{
+  color:var(--muted);
+  background:var(--line-soft);
+}
+.comparison-table td .cell-mark svg{flex-shrink:0}
+
+.comparison-note{
+  font-size:13px;
+  color:var(--faint);
+  text-align:center;
+  font-style:italic;
+  line-height:1.55;
+  padding:0 20px;
+}
+
+@media(max-width:640px){
+  .comparison-table{font-size:13px}
+  .comparison-table thead th,
+  .comparison-table tbody th,
+  .comparison-table tbody td{padding:14px 12px}
+  .comparison-table tbody th{font-size:12.5px;width:130px}
+  .comparison-table tbody td{font-size:12.5px}
+  .comparison-table td .cell-mark{font-size:11.5px;padding:2px 6px}
+}
+
+/* ============================================================
+   6 DIFFERENTIATORS
+============================================================ */
+.why-section{
+  max-width:var(--container);
+  margin:0 auto;
+  padding:0 24px 96px;
+}
+.why-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
+@media(max-width:900px){.why-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.why-grid{grid-template-columns:1fr}}
+
+.why-card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius-lg);
+  padding:32px 28px 28px;
+  position:relative;
+  overflow:hidden;
+  transition:transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s, border-color .25s;
+}
+.why-card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--why),var(--why-2));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .4s cubic-bezier(.2,.8,.2,1);
+}
+.why-card:hover{
+  transform:translateY(-4px);
+  box-shadow:var(--shadow-lg);
+  border-color:#DEDEEA;
+}
+.why-card:hover::before{transform:scaleX(1)}
+
+.why-card-head{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:12px;margin-bottom:20px;
+}
+.why-icon{
+  width:48px;height:48px;
+  border-radius:14px;
+  display:grid;place-items:center;
+  font-size:20px;
+  background:linear-gradient(135deg,var(--why-soft),#FFF);
+  border:1px solid rgba(13,148,136,.15);
+  flex-shrink:0;
+}
+.why-num{
+  font-family:var(--font-mono);
+  font-size:11.5px;
+  font-weight:600;
+  letter-spacing:.05em;
+  color:var(--faint);
+}
+.why-title{
+  font-family:var(--font-serif);
+  font-size:19px;font-weight:600;
+  letter-spacing:-.02em;
+  line-height:1.3;
+  color:var(--ink);
+  margin-bottom:10px;
+}
+.why-desc{
+  font-size:14px;line-height:1.65;
+  color:var(--muted);
+}
+
+/* ============================================================
+   THREE THINGS THAT MATTER
+============================================================ */
+.three-section{
+  max-width:var(--container);
+  margin:0 auto;
+  padding:0 24px 96px;
+}
+.three-wrapper{
+  background:linear-gradient(135deg,#042F2E 0%,#0B4A47 60%,#0F5955 100%);
+  border-radius:28px;
+  padding:64px 56px;
+  color:#fff;
+  position:relative;
+  overflow:hidden;
+}
+.three-wrapper::before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(700px 350px at 20% 20%, rgba(13,148,136,.4), transparent 60%),
+    radial-gradient(600px 350px at 85% 80%, rgba(94,234,212,.18), transparent 60%);
+  pointer-events:none;
+}
+.three-wrapper::after{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size:44px 44px;
+  mask-image:radial-gradient(ellipse at 50% 50%,#000,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse at 50% 50%,#000,transparent 75%);
+  pointer-events:none;
+}
+.three-wrapper > *{position:relative;z-index:1}
+
+.three-head{
+  text-align:center;max-width:640px;
+  margin:0 auto 52px;
+}
+.three-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(94,234,212,.95);
+  padding:6px 13px;border-radius:99px;
+  background:rgba(13,148,136,.2);
+  border:1px solid rgba(94,234,212,.25);
+  margin-bottom:20px;
+}
+.three-eyebrow .dot{
+  width:5px;height:5px;border-radius:50%;
+  background:rgba(94,234,212,.95);
+}
+.three-head h2{
+  font-family:var(--font-serif);
+  font-size:clamp(26px,3.4vw,40px);
+  font-weight:600;letter-spacing:-.03em;
+  line-height:1.15;margin-bottom:16px;
+}
+.three-head h2 em{
+  font-style:normal;
+  background:linear-gradient(100deg,#5EEAD4,#14B8A6 60%,#0D9488);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.three-head p{
+  font-size:15.5px;line-height:1.65;
+  color:rgba(255,255,255,.68);
+}
+
+.three-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+@media(max-width:820px){.three-grid{grid-template-columns:1fr}}
+
+.three-item{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+  padding:32px 28px;
+  transition:.3s;
+}
+.three-item:hover{
+  background:rgba(255,255,255,.07);
+  border-color:rgba(94,234,212,.3);
+  transform:translateY(-4px);
+}
+.three-item .ti-num{
+  font-family:var(--font-mono);
+  font-size:11px;font-weight:600;
+  letter-spacing:.08em;
+  color:rgba(94,234,212,.75);
+  margin-bottom:20px;
+}
+.three-item h3{
+  font-family:var(--font-serif);
+  font-size:22px;font-weight:600;
+  letter-spacing:-.022em;
+  line-height:1.25;
+  color:#fff;
+  margin-bottom:14px;
+}
+.three-item p{
+  font-size:14.5px;line-height:1.65;
+  color:rgba(255,255,255,.68);
+  margin-bottom:16px;
+}
+.three-item .ti-diff{
+  display:flex;align-items:flex-start;gap:10px;
+  padding-top:16px;
+  border-top:1px solid rgba(255,255,255,.08);
+  font-size:13.5px;
+  line-height:1.55;
+  color:rgba(255,255,255,.85);
+}
+.three-item .ti-diff svg{
+  color:#5EEAD4;
+  flex-shrink:0;
+  margin-top:3px;
+}
+
+@media(max-width:640px){
+  .three-wrapper{padding:40px 24px;border-radius:22px}
+}
+
+/* ============================================================
+   HONEST — WHEN WE'RE NOT THE FIT
+============================================================ */
+.honest-section{
+  max-width:var(--container);
+  margin:0 auto;
+  padding:0 24px 96px;
+}
+.honest-card{
+  background:linear-gradient(135deg,#FFF8EA,#FFFBF5);
+  border:1px solid rgba(217,138,11,.2);
+  border-radius:var(--radius-lg);
+  padding:48px 52px;
+  position:relative;
+  overflow:hidden;
+}
+.honest-card::before{
+  content:"";position:absolute;top:-40px;right:-40px;
+  width:200px;height:200px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(217,138,11,.08),transparent 70%);
+  pointer-events:none;
+}
+.honest-card > *{position:relative;z-index:1}
+
+.honest-label{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:#8B5A00;
+  padding:6px 13px;border-radius:99px;
+  background:rgba(217,138,11,.12);
+  border:1px solid rgba(217,138,11,.2);
+  margin-bottom:20px;
+}
+.honest-label .dot{
+  width:5px;height:5px;border-radius:50%;
+  background:var(--amber);
+}
+
+.honest-card h2{
+  font-family:var(--font-serif);
+  font-size:clamp(26px,3.2vw,38px);
+  font-weight:600;letter-spacing:-.028em;
+  line-height:1.18;
+  color:var(--ink);
+  margin-bottom:16px;
+  max-width:720px;
+}
+.honest-card > p{
+  font-size:16px;
+  line-height:1.7;
+  color:var(--ink-2);
+  margin-bottom:32px;
+  max-width:720px;
+}
+
+.honest-list{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+}
+@media(max-width:720px){.honest-list{grid-template-columns:1fr}}
+
+.honest-item{
+  display:flex;
+  align-items:flex-start;
+  gap:14px;
+  padding:20px 22px;
+  background:#fff;
+  border:1px solid rgba(217,138,11,.15);
+  border-radius:14px;
+  transition:.2s;
+}
+.honest-item:hover{
+  border-color:rgba(217,138,11,.3);
+  transform:translateY(-2px);
+  box-shadow:0 8px 20px -8px rgba(217,138,11,.15);
+}
+.honest-item .hi-icon{
+  width:36px;height:36px;
+  border-radius:10px;
+  background:rgba(217,138,11,.1);
+  color:#8B5A00;
+  display:grid;place-items:center;
+  flex-shrink:0;
+  font-size:16px;
+}
+.honest-item .hi-body{flex:1;min-width:0}
+.honest-item .hi-title{
+  font-size:14.5px;
+  font-weight:650;
+  letter-spacing:-.008em;
+  color:var(--ink);
+  margin-bottom:6px;
+}
+.honest-item .hi-desc{
+  font-size:13.5px;
+  line-height:1.6;
+  color:var(--muted);
+}
+.honest-item .hi-desc a{
+  color:var(--why-ink);
+  font-weight:600;
+  text-decoration:underline;
+  text-decoration-color:rgba(13,148,136,.3);
+  text-underline-offset:2px;
+}
+
+.honest-close{
+  margin-top:32px;
+  padding-top:28px;
+  border-top:1px solid rgba(217,138,11,.15);
+  font-size:15px;
+  line-height:1.7;
+  color:var(--ink-2);
+  max-width:720px;
+}
+.honest-close b{
+  color:var(--ink);
+  font-weight:650;
+}
+
+@media(max-width:640px){
+  .honest-card{padding:32px 24px;border-radius:18px}
+}
+
+/* ============================================================
+   TESTIMONIAL
+============================================================ */
+.testimonial-section{
+  max-width:var(--container);
+  margin:0 auto;
+  padding:0 24px 96px;
+}
+.testimonial{
+  background:linear-gradient(135deg,#FBFBFE,#F0FDFA);
+  border:1px solid var(--line);
+  border-radius:var(--radius-lg);
+  padding:64px 56px;
+  position:relative;
+  overflow:hidden;
+}
+.testimonial::before{
+  content:"“";
+  position:absolute;
+  top:-30px;left:32px;
+  font-family:var(--font-serif);
+  font-size:180px;line-height:1;
+  color:var(--why);opacity:.08;
+  font-weight:700;
+}
+.testimonial-content{
+  position:relative;
+  max-width:760px;margin:0 auto;
+  text-align:center;
+}
+.testimonial-quote{
+  font-family:var(--font-serif);
+  font-size:clamp(20px,2.4vw,26px);
+  font-weight:500;line-height:1.45;
+  letter-spacing:-.014em;color:var(--ink);
+  margin-bottom:32px;
+}
+.testimonial-person{
+  display:flex;align-items:center;justify-content:center;gap:14px;
+}
+.testimonial-avatar{
+  width:52px;height:52px;border-radius:15px;
+  display:grid;place-items:center;
+  color:#fff;font-size:16px;font-weight:700;
+  background:linear-gradient(135deg,var(--why),var(--why-2));
+  flex-shrink:0;
+  box-shadow:0 8px 20px -6px rgba(13,148,136,.4);
+}
+.testimonial-info{text-align:left}
+.testimonial-name{
+  font-size:14.5px;font-weight:650;
+  letter-spacing:-.01em;color:var(--ink);
+}
+.testimonial-role{
+  font-size:12.5px;color:var(--muted);
+  margin-top:3px;
+}
+@media(max-width:640px){
+  .testimonial{padding:36px 24px;border-radius:18px}
+  .testimonial::before{font-size:120px;top:-20px;left:20px}
+}
+
+/* ============================================================
+   FAQ
+============================================================ */
+.faq-section{
+  max-width:var(--container);
+  margin:0 auto;
+  padding:0 24px 96px;
+}
+.faq-wrap{max-width:800px;margin:0 auto}
+.faq-item{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:14px;
+  margin-bottom:10px;
+  overflow:hidden;
+  transition:.2s;
+}
+.faq-item.open{
+  border-color:rgba(13,148,136,.3);
+  box-shadow:var(--shadow-sm);
+}
+.faq-q{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  width:100%;padding:20px 24px;text-align:left;
+  font-size:15px;font-weight:600;letter-spacing:-.012em;
+  color:var(--ink);transition:.15s;
+}
+.faq-q:hover{color:var(--why-ink)}
+.faq-icon{
+  width:24px;height:24px;border-radius:7px;flex-shrink:0;
+  display:grid;place-items:center;
+  background:var(--why-soft);color:var(--why-ink);
+  transition:transform .3s cubic-bezier(.2,.8,.2,1), background .2s, color .2s;
+}
+.faq-item.open .faq-icon{
+  transform:rotate(45deg);
+  background:var(--why);color:#fff;
+}
+.faq-a{
+  max-height:0;overflow:hidden;
+  transition:max-height .35s cubic-bezier(.2,.8,.2,1);
+}
+.faq-item.open .faq-a{max-height:520px}
+.faq-a-inner{
+  padding:0 24px 22px;
+  font-size:14.5px;color:var(--muted);
+  line-height:1.7;
+}
+.faq-a-inner p + p{margin-top:12px}
+.faq-a-inner strong{color:var(--ink);font-weight:650}
+
+/* ============================================================
+   FINAL CTA
+============================================================ */
+.cta-section{
+  max-width:var(--container);
+  margin:0 auto;
+  padding:0 24px 96px;
+}
+.cta-final{
+  background:linear-gradient(135deg,#042F2E 0%,#0B4A47 60%,#0F5955 100%);
+  border-radius:28px;
+  padding:72px 56px;
+  color:#fff;
+  position:relative;
+  overflow:hidden;
+  text-align:center;
+}
+.cta-final::before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(800px 400px at 50% 0%, rgba(13,148,136,.45), transparent 60%),
+    radial-gradient(600px 400px at 90% 90%, rgba(94,234,212,.18), transparent 60%);
+  pointer-events:none;
+}
+.cta-final::after{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size:44px 44px;
+  mask-image:radial-gradient(ellipse at 50% 50%,#000,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse at 50% 50%,#000,transparent 75%);
+  pointer-events:none;
+}
+.cta-final > *{position:relative;z-index:1}
+.cta-final h2{
+  font-family:var(--font-serif);
+  font-size:clamp(30px,4.4vw,48px);
+  font-weight:600;letter-spacing:-.032em;
+  line-height:1.1;margin-bottom:18px;
+}
+.cta-final h2 em{
+  font-style:normal;
+  background:linear-gradient(100deg,#5EEAD4,#14B8A6 60%,#0D9488);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.cta-final p{
+  font-size:16.5px;color:rgba(255,255,255,.72);
+  line-height:1.65;max-width:600px;
+  margin:0 auto 36px;
+}
+.cta-final .actions{
+  display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
+}
+.cta-final .btn-white{
+  background:#fff;color:var(--why-ink);
+  box-shadow:0 12px 32px -10px rgba(255,255,255,.3);
+}
+.cta-final .btn-white:hover{background:#F0FDFA;transform:translateY(-2px)}
+.cta-final .btn-outline{
+  background:rgba(255,255,255,.08);color:#fff;
+  border:1px solid rgba(255,255,255,.15);
+}
+.cta-final .btn-outline:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25)}
+
+@media(max-width:640px){
+  .cta-final{padding:52px 24px;border-radius:20px}
+  .cta-final .actions{flex-direction:column}
+  .cta-final .btn{width:100%;justify-content:center}
+}
+
+/* ============================================================
+   FOOTER
+============================================================ */
+.footer{background:#0B0B16;color:rgba(255,255,255,.7);padding:64px 0 28px}
+.footer-grid{
+  display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px;
+  padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.08);
+}
+.footer-brand{display:flex;align-items:center;gap:10px;color:#fff;margin-bottom:14px}
+.footer-brand .brand-mark{box-shadow:none}
+.footer-brand .brand-name{font-size:16px}
+.footer-about{font-size:13.5px;line-height:1.65;max-width:320px;color:rgba(255,255,255,.55)}
+.footer-social{display:flex;gap:10px;margin-top:18px}
+.social-btn{
+  width:38px;height:38px;border-radius:11px;display:grid;place-items:center;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
+  color:rgba(255,255,255,.75);transition:.2s;
+}
+.social-btn:hover{background:var(--why);color:#fff;transform:translateY(-2px);border-color:var(--why)}
+.footer h5{
+  font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  color:rgba(255,255,255,.5);margin-bottom:16px;
+}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13.5px;color:rgba(255,255,255,.7);transition:.15s;display:inline-block}
+.footer-links a:hover{color:#fff;transform:translateX(3px)}
+.footer-bottom{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:26px;gap:16px;flex-wrap:wrap;
+  font-size:12.5px;color:rgba(255,255,255,.4);
+}
+.footer-bottom .made{display:flex;align-items:center;gap:8px}
+.footer-bottom .made span.flag{font-size:15px}
+@media(max-width:820px){
+  .footer-grid{grid-template-columns:1fr 1fr;gap:32px}
+  .footer-grid > div:first-child{grid-column:1/-1}
+  .footer-bottom{flex-direction:column;text-align:center}
+}
+
+/* ============================================================
+   REVEAL
+============================================================ */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.8,.2,1), transform .7s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* ============================================================
+   MOBILE
+============================================================ */
+@media(max-width:720px){
+  .hero{padding:120px 0 64px}
+  .hero h1{font-size:clamp(32px,8.5vw,44px)}
+  .hero .lede{font-size:17px}
+
+  .comparison-section{padding:0 18px 64px}
+  .why-section{padding:0 18px 64px}
+  .three-section{padding:0 18px 64px}
+  .honest-section{padding:0 18px 64px}
+  .testimonial-section{padding:0 18px 64px}
+  .faq-section{padding:0 18px 64px}
+  .cta-section{padding:0 18px 64px}
+
+  .section-head{margin-bottom:36px}
+  .section-head h2{font-size:clamp(24px,7vw,32px)}
+  .section-head p{font-size:14.5px}
+
+  .why-card{padding:26px 22px 24px}
+  .faq-q{padding:16px 20px;font-size:14.5px;gap:12px}
+  .faq-a-inner{padding:0 20px 18px;font-size:13.5px}
+
+  .container{padding:0 18px}
+  .footer{padding:48px 0 22px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important}
+  .reveal{opacity:1;transform:none}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="#" class="brand">
+      <span class="brand-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="3" fill="#fff" stroke="none"/>
+        </svg>
+      </span>
+      <span class="brand-name">HashVeno</span>
+    </a>
+
+    <div class="nav-links">
+      <a class="nav-link" href="#">Services</a>
+      <a class="nav-link" href="#">Products</a>
+      <a class="nav-link" href="#">Articles</a>
+      <a class="nav-link" href="#">About</a>
+      <a class="nav-link active" href="#">Why HashVeno</a>
+    </div>
+
+    <div class="nav-cta">
+      <a href="#contact" class="btn btn-why">
+        Book a call
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M4 7h16M4 12h16M4 17h16"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#">Services</a>
+  <a href="#">Products</a>
+  <a href="#">Articles</a>
+  <a href="#">About</a>
+  <a href="#">Why HashVeno</a>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <div class="container">
+    <div class="hero-inner">
+      <div class="eyebrow"><span class="dot"></span> Why Choose Us</div>
+
+      <h1>
+        Most software partners<br>
+        <em>disappear after launch.</em>
+      </h1>
+
+      <p class="lede">
+        We don't. Everything we build, we run. Everything we promise, we've
+        already done. And we'll tell you honestly when we're not the right
+        fit — before you waste a single call.
+      </p>
+
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-why btn-lg">
+          Book a discovery call
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#comparison" class="btn btn-secondary btn-lg">
+          See the honest comparison
+        </a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="num">3</div>
+          <div class="lbl">Products in production</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">6+</div>
+          <div class="lbl">Person founder-led team</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">100%</div>
+          <div class="lbl">Code ownership to you</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">2020</div>
+          <div class="lbl">Building since</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- COMPARISON -->
+<section class="comparison-section" id="comparison">
+  <div class="section-head center reveal">
+    <h2>How we compare to <em>your other options.</em></h2>
+    <p>No marketing spin. Just an honest look at what each path actually delivers — including the parts that don't flatter us.</p>
+  </div>
+
+  <div class="comparison-scroll reveal">
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th class="hv">
+            HashVeno
+            <span class="hv-badge">Us</span>
+          </th>
+          <th>Traditional agency</th>
+          <th>Freelancer</th>
+          <th>In-house hire</th>
+          <th>Off-the-shelf SaaS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>Who actually builds it</th>
+          <td class="hv"><strong>Founders and senior engineers</strong></td>
+          <td>Juniors, you meet seniors only in sales</td>
+          <td>One person, one skillset</td>
+          <td>Whoever you can hire</td>
+          <td>N/A — it's pre-built</td>
+        </tr>
+        <tr>
+          <th>Who runs it after launch</th>
+          <td class="hv"><strong>The team that built it</strong></td>
+          <td>Handed to "support" — different people</td>
+          <td>Often unavailable or moved on</td>
+          <td>You, or the hire you made</td>
+          <td>You, with a help portal</td>
+        </tr>
+        <tr>
+          <th>Code ownership</th>
+          <td class="hv"><strong>100% yours from day one</strong></td>
+          <td>Yours at handover, with caveats</td>
+          <td>Yours, but often undocumented</td>
+          <td>Yours</td>
+          <td>Not applicable</td>
+        </tr>
+        <tr>
+          <th>Time to first working version</th>
+          <td class="hv"><strong>3 weeks</strong></td>
+          <td>2–4 months</td>
+          <td>Varies wildly</td>
+          <td>1–3 months (hiring time)</td>
+          <td>Immediate, but generic</td>
+        </tr>
+        <tr>
+          <th>Pricing model</th>
+          <td class="hv"><strong>Fixed price, fixed scope</strong></td>
+          <td>Hourly or retainer</td>
+          <td>Hourly, variable</td>
+          <td>Salary + benefits + overhead</td>
+          <td>Subscription that grows with you</td>
+        </tr>
+        <tr>
+          <th>Customization</th>
+          <td class="hv"><strong>Fully custom to your workflow</strong></td>
+          <td>Usually custom, sometimes templated</td>
+          <td>Limited to one skillset</td>
+          <td>Custom, but slow to iterate</td>
+          <td>Vendor's way or the highway</td>
+        </tr>
+        <tr>
+          <th>Continuity after launch</th>
+          <td class="hv"><strong>Same team, ongoing</strong></td>
+          <td>New support team, no context</td>
+          <td>Depends on their availability</td>
+          <td>Depends on retention</td>
+          <td>Vendor's roadmap, not yours</td>
+        </tr>
+        <tr>
+          <th>Who you talk to</th>
+          <td class="hv"><strong>An engineer or founder</strong></td>
+          <td>Account manager, layers deep</td>
+          <td>The person themselves</td>
+          <td>Your own team</td>
+          <td>Support ticket queue</td>
+        </tr>
+        <tr>
+          <th>Best fit for</th>
+          <td class="hv"><strong>Businesses who want to ship and stay shipped</strong></td>
+          <td>Large budgets, big teams</td>
+          <td>Small, well-defined tasks</td>
+          <td>Long-term product companies</td>
+          <td>Standardized, low-customization needs</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="comparison-note">
+    This isn't a "we're best at everything" table. Each path above is right for someone.
+    Read the last row to see if it's right for you.
+  </p>
+</section>
+
+<!-- 6 DIFFERENTIATORS -->
+<section class="why-section">
+  <div class="section-head center reveal">
+    <h2>Six things we do <em>that actually matter.</em></h2>
+    <p>Not values on a wall. Rules we've operated by on every engagement.</p>
+  </div>
+
+  <div class="why-grid">
+
+    <div class="why-card reveal">
+      <div class="why-card-head">
+        <div class="why-icon">👤</div>
+        <span class="why-num">/ 01</span>
+      </div>
+      <h3 class="why-title">Founder-led. Not just on the website.</h3>
+      <p class="why-desc">
+        Dinesh, Sabitha, and Hemanathan are on every engagement. They write
+        code, they run discovery calls, they answer your questions. No
+        "founder-led" marketing that stops at the About page.
+      </p>
+    </div>
+
+    <div class="why-card reveal">
+      <div class="why-card-head">
+        <div class="why-icon">🛠</div>
+        <span class="why-num">/ 02</span>
+      </div>
+      <h3 class="why-title">We run what we build.</h3>
+      <p class="why-desc">
+        Every product we ship, we operate in production ourselves —
+        HashVeno Retail, HashRail, HashRoute. If we wouldn't be willing to
+        run it, we don't sell it to you.
+      </p>
+    </div>
+
+    <div class="why-card reveal">
+      <div class="why-card-head">
+        <div class="why-icon">🔗</div>
+        <span class="why-num">/ 03</span>
+      </div>
+      <h3 class="why-title">One team, no handoffs.</h3>
+      <p class="why-desc">
+        The person who designs it, builds it, and supports it is the same
+        person. You never get passed from sales to delivery to support
+        to someone you've never met.
+      </p>
+    </div>
+
+    <div class="why-card reveal">
+      <div class="why-card-head">
+        <div class="why-icon">📐</div>
+        <span class="why-num">/ 04</span>
+      </div>
+      <h3 class="why-title">Fixed price. No surprises.</h3>
+      <p class="why-desc">
+        We scope it in writing, quote a fixed price, and take on the risk
+        of overrun. No hourly billing, no scope-creep invoices, no
+        "we underestimated" calls halfway through.
+      </p>
+    </div>
+
+    <div class="why-card reveal">
+      <div class="why-card-head">
+        <div class="why-icon">⚡</div>
+        <span class="why-num">/ 05</span>
+      </div>
+      <h3 class="why-title">No-click automation.</h3>
+      <p class="why-desc">
+        A design principle, not a feature. Every system we build is judged
+        by one question: does it save someone from doing a thing they
+        shouldn't have to do anymore?
+      </p>
+    </div>
+
+    <div class="why-card reveal">
+      <div class="why-card-head">
+        <div class="why-icon">🇮🇳</div>
+        <span class="why-num">/ 06</span>
+      </div>
+      <h3 class="why-title">Built for India. Priced for India.</h3>
+      <p class="why-desc">
+        We build for local businesses at prices that make sense for local
+        businesses. World-class engineering shouldn't need a world-class
+        budget to access it.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- THREE THINGS THAT MATTER -->
+<section class="three-section">
+  <div class="three-wrapper reveal">
+    <div class="three-head">
+      <div class="three-eyebrow"><span class="dot"></span> The honest version</div>
+      <h2>Only three things<br><em>actually matter.</em></h2>
+      <p>
+        Strip away the marketing and every software engagement comes down to
+        three questions. Here's how we answer them.
+      </p>
+    </div>
+
+    <div class="three-grid">
+
+      <div class="three-item">
+        <div class="ti-num">QUESTION 01</div>
+        <h3>Who's actually building it?</h3>
+        <p>
+          With most vendors, you meet the senior team in sales and a junior
+          team after. You have no visibility into who writes the code that
+          runs your business.
+        </p>
+        <div class="ti-diff">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          <span>The people who sell you the work are the ones who build it.</span>
+        </div>
+      </div>
+
+      <div class="three-item">
+        <div class="ti-num">QUESTION 02</div>
+        <h3>Who owns it when it ships?</h3>
+        <p>
+          Most vendors hand it off and move on. Support becomes a separate
+          team you've never met. Bug fixes become a new project with a new
+          quote.
+        </p>
+        <div class="ti-diff">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          <span>You own the code from day one — and we keep running it.</span>
+        </div>
+      </div>
+
+      <div class="three-item">
+        <div class="ti-num">QUESTION 03</div>
+        <h3>What happens when it breaks?</h3>
+        <p>
+          Every system breaks eventually. The question is whether the person
+          who fixes it knows the system, or is reading it for the first time
+          at 2 AM.
+        </p>
+        <div class="ti-diff">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          <span>The team that built it is the team that supports it.</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- HONEST SECTION — WHEN WE'RE NOT THE FIT -->
+<section class="honest-section">
+  <div class="honest-card reveal">
+    <div class="honest-label"><span class="dot"></span> Radical honesty</div>
+    <h2>When we're <em>not</em> the right fit.</h2>
+    <p>
+      A "why choose us" page that says we're the best option for everyone
+      isn't useful. Here are four scenarios where you should choose someone
+      else — and we'll tell you so on the first call.
+    </p>
+
+    <div class="honest-list">
+
+      <div class="honest-item">
+        <div class="hi-icon">💼</div>
+        <div class="hi-body">
+          <div class="hi-title">You need 20+ engineers tomorrow</div>
+          <div class="hi-desc">
+            We're a 6+ person team. If you need to scale a team of twenty
+            engineers by next month, we can't help. We'll refer you to a
+            larger agency that can.
+          </div>
+        </div>
+      </div>
+
+      <div class="honest-item">
+        <div class="hi-icon">🎨</div>
+        <div class="hi-body">
+          <div class="hi-title">You want a marketing website or brochure app</div>
+          <div class="hi-desc">
+            We don't build simple marketing sites. Our strength is operational
+            software — dashboards, POS, monitoring, internal tools. For a
+            static site, a good freelancer will serve you better and cheaper.
+          </div>
+        </div>
+      </div>
+
+      <div class="honest-item">
+        <div class="hi-icon">⚖️</div>
+        <div class="hi-body">
+          <div class="hi-title">Your project needs a formal RFP and 5-vendor bidding</div>
+          <div class="hi-desc">
+            We don't participate in lengthy RFP processes. We prefer a
+            discovery call, a scoped plan, and a decision. If your procurement
+            requires formal bidding, we're happy to step aside.
+          </div>
+        </div>
+      </div>
+
+      <div class="honest-item">
+        <div class="hi-icon">💵</div>
+        <div class="hi-body">
+          <div class="hi-title">Your total budget is under $5,000</div>
+          <div class="hi-desc">
+            Below that number, we can't deliver the quality of work we stand
+            behind. We'll gladly refer you to a freelancer or smaller studio
+            who can help more efficiently at that budget.
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="honest-close">
+      <b>Why we say this openly:</b> every wrong "yes" costs both sides. A
+      project we shouldn't take means you get mediocre work, we get a
+      stressed team, and nobody wins. When we say yes, we want it to be
+      because we're genuinely the right fit — not because we needed the
+      revenue.
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section class="testimonial-section">
+  <div class="testimonial reveal">
+    <div class="testimonial-content">
+      <p class="testimonial-quote">
+        We evaluated four vendors before choosing HashVeno. Two of them were
+        cheaper. One was a bigger name. But only HashVeno asked us the hard
+        questions in the first call — the ones that made us realise what we
+        actually needed. Three months in, they're still the ones on the line
+        when something matters.
+      </p>
+      <div class="testimonial-person">
+        <div class="testimonial-avatar">MK</div>
+        <div class="testimonial-info">
+          <div class="testimonial-name">Meera Krishnan</div>
+          <div class="testimonial-role">Founder · D2C retail brand</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="section-head center reveal">
+    <h2>The questions <em>most buyers ask us.</em></h2>
+    <p>Before you get on a call, these are the four things we usually end up discussing anyway.</p>
+  </div>
+
+  <div class="faq-wrap reveal">
+
+    <div class="faq-item">
+      <button class="faq-q" data-faq>
+        Why not just hire an in-house team?
+        <span class="faq-icon">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        </span>
+      </button>
+      <div class="faq-a">
+        <div class="faq-a-inner">
+          <p>
+            For a mature product company with a long roadmap, in-house is
+            usually the right answer — and we'll tell you that when it's
+            true. But for most businesses, the math is worse than it looks.
+          </p>
+          <p>
+            A single senior engineer in Chennai costs ₹20–35 lakhs per year
+            fully loaded. To actually ship and support a production system
+            you need at least three people (frontend, backend, ops). That's
+            ₹60 lakhs+ per year, plus hiring time of 3 months, plus the risk
+            of one person leaving and taking all context with them.
+          </p>
+          <p>
+            <strong>In-house wins when:</strong> you have ongoing product work
+            forever, you already have engineering leadership, and you want
+            long-term ownership of the team.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" data-faq>
+        Why not use a bigger agency?
+        <span class="faq-icon">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        </span>
+      </button>
+      <div class="faq-a">
+        <div class="faq-a-inner">
+          <p>
+            Big agencies have real strengths: large teams, established
+            processes, and the ability to staff a 20-person project quickly.
+            If you need that, you should go there.
+          </p>
+          <p>
+            What they usually can't offer is continuity. The senior team
+            that pitches the work is rarely the team that builds it. Your
+            project is one of thirty in the pipeline. And after launch,
+            support becomes a ticket queue — not the people who actually
+            know your system.
+          </p>
+          <p>
+            <strong>Agencies win when:</strong> you need scale fast, need a
+            wide range of skills, or have a budget that requires a bigger
+            organisation for procurement reasons.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" data-faq>
+        Why not just buy SaaS?
+        <span class="faq-icon">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        </span>
+      </button>
+      <div class="faq-a">
+        <div class="faq-a-inner">
+          <p>
+            If a good SaaS product already does what you need, use it. It's
+            cheaper, faster, and someone else handles the bugs. We're not
+            here to convince you to build custom software when off-the-shelf
+            works.
+          </p>
+          <p>
+            But there's a reason we exist. Most businesses eventually hit one
+            of these walls: the SaaS doesn't fit your workflow, the pricing
+            scales faster than your revenue, you can't integrate it with
+            your other tools, or your data ends up locked in a system you
+            don't control.
+          </p>
+          <p>
+            <strong>SaaS wins when:</strong> your needs match its assumptions
+            closely, you want zero maintenance burden, and you're comfortable
+            with data living in someone else's infrastructure.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" data-faq>
+        What if my project doesn't fit your model?
+        <span class="faq-icon">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        </span>
+      </button>
+      <div class="faq-a">
+        <div class="faq-a-inner">
+          <p>
+            Then we'll tell you on the first call. We keep a short list of
+            trusted freelancers, studios, and specialists we refer work to
+            when it's outside our wheelhouse. We don't try to shoehorn
+            projects into our model, and we don't take work just to book
+            the revenue.
+          </p>
+          <p>
+            The referrals we make usually come back to us later as clients
+            with work that <em>does</em> fit. So there's no incentive for us
+            to be anything but honest.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="cta-section" id="contact">
+  <div class="cta-final reveal">
+    <h2>Still here?<br><em>Let's talk.</em></h2>
+    <p>
+      Book a 45-minute discovery call. No pitch deck. No sales sequence.
+      Just an honest conversation about what you're building, and whether
+      we're the right people to build it with you.
+    </p>
+    <div class="actions">
+      <a href="#" class="btn btn-white btn-lg">
+        Book a discovery call
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#" class="btn btn-outline btn-lg">
+        See our services
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <span class="brand-mark">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="3" fill="#fff" stroke="none"/>
+            </svg>
+          </span>
+          <span class="brand-name">HashVeno</span>
+        </div>
+        <p class="footer-about">
+          IT product &amp; service provider helping businesses grow through
+          smart technology solutions. Built and operated from Chennai, India.
+        </p>
+        <div class="footer-social">
+          <a href="#" class="social-btn" aria-label="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="LinkedIn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="Facebook">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M15 3h-3a4 4 0 0 0-4 4v3H5v4h3v7h4v-7h3l1-4h-4V7a1 1 0 0 1 1-1h3V3z"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="YouTube">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="6" width="18" height="12" rx="3"/><path d="M11 10l4 2-4 2v-4z" fill="currentColor"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h5>Services</h5>
+        <div class="footer-links">
+          <a href="#">Custom Software</a>
+          <a href="#">Cloud Applications</a>
+          <a href="#">Support &amp; Maintenance</a>
+          <a href="#">Integrations</a>
+        </div>
+      </div>
+
+      <div>
+        <h5>Products</h5>
+        <div class="footer-links">
+          <a href="#">HashVeno Retail</a>
+          <a href="#">HashRail</a>
+          <a href="#">HashRoute</a>
+          <a href="#">Tutorials</a>
+        </div>
+      </div>
+
+      <div>
+        <h5>Company</h5>
+        <div class="footer-links">
+          <a href="#">Articles</a>
+          <a href="#">Careers</a>
+          <a href="#">Terms</a>
+          <a href="#">Privacy</a>
+          <a href="#">Why Choose Us?</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2026 HashVeno. All rights reserved.</div>
+      <div class="made">
+        <span class="flag">🇮🇳</span>
+        made in India · Chennai
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* NAV SCROLL */
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 12);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+/* MOBILE MENU */
+const navToggle = document.getElementById('navToggle');
+const mobileMenu = document.getElementById('mobileMenu');
+navToggle.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+mobileMenu.querySelectorAll('a').forEach(a =>
+  a.addEventListener('click', () => mobileMenu.classList.remove('open'))
+);
+
+/* REVEAL */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* FAQ */
+document.querySelectorAll('[data-faq]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.faq-item');
+    const open = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    if (!open) item.classList.add('open');
+  });
+});
+
+/* SMOOTH ANCHOR SCROLL */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    const href = a.getAttribute('href');
+    if (href === '#') return;
+    const target = document.querySelector(href);
+    if (target){
+      e.preventDefault();
+      const top = target.getBoundingClientRect().top + window.pageYOffset - 90;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  });
+});
+</script>
+</body>
+</html>
